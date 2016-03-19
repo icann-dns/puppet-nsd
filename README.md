@@ -231,13 +231,13 @@ dns::zones:
 
 - [**Public Classes**](#public-classes)
     - [`nsd`](#class-nsd)
-- **Private Classes**
+- [**Private Classes**](#private-classes)
     - [`nsd::params`](#class-nsdparams)
-[**Private defined types**](#private-defined-types)
+- [**Private defined types**](#private-defined-types)
     - [`nsd::file`](#defined-nsdfile)
     - [`nsd::tsig`](#defined-nsdtsig)
     - [`nsd::zone`](#defined-nsdzone)
-[**Facts**]
+- [**Facts**]
     - ['nsd_version'](#fact-nsdversion)
 
 ### Classes
