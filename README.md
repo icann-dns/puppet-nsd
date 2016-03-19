@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/icann-dns/puppet-nsd.svg?branch=master)](https://travis-ci.org/icann-dns/puppet-nsd)
 # nsd
 
 #### Table of Contents
