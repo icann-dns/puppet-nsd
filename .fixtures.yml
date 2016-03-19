@@ -2,6 +2,6 @@ fixtures:
   repositories:
     "stdlib": "https://github.com/puppetlabs/puppetlabs-stdlib"
     "concat": "https://github.com/puppetlabs/puppetlabs-concat"
-    "logrotate" : "https://github.com/b4ldr/puppet-logrotate"
+    "logrotate" : "https://github.com/icann-dns/puppet-logrotate"
   symlinks:
     "ssh": "#{source_dir}"
