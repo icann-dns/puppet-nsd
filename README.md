@@ -237,7 +237,7 @@ dns::zones:
     - [`nsd::file`](#defined-nsdfile)
     - [`nsd::tsig`](#defined-nsdtsig)
     - [`nsd::zone`](#defined-nsdzone)
-- [**Facts**]
+- [**Facts**](#facts)
     - ['nsd_version'](#fact-nsdversion)
 
 ### Classes
