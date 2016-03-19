@@ -14,10 +14,12 @@ RSpec.configure do |c|
     # Install module to all hosts
     hosts.each do |host|
       install_dev_puppet_module_on(
-          host, :source => module_root, :module_name => 'ssh',
+          host, :source => module_root, :module_name => 'nsd',
           :target_module_path => '/etc/puppet/modules')
       # Install dependencies
       on(host, puppet('module', 'install', 'puppetlabs-stdlib'))
+      on(host, puppet('module', 'install', 'puppetlabs-concat'))
+      on(host, puppet('module', 'install', 'b4ldr-logrotate'))
 
     end
   end
