@@ -1,0 +1,40 @@
+<%- @zones.each do |zone| -%>
+zone:
+    name: "<%= zone %>"
+  <%- if @zonefile then -%>
+    zonefile: "<%= @zone_subdir %>/<%= @zonefile %>"
+  <%- else -%>
+    zonefile: "<%= @zone_subdir %>/<%= zone %>"
+  <%- end -%>
+  <%- if @notify_addresses then -%>
+    <%- @notify_addresses.each do |notify_address| -%>
+      <%- next if not @ipv6_capable and notify_address.include? ":" and ! @ipv6_capable.nil? -%>
+    notify: <%= notify_address %> NOKEY
+    <%- end -%>
+  <%- end -%>
+  <%- if @allow_notify then -%>
+    <%- @allow_notify.each do |notify| -%>
+      <%- next if not @ipv6_capable and notify.include? ":" and ! @ipv6_capable.nil? -%>
+    allow-notify: <%= notify %> NOKEY
+    <%- end -%>
+  <%- end -%>
+  <%- if @masters then -%>
+    <%- @masters.each do |master| -%>
+      <%- next if not @ipv6_capable and master.include? ":" and ! @ipv6_capable.nil? -%>
+      request-xfr: AXFR <%= master %> <%- if @tsig %> <%= @tsig['name'] %><%- end %>
+    <%- end -%>
+  <%- end -%>
+  <%- if @provide_xfr then -%>
+    <%- @provide_xfr.each do |xfr| -%>
+      <%- next if not @ipv6_capable and xfr.include? ":" and ! @ipv6_capable.nil? -%>
+    provide-xfr: <%= xfr %> NOKEY
+    <%- end -%>
+  <%- end -%>
+  <%- if ! @slave_addresses.nil? -%>
+    <%- @slave_addresses.each_pair do |iface, key| -%> 
+      <%- next if not @ipv6_capable and iface.include? ":" and ! @ipv6_capable.nil? -%>
+    notify: <%= iface %> NOKEY
+    provide-xfr: <%= iface %> <%= key -%>
+    <%- end -%>
+  <%- end -%>
+<% end -%>

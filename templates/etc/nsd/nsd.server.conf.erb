@@ -1,0 +1,117 @@
+server:
+<%- @ip_addresses.each do |address| -%>
+  <%- if address != :undef -%>
+    <%- if @ipv6_capable.nil? or (address[":"] and @ipv6_capable) -%>
+    ip-address: <%= address.split('/')[0] %>
+    <%- elsif @ipv4_capable.nil? or @ipv4_capable then -%> 
+    ip-address: <%= address.split('/')[0] %>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
+<%- if @ip_transparent -%>
+    ip-transparent: yes
+<%- else -%>
+    ip-transparent: no
+<%- end -%>
+<%- if @debug_mode -%>
+    debug-mode: yes
+<%- else -%>
+    debug-mode: no
+<%- end -%>
+<%- if @database -%>
+    database: <%= @database %>
+<%- end -%>
+<%- if @identity -%>
+    identity: <%= @identity %>
+<%- end -%>
+<%- if @nsid -%>
+    nsid: "<% @nsid.each_byte do |byte| -%><%= byte.to_s(base=16) %><% end -%>"
+<%- end -%>
+<%- if @logfile -%>
+    logfile: <%= @logfile %>
+<%- end -%>
+<%- if @server_count -%>
+    server-count: <%= @server_count %>
+<%- end -%>
+<%- if @tcp_count -%>
+    tcp-count: <%= @tcp_count %>
+<%- end -%>
+<%- if @tcp_query_count -%>
+    tcp-query-count: <%= @tcp_query_count %>
+<%- end -%>
+<%- if @tcp_timeout -%>
+    tcp-timeout: <%= @tcp_timeout %>
+<%- end -%>
+<%- if @ipv4_edns_size -%>
+    ipv4-edns-size: <%= @ipv4_edns_size %>
+<%- end -%>
+<%- if @ipv6_edns_size -%>
+    ipv6-edns-size: <%= @ipv6_edns_size %>
+<%- end -%>
+<%- if @pidfile -%>
+    pidfile: <%= @pidfile %>
+<%- end -%>
+<%- if @port -%>
+    port: <%= @port %>
+<%- end -%>
+<%- if @statistics -%>
+    statistics: <%= @statistics %>
+<%- end -%>
+<%- if @chroot -%>
+    chroot: <%= @chroot %>
+<%- end -%>
+<%- if @username -%>
+    username: <%= @username %>
+<%- end -%>
+<%- if @zonesdir -%>
+    zonesdir: <%= @zonesdir %>
+<%- end -%>
+<%- if @difffile -%>
+    difffile: <%= @difffile %>
+<%- end -%>
+<%- if @xfrdfile -%>
+    xfrdfile: <%= @xfrdfile %>
+<%- end -%>
+<%- if @xfrd_reload_timeout -%>
+    xfrd-reload-timeout: <%= @xfrd_reload_timeout %>
+<%- end -%>
+<%- if @verbosity -%>
+    verbosity: <%= @verbosity %>
+<%- end -%>
+<%- if @hide_version -%>
+    hide-version: yes
+<%- else -%>
+    hide-version: no
+<%- end -%>
+<%- if @rrl_size -%>
+    rrl-size: <%= @rrl_size %>
+<%- end -%>
+<%- if @rrl_ratelimit -%>
+    rrl-ratelimit: <%= @rrl_ratelimit %>
+<%- end -%>
+<%- if @rrl_slip -%>
+    rrl-slip: <%= @rrl_slip %>
+<%- end -%>
+<%- if @rrl_ipv4_prefix_length -%>
+    rrl-ipv4-prefix-length: <%= @rrl_ipv4_prefix_length %>
+<%- end -%>
+<%- if @rrl_ipv6_prefix_length -%>
+    rrl-ipv6-prefix-length: <%= @rrl_ipv6_prefix_length %>
+<%- end -%>
+<%- if @rrl_whitelist_ratelimit -%>
+    rrl-whitelist-ratelimit: <%= @rrl_whitelist_ratelimit %>
+<%- end -%>
+<%- if @control_enable -%>
+remote-control:
+    control-enable: yes
+  <%- if @control_interface -%>
+    <%- @control_interface.each do |interface| -%>
+   control-interface: <%= interface %>
+    <%- end -%>
+  <%- end -%>
+   control-port: <%= @control_port %>
+   server-key-file: <%= @server_key_file %>
+   server-cert-file: <%= @server_cert_file %>
+   control-key-file: <%= @control_key_file %>
+   control-cert-file: <%= @control_cert_file %>
+<%- end -%>

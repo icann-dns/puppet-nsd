@@ -1,0 +1,6 @@
+<%- @slave_tsigs.each_pair do |name, tsig| -%>
+key:
+    name: <%= name %>
+    algorithm: <%= tsig['algo'] %>
+    secret: <%= tsig['data'] %>
+<%- end -%>
