@@ -4,6 +4,7 @@ language: ruby
 cache: bundler
 bundler_args: --without system_tests
 script: "bundle exec rake validate lint spec beaker"
+env: BEAKER_set='ubuntu-14.04'
 matrix:
   fast_finish: true
   include:
@@ -29,9 +30,5 @@ matrix:
     env: PUPPET_GEM_VERSION="~> 3.6.2"
   - rvm: 1.9.3
     env: PUPPET_GEM_VERSION="~> 3.0"
-  - rvm: default
-    sudo: required
-    services: docker
-    env: BEAKER_set='ubuntu-14.04'
 notifications:
   email: false
