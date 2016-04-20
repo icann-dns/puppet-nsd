@@ -135,39 +135,38 @@ creat and as112 server also uses the nsd::file resource
 ```puppet
   class {'::nsd': }
   nsd::zone {
-      'rfc1918': 
-        'zonefile' => 'db.dd-empty',
-        'zones' => [
-          '10.in-addr.arpa',
-          '16.172.in-addr.arpa',
-          '17.172.in-addr.arpa',
-          '18.172.in-addr.arpa',
-          '19.172.in-addr.arpa',
-          '20.172.in-addr.arpa',
-          '21.172.in-addr.arpa',
-          '22.172.in-addr.arpa',
-          '23.172.in-addr.arpa',
-          '24.172.in-addr.arpa',
-          '25.172.in-addr.arpa',
-          '26.172.in-addr.arpa',
-          '27.172.in-addr.arpa',
-          '28.172.in-addr.arpa',
-          '29.172.in-addr.arpa',
-          '30.172.in-addr.arpa',
-          '31.172.in-addr.arpa',
-          '168.192.in-addr.arpa',
-          '254.169.in-addr.arpa'
-        ];
-      'empty.as112.arpa':
-        'zonefile' => 'db.dr-empty',
-        'zones'    => ['empty.as112.arpa'];
-      'hostname.as112.net':
-        'zonefile' => 'hostname.as112.net.zone',
-        'zones'    =>  ['hostname.as112.net'];
-      'hostname.as112.arpa':
-        'zonefile' => 'hostname.as112.arpa.zone',
-        'zones'    => ['hostname.as112.arpa'];
-    }
+    'rfc1918': 
+      'zonefile' => 'db.dd-empty',
+      'zones' => [
+        '10.in-addr.arpa',
+        '16.172.in-addr.arpa',
+        '17.172.in-addr.arpa',
+        '18.172.in-addr.arpa',
+        '19.172.in-addr.arpa',
+        '20.172.in-addr.arpa',
+        '21.172.in-addr.arpa',
+        '22.172.in-addr.arpa',
+        '23.172.in-addr.arpa',
+        '24.172.in-addr.arpa',
+        '25.172.in-addr.arpa',
+        '26.172.in-addr.arpa',
+        '27.172.in-addr.arpa',
+        '28.172.in-addr.arpa',
+        '29.172.in-addr.arpa',
+        '30.172.in-addr.arpa',
+        '31.172.in-addr.arpa',
+        '168.192.in-addr.arpa',
+        '254.169.in-addr.arpa'
+      ];
+    'empty.as112.arpa':
+      'zonefile' => 'db.dr-empty',
+      'zones'    => ['empty.as112.arpa'];
+    'hostname.as112.net':
+      'zonefile' => 'hostname.as112.net.zone',
+      'zones'    =>  ['hostname.as112.net'];
+    'hostname.as112.arpa':
+      'zonefile' => 'hostname.as112.arpa.zone',
+      'zones'    => ['hostname.as112.arpa'];
   }
   nsd::file {
     'db.dd-empty':
