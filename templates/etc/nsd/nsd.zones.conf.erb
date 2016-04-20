@@ -37,4 +37,9 @@ zone:
     provide-xfr: <%= iface %> <%= key -%>
     <%- end -%>
   <%- end -%>
+  <%- if @rrl_whitelist.any? then -%>
+    <%- @rrl_whitelist.each do |rrl_type| -%>
+    rrl-whitelist: <%= rrl_type %>
+    <%- end -%>
+  <%- end -%>
 <% end -%>

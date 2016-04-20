@@ -580,6 +580,10 @@ describe 'nsd', :type => :class do
           let(:params) {{ :rrl_whitelist_ratelimit => 'foo' }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
+        context 'rrl_whitelist' do
+          let(:params) {{ :rrl_whitelist => 'foo' }}
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
         context 'control_enable' do
           let(:params) {{ :control_enable => 'foo' }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }

@@ -8,6 +8,7 @@ define nsd::zone (
   $zones            = [],
   $zonefile         = undef,
   $zone_dir         = undef,
+  $rrl_whitelist    = [],
 ) {
   validate_array($masters)
   validate_array($notify_addresses)
@@ -23,6 +24,14 @@ define nsd::zone (
   } else {
     $zone_subdir = $::nsd::zone_subdir
   }
+  
+  if empty($rrl_whitelist) {
+    $_rrl_whitelist = $::nsd::rrl_whitelist
+  } else {
+    $_rrl_whitelist = $rrl_whitelist
+  }
+  validate_array($_rrl_whitelist)
+
   concat::fragment{ "nsd_zones_${name}":
     target  => $::nsd::nsd_conf_file,
     content => template($::nsd::zones_template),

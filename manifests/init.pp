@@ -43,6 +43,7 @@ class nsd (
   $rrl_ipv4_prefix_length   = 24,
   $rrl_ipv6_prefix_length   = 64,
   $rrl_whitelist_ratelimit  = 4000,
+  $rrl_whitelist            = [],
   $control_enable           = false,
   $control_interface        = undef,
   $control_port             = 8952,
@@ -124,6 +125,7 @@ class nsd (
   validate_integer($rrl_ipv4_prefix_length,32)
   validate_integer($rrl_ipv6_prefix_length,128)
   validate_integer($rrl_whitelist_ratelimit)
+  validate_array($rrl_whitelist)
 
   ensure_packages($nsd_package_name)
   validate_bool($control_enable)
