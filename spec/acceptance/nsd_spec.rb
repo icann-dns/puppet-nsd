@@ -20,39 +20,38 @@ describe 'nsd class' do
       pp = <<-EOS
   class {'::nsd': }
   nsd::zone {
-      'rfc1918':
-        zonefile => 'db.dd-empty',
-        zones => [
-          '10.in-addr.arpa',
-          '16.172.in-addr.arpa',
-          '17.172.in-addr.arpa',
-          '18.172.in-addr.arpa',
-          '19.172.in-addr.arpa',
-          '20.172.in-addr.arpa',
-          '21.172.in-addr.arpa',
-          '22.172.in-addr.arpa',
-          '23.172.in-addr.arpa',
-          '24.172.in-addr.arpa',
-          '25.172.in-addr.arpa',
-          '26.172.in-addr.arpa',
-          '27.172.in-addr.arpa',
-          '28.172.in-addr.arpa',
-          '29.172.in-addr.arpa',
-          '30.172.in-addr.arpa',
-          '31.172.in-addr.arpa',
-          '168.192.in-addr.arpa',
-          '254.169.in-addr.arpa'
-        ];
-      'empty.as112.arpa':
-        zonefile => 'db.dr-empty',
-        zones    => ['empty.as112.arpa'];
-      'hostname.as112.net':
-        zonefile => 'hostname.as112.net.zone',
-        zones    =>  ['hostname.as112.net'];
-      'hostname.as112.arpa':
-        zonefile => 'hostname.as112.arpa.zone',
-        zones    => ['hostname.as112.arpa'];
-    }
+    'rfc1918':
+      zonefile => 'db.dd-empty',
+      zones => [
+        '10.in-addr.arpa',
+        '16.172.in-addr.arpa',
+        '17.172.in-addr.arpa',
+        '18.172.in-addr.arpa',
+        '19.172.in-addr.arpa',
+        '20.172.in-addr.arpa',
+        '21.172.in-addr.arpa',
+        '22.172.in-addr.arpa',
+        '23.172.in-addr.arpa',
+        '24.172.in-addr.arpa',
+        '25.172.in-addr.arpa',
+        '26.172.in-addr.arpa',
+        '27.172.in-addr.arpa',
+        '28.172.in-addr.arpa',
+        '29.172.in-addr.arpa',
+        '30.172.in-addr.arpa',
+        '31.172.in-addr.arpa',
+        '168.192.in-addr.arpa',
+        '254.169.in-addr.arpa'
+      ];
+    'empty.as112.arpa':
+      zonefile => 'db.dr-empty',
+      zones    => ['empty.as112.arpa'];
+    'hostname.as112.net':
+      zonefile => 'hostname.as112.net.zone',
+      zones    =>  ['hostname.as112.net'];
+    'hostname.as112.arpa':
+      zonefile => 'hostname.as112.arpa.zone',
+      zones    => ['hostname.as112.arpa'];
   }
   nsd::file {
     'db.dd-empty':
@@ -74,6 +73,86 @@ describe 'nsd class' do
     end
     describe port(53) do 
       it { is_expected.to be_listening }
+    end
+    describe command('dig +short soa empty.as112.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /blackhole.as112.arpa. noc.dns.icann.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 10.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 16.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 17.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 18.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 19.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 20.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 21.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 22.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 23.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 24.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 25.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 26.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 27.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 28.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 29.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 30.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 31.172.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 168.192.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
+    end
+    describe command('dig +short soa 254.169.in-addr.arpa @127.0.0.1') do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match /prisoner.iana.org. hostmaster.root-servers.org. 1 604800 60 604800 604800/ }
     end
   end
 end
