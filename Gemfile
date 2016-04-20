@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 group :test do
     gem "rake"
+    gem "rspec"
     gem "puppet", ENV['PUPPET_GEM_VERSION'] || '~> 3.8.3'
     gem "rspec-puppet"
     gem "puppetlabs_spec_helper"
