@@ -21,7 +21,7 @@ zone:
   <%- if @masters then -%>
     <%- @masters.each do |master| -%>
       <%- next if not @ipv6_capable and master.include? ":" and ! @ipv6_capable.nil? -%>
-      request-xfr: AXFR <%= master %> <%- if @tsig %> <%= @tsig['name'] %><%- end %>
+      request-xfr: AXFR <%= master %> <%- if @tsig %> <%= @tsig['name'] %><%-else-%> NOKEY<%- end %>
     <%- end -%>
   <%- end -%>
   <%- if @provide_xfr then -%>
