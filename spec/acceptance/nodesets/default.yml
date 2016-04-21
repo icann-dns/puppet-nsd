@@ -1,11 +1,21 @@
 HOSTS:
   ubuntu-server-1404-x64:
     roles:
-      - agent
+      - default
+      - ubuntu
     platform: ubuntu-14.04-amd64
     box: puppetlabs/ubuntu-14.04-64-nocm
     hypervisor: vagrant
+  freebsd-102-x64:
+    default_apply_opts:
+      strict_variables:
+    roles:
+      - default
+      - freebsd
+    platform: freebsd-102-amd64
+    box: bento/freebsd-10.2  
+    hypervisor: vagrant
 CONFIG:
-  log_level: debug
-  masterless: true
   type: foss
+  masterless: true
+  log_level: debug

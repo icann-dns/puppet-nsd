@@ -15,7 +15,7 @@ matrix:
   #  - vagrant
   #  script: bundle exec rake beaker
   - rvm: 1.9.3
-    env: BEAKER_set="ubuntu-14.04"
+    env: BEAKER_set="docker/ubuntu-14.04"
     sudo: required
     services:
     - docker
