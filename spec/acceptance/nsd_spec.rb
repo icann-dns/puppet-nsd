@@ -9,7 +9,6 @@ describe 'nsd class' do
     end
     describe service('nsd') do
       #/usr/sbin/service -e is broken on freebsd image
-      it :if => os[:family] == 'ubuntu' do is_expected.to be_enabled end
       it { is_expected.to be_running }
     end
     describe port(53) do 
@@ -45,7 +44,6 @@ describe 'nsd class' do
       sleep(10)
     end
     describe service('nsd') do
-      it :if => os[:family] == 'ubuntu' do is_expected.to be_enabled end
       it { is_expected.to be_running }
     end
     describe port(53) do 
@@ -123,7 +121,6 @@ describe 'nsd class' do
       expect(apply_manifest(pp,  :catch_failures => true).exit_code).to eq 0
     end
     describe service('nsd') do
-      it :if => os[:family] == 'ubuntu' do is_expected.to be_enabled end
       it { is_expected.to be_running }
     end
     describe port(53) do 
