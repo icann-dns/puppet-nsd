@@ -6,5 +6,6 @@ HOSTS:
     box: puppetlabs/ubuntu-14.04-64-nocm
     hypervisor: vagrant
 CONFIG:
-  log_level   : debug
-#  type: git
+  log_level: debug
+  masterless: true
+  type: foss

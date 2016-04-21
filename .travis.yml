@@ -8,6 +8,12 @@ matrix:
   fast_finish: true
   include:
   - rvm: 1.9.3
+    env: BEAKER_set="freebsd-10.2"
+    sudo: required
+    services:
+    - vagrent
+    script: bundle exec rake beaker
+  - rvm: 1.9.3
     env: BEAKER_set="ubuntu-14.04"
     sudo: required
     services:

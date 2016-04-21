@@ -8,20 +8,26 @@ describe 'nsd class' do
       expect(apply_manifest(pp,  :catch_failures => true).exit_code).to eq 0
     end
     describe service('nsd') do
-      it { is_expected.to be_enabled }
+      #/usr/sbin/service -e is broken on freebsd image
+      it :if => os[:family] == 'ubuntu' do is_expected.to be_enabled end
       it { is_expected.to be_running }
     end
     describe port(53) do 
       it { is_expected.to be_listening }
     end
-    describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf') do
+    describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf'), :if => os[:family] == 'ubuntu' do
+      its(:stdout) { should match // }
+    end
+    describe command('nsd-checkconf /usr/local/etc/nsd/nsd.conf || cat /usr/local/etc/nsd/nsd.conf'), :if => os[:family] == 'freebsd' do
       its(:stdout) { should match // }
     end
   end
   context 'root' do
     it 'should work with no errors' do
       pp = <<-EOS
-  class {'::nsd': }
+  class {'::nsd': 
+      rrl_whitelist => ['nxdomain', 'referral']
+  }
   nsd::zone {
     root:
       masters  => ['192.0.32.132', '192.0.47.132'],
@@ -39,13 +45,16 @@ describe 'nsd class' do
       sleep(10)
     end
     describe service('nsd') do
-      it { is_expected.to be_enabled }
+      it :if => os[:family] == 'ubuntu' do is_expected.to be_enabled end
       it { is_expected.to be_running }
     end
     describe port(53) do 
       it { is_expected.to be_listening }
     end
-    describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf') do
+    describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf'), :if => os[:family] == 'ubuntu' do
+      its(:stdout) { should match // }
+    end
+    describe command('nsd-checkconf /usr/local/etc/nsd/nsd.conf || cat /usr/local/etc/nsd/nsd.conf'), :if => os[:family] == 'freebsd' do
       its(:stdout) { should match // }
     end
     describe command('dig +short soa . @127.0.0.1') do
@@ -114,13 +123,16 @@ describe 'nsd class' do
       expect(apply_manifest(pp,  :catch_failures => true).exit_code).to eq 0
     end
     describe service('nsd') do
-      it { is_expected.to be_enabled }
+      it :if => os[:family] == 'ubuntu' do is_expected.to be_enabled end
       it { is_expected.to be_running }
     end
     describe port(53) do 
       it { is_expected.to be_listening }
     end
-    describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf') do
+    describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf'), :if => os[:family] == 'ubuntu' do
+      its(:stdout) { should match // }
+    end
+    describe command('nsd-checkconf /usr/local/etc/nsd/nsd.conf || cat /usr/local/etc/nsd/nsd.conf'), :if => os[:family] == 'freebsd' do
       its(:stdout) { should match // }
     end
     describe command('dig +short soa empty.as112.arpa @127.0.0.1') do

@@ -175,10 +175,12 @@ class nsd (
       require  => Package[$nsd_package_name];
     }
   } else {
-    file { '/etc/init/nsd.conf':
-      ensure => file,
-      source => 'puppet:///modules/nsd/etc/init/nsd.conf',
-      notify => Service[$nsd_service_name],
+    if $::operatingsystem == 'ubuntu' {
+      file { '/etc/init/nsd.conf':
+        ensure => file,
+        source => 'puppet:///modules/nsd/etc/init/nsd.conf',
+        notify => Service[$nsd_service_name],
+      }
     }
     service { $nsd_service_name:
       ensure   => $enable,
