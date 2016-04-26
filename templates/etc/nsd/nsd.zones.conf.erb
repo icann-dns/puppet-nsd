@@ -1,4 +1,5 @@
 <%- @zones.each do |zone| -%>
+
 zone:
     name: "<%= zone %>"
   <%- if @zonefile then -%>
@@ -33,8 +34,8 @@ zone:
   <%- if ! @slave_addresses.nil? -%>
     <%- @slave_addresses.each_pair do |iface, key| -%> 
       <%- next if not @ipv6_capable and iface.include? ":" and ! @ipv6_capable.nil? -%>
-    notify: <%= iface %> NOKEY
     provide-xfr: <%= iface %> <%= key %>
+    notify: <%= iface %> NOKEY
     <%- end -%>
   <%- end -%>
   <%- if @rrl_whitelist.any? then -%>
