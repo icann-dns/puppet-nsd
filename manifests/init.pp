@@ -58,6 +58,7 @@ class nsd (
   $nsd_conf_dir             = $::nsd::params::nsd_conf_dir,
   $zone_subdir              = $::nsd::params::zone_subdir,
   $nsd_conf_file            = $::nsd::params::nsd_conf_file,
+  $manage_nagios            = false,
 ) inherits nsd::params  {
 
   validate_bool($enable)

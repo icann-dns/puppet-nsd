@@ -37,4 +37,10 @@ define nsd::zone (
     content => template($::nsd::zones_template),
     order   => 20;
   }
+  if $::nsd::manage_nagios {
+    nsd::zone::nagios {$zones:
+      masters => $allow_notify,
+      slaves  => $provide_xfr,
+    }
+  }
 }
