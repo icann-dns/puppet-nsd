@@ -34,7 +34,7 @@ zone:
     <%- @slave_addresses.each_pair do |iface, key| -%> 
       <%- next if not @ipv6_capable and iface.include? ":" and ! @ipv6_capable.nil? -%>
     notify: <%= iface %> NOKEY
-    provide-xfr: <%= iface %> <%= key -%>
+    provide-xfr: <%= iface %> <%= key %>
     <%- end -%>
   <%- end -%>
   <%- if @rrl_whitelist.any? then -%>
