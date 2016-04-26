@@ -16,7 +16,7 @@ define nsd::zone::nagios (
       use                 => 'generic-service',
       host_name           => $::fqdn,
       service_description => "DNS_ZONE_MASTERS_${name}",
-      check_command       => "check_nrpe_args!check_dns!${name}!${master_check_args}|${addresses}",
+      check_command       => "check_nrpe_args!check_dns!${name}!${master_check_args}!${addresses}",
     }
   }
   if ! empty($_slaves) {
@@ -26,8 +26,7 @@ define nsd::zone::nagios (
       use                 => 'generic-service',
       host_name           => $::fqdn,
       service_description => "DNS_ZONE_MASTERS_${name}",
-      check_command       => "check_nrpe_args!check_dns!${name}!${slave_check_args}|${addresses}",
+      check_command       => "check_nrpe_args!check_dns!${name}!${slave_check_args}!${addresses}",
     }
   }
-
 }
