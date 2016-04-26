@@ -39,7 +39,7 @@ define nsd::zone (
   }
   if $::nsd::manage_nagios {
     nsd::zone::nagios {$zones:
-      masters => $allow_notify,
+      masters => $masters,
       slaves  => $provide_xfr,
     }
   }
