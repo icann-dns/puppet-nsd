@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 group :test do
+    gem "listen", "<=3.0.6"
     gem "rake"
     gem "rspec"
     gem "puppet", ENV['PUPPET_GEM_VERSION'] || '~> 3.8.3'
