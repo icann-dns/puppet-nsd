@@ -38,8 +38,8 @@ zone:
     notify: <%= iface %> NOKEY
     <%- end -%>
   <%- end -%>
-  <%- if @rrl_whitelist.any? then -%>
-    <%- @rrl_whitelist.each do |rrl_type| -%>
+  <%- if @_rrl_whitelist.any? then -%>
+    <%- @_rrl_whitelist.each do |rrl_type| -%>
     rrl-whitelist: <%= rrl_type %>
     <%- end -%>
   <%- end -%>
