@@ -6,8 +6,9 @@ define nsd::zone::nagios (
 ) {
   validate_array($slaves)
   validate_array($masters)
-  $_masters = delete($masters,['127.0.0.1','0::1'])
-  $_slaves  = delete($slaves,['127.0.0.1','0::1'])
+  $_masters  = delete($masters,['127.0.0.1','0::1'])
+  $_slaves   = delete($slaves,['127.0.0.1','0::1'])
+  $addresses = join($::nsd::ip_addresses, ' ')
   if ! empty($_masters) {
     $master_check_args = join($_masters, ' ')
     @@nagios_service{ "${::fqdn}_DNS_ZONE_MASTERS_${name}":
@@ -15,7 +16,7 @@ define nsd::zone::nagios (
       use                 => 'generic-service',
       host_name           => $::fqdn,
       service_description => "DNS_ZONE_MASTERS_${name}",
-      check_command       => "check_nrpe_args!check_dns!${name}!${master_check_args}",
+      check_command       => "check_nrpe_args!check_dns!${name}!${master_check_args}|${addresses}",
     }
   }
   if ! empty($_slaves) {
@@ -25,7 +26,7 @@ define nsd::zone::nagios (
       use                 => 'generic-service',
       host_name           => $::fqdn,
       service_description => "DNS_ZONE_MASTERS_${name}",
-      check_command       => "check_nrpe_args!check_dns!${name}!${slave_check_args}",
+      check_command       => "check_nrpe_args!check_dns!${name}!${slave_check_args}|${addresses}",
     }
   }
 
