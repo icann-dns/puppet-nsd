@@ -5,7 +5,7 @@ define nsd::tsig (
     $data     = false,
     $template = 'nsd/etc/nsd/nsd.key.conf.erb',
 ) {
-  validate_re($algo, '^hmac-sha(1|224|256|384|512)$', '^hmac-md5$')
+  validate_re($algo, ['^hmac-sha(1|224|256|384|512)$', '^hmac-md5$'])
   validate_string($data)
   validate_absolute_path("/${template}")
 
