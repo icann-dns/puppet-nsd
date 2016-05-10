@@ -1,12 +1,13 @@
 # Define: nsd::file
 #
 define nsd::file (
-    $owner   = 'root',
-    $group   = 'nsd',
-    $mode    = '0640',
-    $source  = undef,
-    $content = undef,
-    $ensure  = 'present',
+    $owner            = 'root',
+    $group            = 'nsd',
+    $mode             = '0640',
+    $source           = undef,
+    $content          = undef,
+    $content_template = undef,
+    $ensure           = 'present',
 ) {
   validate_string($owner)
   validate_string($group)
@@ -14,8 +15,14 @@ define nsd::file (
   if $source {
     validate_string($source)
   }
-  if $content {
+  if $content and $content_template {
+    fail('can\'t set $content and $content_template')
+  } elsif $content {
     validate_string($content)
+    $_content = $content
+  } elsif $content_template {
+    validate_absolute_path("/${content_template}")
+    $_content = template($content_template)
   }
   validate_string($ensure)
   $zone_subdir      = $::nsd::zone_subdir
@@ -26,7 +33,7 @@ define nsd::file (
     group   => $group,
     mode    => $mode,
     source  => $source,
-    content => $content,
+    content => $_content,
     require => Package[$::nsd::nsd_package_name],
     notify  => Service[$::nsd::nsd_service_name];
   }

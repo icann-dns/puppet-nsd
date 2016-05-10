@@ -174,23 +174,23 @@ creat and as112 server also uses the nsd::file resource
     'db.dr-empty':
       source  => 'puppet:///modules/nsd/etc/nsd/db.dr-empty';
     'hostname.as112.net.zone':
-      content => template('nsd/etc/nsd/hostname.as112.net.zone.erb');
+      content_template => 'nsd/etc/nsd/hostname.as112.net.zone.erb';
     'hostname.as112.arpa.zone':
-      content => template('nsd/etc/nsd/hostname.as112.arpa.zone.erb');
+      content_template => 'nsd/etc/nsd/hostname.as112.arpa.zone.erb';
   }
 ```
 
 ```yaml
-dns::files:
+nsd::files:
   db.dd-empty:
     source: 'puppet:///modules/nsd/etc/nsd/db.dd-empty'
   db.dr-empty:
     source: 'puppet:///modules/nsd/etc/nsd/db.dr-empty'
   hostname.as112.net.zone:
-    content: 'nsd/etc/nsd/hostname.as112.net.zone.erb'
+    content_template: 'nsd/etc/nsd/hostname.as112.net.zone.erb'
   hostname.as112.arpa.zone:
-    content: 'nsd/etc/nsd/hostname.as112.arpa.zone.erb'
-dns::zones:
+    content_template: 'nsd/etc/nsd/hostname.as112.arpa.zone.erb'
+nsd::zones:
   rfc1918:
     zonefile: db.dd-empty
     zones:
