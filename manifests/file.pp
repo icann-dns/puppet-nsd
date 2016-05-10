@@ -23,6 +23,8 @@ define nsd::file (
   } elsif $content_template {
     validate_absolute_path("/${content_template}")
     $_content = template($content_template)
+  } else {
+    $_content = undef
   }
   validate_string($ensure)
   $zone_subdir      = $::nsd::zone_subdir
