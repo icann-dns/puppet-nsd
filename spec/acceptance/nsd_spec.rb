@@ -111,9 +111,9 @@ describe 'nsd class' do
     'db.dr-empty':
       source  => 'puppet:///modules/nsd/etc/nsd/db.dr-empty';
     'hostname.as112.net.zone':
-      content => template('nsd/etc/nsd/hostname.as112.net.zone.erb');
+      content_template => 'nsd/etc/nsd/hostname.as112.net.zone.erb';
     'hostname.as112.arpa.zone':
-      content => template('nsd/etc/nsd/hostname.as112.arpa.zone.erb');
+      content_template=> 'nsd/etc/nsd/hostname.as112.arpa.zone.erb';
   }
       EOS
       apply_manifest(pp ,  :catch_failures => true)
