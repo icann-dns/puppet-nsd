@@ -92,14 +92,14 @@ class {'::nsd':
     'master1_zones' => {
       'allow_notify' => ['192.0.2.1'],
       'masters'      => ['192.0.2.1'],
-      'provide_xfr   => ['127.0.0.1'],
-      zones          => ['example.com', 'example.net']
+      'provide_xfr'  => ['127.0.0.1'],
+      'zones'        => ['example.com', 'example.net']
     },
     'master2_zones'  => {
       'allow_notify' => ['192.0.2.2'],
       'masters'      => ['192.0.2.2'],
-      'provide_xfr   => ['127.0.0.2'],
-      zones          => ['example.org']
+      'provide_xfr'  => ['127.0.0.2'],
+      'zones'        => ['example.org']
     }
   }
 }
