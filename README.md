@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/icann-dns/puppet-nsd.svg?branch=master)](https://travis-ci.org/icann-dns/puppet-nsd)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/icann/nsd.svg?maxAge=2592000)](https://forge.puppet.com/icann/nsd)
+[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/icann/nsd.svg?maxAge=2592000)](https://forge.puppet.com/icann/nsd)
 # nsd
 
 #### Table of Contents
