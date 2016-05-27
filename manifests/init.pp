@@ -7,9 +7,6 @@ class nsd (
   $zones                    = {},
   $files                    = {},
   $tsigs                    = {},
-  $logrotate_enable         = $::nsd::params::logrotate_enable,
-  $logrotate_rotate         = 5,
-  $logrotate_size           = '100M',
   $server_template          = 'nsd/etc/nsd/nsd.server.conf.erb',
   $zones_template           = 'nsd/etc/nsd/nsd.zones.conf.erb',
   $ip_addresses             = [],
@@ -51,12 +48,15 @@ class nsd (
   $control_cert_file        = $::nsd::params::control_cert_file,
   $init                     = $::nsd::params::init,
   $database                 = $::nsd::params::database,
-  $nsd_package_name         = $::nsd::params::nsd_package_name,
-  $nsd_service_name         = $::nsd::params::nsd_service_name,
-  $nsd_conf_dir             = $::nsd::params::nsd_conf_dir,
+  $package_name             = $::nsd::params::package_name,
+  $service_name             = $::nsd::params::service_name,
+  $conf_dir                 = $::nsd::params::conf_dir,
   $zone_subdir              = $::nsd::params::zone_subdir,
-  $nsd_conf_file            = $::nsd::params::nsd_conf_file,
+  $conf_file                = $::nsd::params::conf_file,
   $manage_nagios            = false,
+  $logrotate_enable         = $::nsd::params::logrotate_enable,
+  $logrotate_rotate         = 5,
+  $logrotate_size           = '100M',
 ) inherits nsd::params  {
 
   validate_bool($enable)
@@ -68,11 +68,11 @@ class nsd (
   validate_bool($logrotate_enable)
   validate_integer($logrotate_rotate)
   validate_string($logrotate_size)
-  validate_string($nsd_package_name)
-  validate_string($nsd_service_name)
-  validate_absolute_path($nsd_conf_dir)
+  validate_string($package_name)
+  validate_string($service_name)
+  validate_absolute_path($conf_dir)
   validate_absolute_path($zone_subdir)
-  validate_absolute_path($nsd_conf_file)
+  validate_absolute_path($conf_file)
   validate_string($init)
   validate_string($server_template)
   validate_string($zones_template)
@@ -124,7 +124,7 @@ class nsd (
   validate_integer($rrl_whitelist_ratelimit)
   validate_array($rrl_whitelist)
 
-  ensure_packages($nsd_package_name)
+  ensure_packages($package_name)
   validate_bool($control_enable)
   if $control_interface {
     validate_array($control_interface)
@@ -135,54 +135,48 @@ class nsd (
   validate_absolute_path($control_key_file)
   validate_absolute_path($control_cert_file)
 
-  concat{$nsd_conf_file:
-    require => Package[$nsd_package_name],
-    notify  => Service[$nsd_service_name];
+  concat{$conf_file:
+    require => Package[$package_name],
+    notify  => Service[$service_name];
   }
-  concat::fragment{'nsd_server':
-    target  => $nsd_conf_file,
+  concat::fragment{'server':
+    target  => $conf_file,
     content => template($server_template),
     order   => 01;
   }
-  file { $zonesdir:
+  file { [$zonesdir, $zone_subdir]:
       ensure  => directory,
       owner   => $username,
       group   => $username,
-      require => Package[$nsd_package_name],
+      require => Package[$package_name],
   }
-  file{ $zone_subdir:
-    ensure  => directory,
-    owner   => $username,
-    group   => $username,
-    require => Package[$nsd_package_name],
-  }
-  file { $nsd_conf_dir:
+  file { $conf_dir:
     ensure  => directory,
     mode    => '0755',
     group   => $username,
-    require => Package[$nsd_package_name],
+    require => Package[$package_name],
   }
   if $init == 'base' {
-    service { $nsd_service_name:
+    service { $service_name:
       ensure   => $enable,
       provider => 'base',
-      start    => "/etc/init.d/${nsd_service_name} start",
-      stop     => "/etc/init.d/${nsd_service_name} stop",
+      start    => "/etc/init.d/${service_name} start",
+      stop     => "/etc/init.d/${service_name} stop",
       enable   => $enable,
-      require  => Package[$nsd_package_name];
+      require  => Package[$package_name];
     }
   } else {
     if $::operatingsystem == 'ubuntu' {
       file { '/etc/init/nsd.conf':
         ensure => file,
         source => 'puppet:///modules/nsd/etc/init/nsd.conf',
-        notify => Service[$nsd_service_name],
+        notify => Service[$service_name],
       }
     }
-    service { $nsd_service_name:
+    service { $service_name:
       ensure   => $enable,
       enable   => $enable,
-      require  => Package[$nsd_package_name];
+      require  => Package[$package_name];
     }
   }
   if $logrotate_enable and $logfile {
@@ -191,7 +185,7 @@ class nsd (
       rotate     => $logrotate_rotate,
       size       => $logrotate_size,
       compress   => true,
-      postrotate => "/usr/sbin/service ${nsd_service_name} restart",
+      postrotate => "/usr/sbin/service ${service_name} restart",
     }
   }
   #add backwords compatible
