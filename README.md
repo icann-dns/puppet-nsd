@@ -260,7 +260,6 @@ nsd::zones:
 * `tsigs` (Hash, Default: {}): a hash which is passed to create_resoure(nsd::tsig, $tsigs)
 * `logrotate_rotate` (Integer, Default: 5): The number of rotated log files to keep on disk.
 * `logrotate_size` (String, Default: 100M): The String size a log file has to reach before it will be rotated.  The default units are bytes, append k, M or G for kilobytes, megabytes or gigabytes respectively.
-* `instance` (String, Default: default): A string used for master slave sync.  a master which is the same instance as a slave will configuere the appropriate tsig keys.
 * `master` (Bool, Default: false: Specify if the server is a master or slave.
 * `server_template` (File Path, Default: 'nsd/etc/nsd/nsd.server.conf.'): template file to use for server config.  only change if you know what you are doing.
 * `zones_template` (File Path, Default: 'nsd/etc/nsd/nsd.zones.conf.erb'): template file to use for zone config.  only change if you know what you are doing.

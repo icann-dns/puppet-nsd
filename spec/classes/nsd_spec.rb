@@ -444,10 +444,6 @@ describe 'nsd', :type => :class do
           let(:params) {{ :logrotate_size => true }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
-        context 'instance' do
-          let(:params) {{ :instance => true }}
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
-        end
         context 'master' do
           let(:params) {{ :master => 'foo' }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
