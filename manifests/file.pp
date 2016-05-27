@@ -27,9 +27,8 @@ define nsd::file (
     $_content = undef
   }
   validate_string($ensure)
-  $zone_subdir      = $::nsd::zone_subdir
 
-  file { "${zone_subdir}/${title}":
+  file { "${::nsd::zone_subdir}/${title}":
     ensure  => $ensure,
     owner   => $owner,
     group   => $group,

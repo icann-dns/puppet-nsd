@@ -11,22 +11,22 @@ describe 'nsd', :type => :class do
       when 'Ubuntu'
         case facts['lsbdistcodename']
         when 'precise'
-          let(:nsd_package_name) { 'nsd3' }
-          let(:nsd_service_name) { 'nsd3' }
-          let(:nsd_conf_dir)     { '/etc/nsd3' }
+          let(:package_name)     { 'nsd3' }
+          let(:service_name)     { 'nsd3' }
+          let(:conf_dir)         { '/etc/nsd3' }
           let(:zonesdir)         { '/var/lib/nsd3' }
-          let(:nsd_conf_file)    { "#{nsd_conf_dir}/nsd.conf" }
+          let(:conf_file)        { "#{conf_dir}/nsd.conf" }
           let(:database)         { "#{zonesdir}/nsd.db" }
           let(:xfrdfile)         { "#{zonesdir}/xfrd.state" }
           let(:init)             { 'base' }
           let(:pidfile)          { '/run/nsd3/nsd.pid' }
           let(:logrotate_enable) { true }
         else
-          let(:nsd_package_name) { 'nsd' }
-          let(:nsd_service_name) { 'nsd' }
-          let(:nsd_conf_dir)     { '/etc/nsd' }
+          let(:package_name)     { 'nsd' }
+          let(:service_name)     { 'nsd' }
+          let(:conf_dir)         { '/etc/nsd' }
           let(:zonesdir)         { '/var/lib/nsd' }
-          let(:nsd_conf_file)    { "#{nsd_conf_dir}/nsd.conf" }
+          let(:conf_file)        { "#{conf_dir}/nsd.conf" }
           let(:database)         { "#{zonesdir}/nsd.db" }
           let(:xfrdfile)         { "#{zonesdir}/xfrd.state" }
           let(:init)             { 'upstart' }
@@ -34,11 +34,11 @@ describe 'nsd', :type => :class do
           let(:logrotate_enable) { true }
         end
       else
-        let(:nsd_package_name) { 'nsd' }
-        let(:nsd_service_name) { 'nsd' }
-        let(:nsd_conf_dir)     { '/usr/local/etc/nsd' }
-        let(:zonesdir)         { "#{nsd_conf_dir}/data" }
-        let(:nsd_conf_file)    { "#{nsd_conf_dir}/nsd.conf" }
+        let(:package_name)     { 'nsd' }
+        let(:service_name)     { 'nsd' }
+        let(:conf_dir)         { '/usr/local/etc/nsd' }
+        let(:zonesdir)         { "#{conf_dir}/data" }
+        let(:conf_file)        { "#{conf_dir}/nsd.conf" }
         let(:database)         { "/var/db/nsd/nsd.db" }
         let(:xfrdfile)         { "/var/db/nsd/xfrd.state" }
         let(:init)             { 'freebsd' }
@@ -49,12 +49,12 @@ describe 'nsd', :type => :class do
       describe 'check default config' do
 
         it { is_expected.to compile }
-        it { is_expected.to contain_package(nsd_package_name).with_ensure(
+        it { is_expected.to contain_package(package_name).with_ensure(
           'present') }
-        it { is_expected.to contain_concat(nsd_conf_file) }
+        it { is_expected.to contain_concat(conf_file) }
         it { 
           is_expected.to contain_concat_fragment('nsd_server').with(
-            :target => nsd_conf_file
+            :target => conf_file
           ).with_content(
             /ip-transparent: no/
           ).with_content(
@@ -127,12 +127,12 @@ describe 'nsd', :type => :class do
           :owner  => 'nsd',
           :group  => 'nsd',
         ) }
-        it { is_expected.to contain_file(nsd_conf_dir).with(
+        it { is_expected.to contain_file(conf_dir).with(
           :ensure => 'directory',
           :mode   => '0755',
           :group  => 'nsd',
         ) }
-        it { is_expected.to contain_service(nsd_service_name).with(
+        it { is_expected.to contain_service(service_name).with(
           :ensure   => true,
           :enable   => true,
         ) }
@@ -142,7 +142,7 @@ describe 'nsd', :type => :class do
         context 'enable' do
           let(:params) {{ :enable => false }}
           it { is_expected.to contain_service(
-            nsd_service_name).with(
+            service_name).with(
               :ensure   => false,
               :enable   => false,
         ) }
@@ -393,16 +393,16 @@ describe 'nsd', :type => :class do
             /database: \/foo/
           ) }
         end
-        context 'nsd_package_name' do
-          let(:params) {{ :nsd_package_name => 'foo' }}
+        context 'package_name' do
+          let(:params) {{ :package_name => 'foo' }}
           it { is_expected.to contain_package('foo').with_ensure('present')}
         end
-        context 'nsd_service_name' do
-          let(:params) {{ :nsd_service_name => 'foo' }}
+        context 'service_name' do
+          let(:params) {{ :service_name => 'foo' }}
           it { is_expected.to contain_service('foo') }
         end
-        context 'nsd_conf_file' do
-          let(:params) {{ :nsd_conf_file => '/foo.cfg' }}
+        context 'conf_file' do
+          let(:params) {{ :conf_file => '/foo.cfg' }}
           it { is_expected.to contain_concat_fragment('nsd_server').with_target('/foo.cfg') }
         end
       end
@@ -612,24 +612,24 @@ describe 'nsd', :type => :class do
           let(:params) {{ :database => 'foo' }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
-        context 'nsd_package_name' do
-          let(:params) {{ :nsd_package_name => true }}
+        context 'package_name' do
+          let(:params) {{ :package_name => true }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
-        context 'nsd_service_name' do
-          let(:params) {{ :nsd_service_name => true }}
+        context 'service_name' do
+          let(:params) {{ :service_name => true }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
-        context 'nsd_conf_dir' do
-          let(:params) {{ :nsd_conf_dir => 'foo' }}
+        context 'conf_dir' do
+          let(:params) {{ :conf_dir => 'foo' }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'zone_subdir' do
           let(:params) {{ :zone_subdir => 'foo' }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
-        context 'nsd_conf_file' do
-          let(:params) {{ :nsd_conf_file => 'foo' }}
+        context 'conf_file' do
+          let(:params) {{ :conf_file => 'foo' }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
       end
