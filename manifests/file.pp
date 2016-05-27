@@ -36,8 +36,8 @@ define nsd::file (
     mode    => $mode,
     source  => $source,
     content => $_content,
-    require => Package[$::nsd::nsd_package_name],
-    notify  => Service[$::nsd::nsd_service_name];
+    require => Package[$::nsd::package_name],
+    notify  => Service[$::nsd::service_name];
   }
 }
 

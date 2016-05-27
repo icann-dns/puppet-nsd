@@ -10,7 +10,7 @@ define nsd::tsig (
   validate_absolute_path("/${template}")
 
   concat::fragment{ "nsd_key_${name}":
-    target  => $::nsd::nsd_conf_file,
+    target  => $::nsd::conf_file,
     content => template($template),
     order   => 10;
   }

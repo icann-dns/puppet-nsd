@@ -33,7 +33,7 @@ define nsd::zone (
   validate_array($_rrl_whitelist)
 
   concat::fragment{ "nsd_zones_${name}":
-    target  => $::nsd::nsd_conf_file,
+    target  => $::nsd::conf_file,
     content => template($::nsd::zones_template),
     order   => 20;
   }
