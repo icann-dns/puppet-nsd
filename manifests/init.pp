@@ -139,10 +139,10 @@ class nsd (
     require => Package[$package_name],
     notify  => Service[$service_name];
   }
-  concat::fragment{'server':
+  concat::fragment{'nsd_server':
     target  => $conf_file,
     content => template($server_template),
-    order   => 01;
+    order   => 01,
   }
   file { [$zonesdir, $zone_subdir]:
       ensure  => directory,
