@@ -10,7 +10,6 @@ class nsd (
   $logrotate_enable         = $::nsd::params::logrotate_enable,
   $logrotate_rotate         = 5,
   $logrotate_size           = '100M',
-  $master                   = false,
   $server_template          = 'nsd/etc/nsd/nsd.server.conf.erb',
   $zones_template           = 'nsd/etc/nsd/nsd.zones.conf.erb',
   $ip_addresses             = [],
@@ -69,7 +68,6 @@ class nsd (
   validate_bool($logrotate_enable)
   validate_integer($logrotate_rotate)
   validate_string($logrotate_size)
-  validate_bool($master)
   validate_string($nsd_package_name)
   validate_string($nsd_service_name)
   validate_absolute_path($nsd_conf_dir)
