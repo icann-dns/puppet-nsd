@@ -144,6 +144,11 @@ class nsd (
     content => template($server_template),
     order   => 01,
   }
+  exec { 'nsd-control-setup':
+    command => 'nsd-control-setup',
+    path    => '/usr/sbin:/usr/local/sbin',
+    creates => $server_key_file,
+  }
   file { [$zonesdir, $zone_subdir]:
       ensure  => directory,
       owner   => $username,

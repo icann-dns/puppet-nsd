@@ -4,4 +4,4 @@ fixtures:
     "concat": "https://github.com/puppetlabs/puppetlabs-concat"
     "logrotate" : "https://github.com/icann-dns/puppet-logrotate"
   symlinks:
-    "ssh": "#{source_dir}"
+    "nsd": "#{source_dir}"
