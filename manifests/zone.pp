@@ -24,7 +24,6 @@ define nsd::zone (
   } else {
     $zone_subdir = $::nsd::zone_subdir
   }
-  
   if empty($rrl_whitelist) {
     $_rrl_whitelist = $::nsd::rrl_whitelist
   } else {

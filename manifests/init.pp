@@ -179,9 +179,9 @@ class nsd (
       }
     }
     service { $service_name:
-      ensure   => $enable,
-      enable   => $enable,
-      require  => Package[$package_name];
+      ensure  => $enable,
+      enable  => $enable,
+      require => Package[$package_name];
     }
   }
   if $logrotate_enable and $logfile {
