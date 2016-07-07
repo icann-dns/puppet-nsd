@@ -148,12 +148,13 @@ class nsd (
     command => 'nsd-control-setup',
     path    => '/usr/bin:/usr/sbin:/usr/local/sbin',
     creates => $server_key_file,
+    require => Package[$package_name],
   }
   file { [$zonesdir, $zone_subdir]:
-      ensure  => directory,
-      owner   => $username,
-      group   => $username,
-      require => Package[$package_name],
+    ensure  => directory,
+    owner   => $username,
+    group   => $username,
+    require => Package[$package_name],
   }
   file { $conf_dir:
     ensure  => directory,
