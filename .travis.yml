@@ -4,6 +4,8 @@ language: ruby
 cache: bundler
 bundler_args: --without system_tests
 script: "bundle exec rake validate lint spec"
+before_deploy:
+- rvm 1.9.3 do gem install mime-types -v 2.6.2
 matrix:
   fast_finish: true
   include:

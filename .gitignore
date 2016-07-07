@@ -1,4 +1,5 @@
 .vagrant/
+spec/fixtures
 log/
 *.swp
 *.gem

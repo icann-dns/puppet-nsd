@@ -14,6 +14,7 @@ group :test do
     gem 'puppet-syntax'
     gem 'puppet-lint'
     gem 'rspec-puppet-facts'
+    gem "rest-client", "<=1.8.0"
 end
 
 group :integration do
