@@ -146,7 +146,7 @@ class nsd (
   }
   exec { 'nsd-control-setup':
     command => 'nsd-control-setup',
-    path    => '/usr/sbin:/usr/local/sbin',
+    path    => '/usr/bin:/usr/sbin:/usr/local/sbin',
     creates => $server_key_file,
   }
   file { [$zonesdir, $zone_subdir]:
