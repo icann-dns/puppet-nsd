@@ -1,18 +1,9 @@
-#seems to be a bug in the ignore below
-#require 'puppetlabs_spec_helper/module_spec_helper'
-require 'puppetlabs_spec_helper/rake_tasks'
+require 'puppetlabs_spec_helper/module_spec_helper'
 require 'rspec-puppet-utils'
 # if your using puppet4, the following gem seems to causes issues
 require 'hiera-puppet-helper'
 require 'rspec-puppet-facts'
 include RspecPuppetFacts
-require 'puppet-lint/tasks/puppet-lint'
-require 'puppet-syntax/tasks/puppet-syntax'
-
-ignore_paths = ["vendor/**/*.pp", "spec/**/*.pp"]
-PuppetLint.configuration.ignore_paths = ignore_paths
-PuppetLint.configuration.send("disable_class_inherits_from_params_class")
-PuppetSyntax.exclude_paths = exclude_paths
 
 # Uncomment this to show coverage report, also useful for debugging
 at_exit { RSpec::Puppet::Coverage.report! }
