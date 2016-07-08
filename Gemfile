@@ -15,6 +15,7 @@ group :test do
     gem 'puppet-lint'
     gem 'rspec-puppet-facts'
     gem "rest-client", "<=1.8.0"
+    gem "rubocop"
 end
 
 group :integration do
