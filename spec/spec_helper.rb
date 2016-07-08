@@ -1,4 +1,6 @@
-require 'puppetlabs_spec_helper/module_spec_helper'
+#seems to be a bug in the ignore below
+#require 'puppetlabs_spec_helper/module_spec_helper'
+require 'puppetlabs_spec_helper/rake_tasks'
 require 'rspec-puppet-utils'
 # if your using puppet4, the following gem seems to causes issues
 require 'hiera-puppet-helper'
