@@ -7,8 +7,12 @@ require 'hiera-puppet-helper'
 require 'rspec-puppet-facts'
 include RspecPuppetFacts
 require 'puppet-lint/tasks/puppet-lint'
-PuppetLint.configuration.ignore_paths = ["vendor/**/*.pp", "spec/**/*.pp"]
+require 'puppet-syntax/tasks/puppet-syntax'
+
+ignore_paths = ["vendor/**/*.pp", "spec/**/*.pp"]
+PuppetLint.configuration.ignore_paths = ignore_paths
 PuppetLint.configuration.send("disable_class_inherits_from_params_class")
+PuppetSyntax.exclude_paths = exclude_paths
 
 # Uncomment this to show coverage report, also useful for debugging
 at_exit { RSpec::Puppet::Coverage.report! }
