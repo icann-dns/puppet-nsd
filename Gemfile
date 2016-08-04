@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem "json_pure", "<=1.8.3"
+gem "rubocop", "<=0.41.2"
 
 group :test do
     gem "listen", "<=3.0.6"
