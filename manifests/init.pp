@@ -142,7 +142,7 @@ class nsd (
   concat::fragment{'nsd_server':
     target  => $conf_file,
     content => template($server_template),
-    order   => 01,
+    order   => '01',
   }
   exec { 'nsd-control-setup':
     command => 'nsd-control-setup',
