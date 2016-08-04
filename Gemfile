@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 
 gem "json_pure", "<=1.8.3"
-gem "rubocop", "<=0.41.2"
 
 group :test do
     gem "listen", "<=3.0.6"
@@ -18,7 +17,7 @@ group :test do
     gem 'puppet-lint'
     gem 'rspec-puppet-facts'
     gem "rest-client", "<=1.8.0"
-    gem "rubocop"
+    gem "rubocop", "<=0.41.2"
 end
 
 group :integration do
