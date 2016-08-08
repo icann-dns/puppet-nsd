@@ -38,7 +38,7 @@ define nsd::zone (
     } else {
       fail("Nsd::Tsig['${tsig_name}'] does not exist")
     }
-  } elsif has_key($::nsd::tsig['name']) {
+  } elsif has_key($::nsd::tsig, 'name') {
     $_tsig_name = $::nsd::tsig['name']
   }
 
