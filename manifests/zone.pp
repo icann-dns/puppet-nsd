@@ -9,6 +9,7 @@ define nsd::zone (
   $zonefile         = undef,
   $zone_dir         = undef,
   $rrl_whitelist    = [],
+  $tsig_name        = undef,
 ) {
   validate_array($masters)
   validate_array($notify_addresses)
@@ -30,6 +31,16 @@ define nsd::zone (
     $_rrl_whitelist = $rrl_whitelist
   }
   validate_array($_rrl_whitelist)
+  if $tsig_name {
+    validate_string($tsig_name)
+    if defined(Nsd::Tsig[$tsig_name]) {
+      $_tsig_name = $tsig_name
+    } else {
+      fail("Nsd::Tsig['${tsig_name}'] does not exist")
+    }
+  } elsif has_key($::nsd::tsig['name']) {
+    $_tsig_name = $::nsd::tsig['name']
+  }
 
   concat::fragment{ "nsd_zones_${name}":
     target  => $::nsd::conf_file,
