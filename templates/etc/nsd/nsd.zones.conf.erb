@@ -31,8 +31,8 @@ zone:
     provide-xfr: <%= xfr %> NOKEY
     <%- end -%>
   <%- end -%>
-  <%- if ! @slave_addresses.nil? -%>
-    <%- @slave_addresses.each_pair do |iface, key| -%> 
+  <%- if ! @_slave_addresses.nil? -%>
+    <%- @_slave_addresses.each_pair do |iface, key| -%> 
       <%- next if not @ipv6_capable and iface.include? ":" and ! @ipv6_capable.nil? -%>
     provide-xfr: <%= iface %> <%= key %>
     notify: <%= iface %> NOKEY
