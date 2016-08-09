@@ -10,6 +10,7 @@ define nsd::zone (
   $zone_dir         = undef,
   $rrl_whitelist    = [],
   $tsig_name        = undef,
+  $slave_addresses  = {},
 ) {
   validate_array($masters)
   validate_array($notify_addresses)
@@ -40,6 +41,12 @@ define nsd::zone (
     }
   } elsif has_key($::nsd::tsig, 'name') {
     $_tsig_name = $::nsd::tsig['name']
+  }
+  if empty($slave_addresses) {
+    $_slave_addresses = $::nsd::slave_addresses
+  } else {
+    validate_hash($slave_addresses)
+    $_slave_addresses = $slave_addresses
   }
 
   concat::fragment{ "nsd_zones_${name}":
