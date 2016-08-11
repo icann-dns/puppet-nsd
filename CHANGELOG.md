@@ -1,3 +1,6 @@
+### 2016-08-08 0.1.8
+* only run control-setup if control is enabled
+
 ### 2016-08-08 0.1.7
 * fix slave_addresses variable scope for future parser
 

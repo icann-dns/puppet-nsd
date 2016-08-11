@@ -144,11 +144,13 @@ class nsd (
     content => template($server_template),
     order   => '01',
   }
-  exec { 'nsd-control-setup':
-    command => 'nsd-control-setup',
-    path    => '/usr/bin:/usr/sbin:/usr/local/sbin',
-    creates => $server_key_file,
-    require => Package[$package_name],
+  if $control_enable {
+    exec { 'nsd-control-setup':
+      command => 'nsd-control-setup',
+      path    => '/usr/bin:/usr/sbin:/usr/local/sbin',
+      creates => $server_key_file,
+      require => Package[$package_name],
+    }
   }
   file { [$zonesdir, $zone_subdir]:
     ensure  => directory,
