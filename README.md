@@ -12,8 +12,6 @@
     * [Setup requirements](#setup-requirements)
     * [Beginning with nsd](#beginning-with-nsd)
 4. [Usage - Configuration options and additional functionality](#usage)
-    * [Basic Config](#basic-config)
-    * [Master Slave Config](#master-slave-config)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
