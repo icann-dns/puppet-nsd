@@ -7,7 +7,7 @@ group :test do
     gem "nokogiri", "<=1.6.7.2"
     gem "rake"
     gem "rspec"
-    gem "puppet", ENV['PUPPET_GEM_VERSION'] || '~> 3.8.3'
+    gem "puppet", ENV['PUPPET_GEM_VERSION'] || '~> 4.6.2'
     gem "rspec-puppet"
     gem "puppetlabs_spec_helper"
     gem 'rspec-puppet-utils'

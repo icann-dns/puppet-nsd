@@ -1,6 +1,8 @@
 fixtures:
   repositories:
-    "stdlib": "https://github.com/puppetlabs/puppetlabs-stdlib"
+    "stdlib": 
+      repo: "https://github.com/puppetlabs/puppetlabs-stdlib"
+      ref: 4.12.0
     "concat": "https://github.com/puppetlabs/puppetlabs-concat"
     "logrotate" : "https://github.com/icann-dns/puppet-logrotate"
   symlinks:
