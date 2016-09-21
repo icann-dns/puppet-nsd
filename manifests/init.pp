@@ -187,7 +187,7 @@ class nsd (
       require => Package[$package_name];
     }
   }
-  if $logrotate_enable and $logfile {
+  if $logrotate_enable and $logfile and $::kenel != 'FreeBSD' {
     logrotate::rule {'nsd':
       path       => $logfile,
       rotate     => $logrotate_rotate,

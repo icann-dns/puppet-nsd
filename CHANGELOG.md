@@ -1,3 +1,6 @@
+### 2016-08-08 0.1.9
+* Disable logrotate rule on freebsd
+
 ### 2016-08-08 0.1.8
 * only run control-setup if control is enabled
 
