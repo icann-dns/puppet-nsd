@@ -1,27 +1,18 @@
 #== Class: nsd
 #
 define nsd::zone (
-  $masters          = [],
-  $notify_addresses = [],
-  $allow_notify     = [],
-  $provide_xfr      = [],
-  $zones            = [],
-  $zonefile         = undef,
-  $zone_dir         = undef,
-  $rrl_whitelist    = [],
-  $tsig_name        = undef,
-  $slave_addresses  = {},
+  Array                       $masters          = [],
+  Array                       $notify_addresses = [],
+  Array                       $allow_notify     = [],
+  Array                       $provide_xfr      = [],
+  Array                       $zones            = [],
+  Optional[String]            $zonefile         = undef,
+  Optional[Tea::Absolutepath] $zone_dir         = undef,
+  Array                       $rrl_whitelist    = [],
+  Optional[String]            $tsig_name        = undef,
+  Hash                        $slave_addresses  = {},
 ) {
-  validate_array($masters)
-  validate_array($notify_addresses)
-  validate_array($allow_notify)
-  validate_array($provide_xfr)
-  validate_array($zones)
-  if $zonefile {
-    validate_string($zonefile)
-  }
   if $zone_dir {
-    validate_absolute_path($zone_dir)
     $zone_subdir = $zone_dir
   } else {
     $zone_subdir = $::nsd::zone_subdir
@@ -31,9 +22,7 @@ define nsd::zone (
   } else {
     $_rrl_whitelist = $rrl_whitelist
   }
-  validate_array($_rrl_whitelist)
   if $tsig_name {
-    validate_string($tsig_name)
     if defined(Nsd::Tsig[$tsig_name]) {
       $_tsig_name = $tsig_name
     } else {
@@ -45,7 +34,6 @@ define nsd::zone (
   if empty($slave_addresses) {
     $_slave_addresses = $::nsd::slave_addresses
   } else {
-    validate_hash($slave_addresses)
     $_slave_addresses = $slave_addresses
   }
 

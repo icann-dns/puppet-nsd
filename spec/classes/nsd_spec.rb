@@ -181,7 +181,7 @@ describe 'nsd', :type => :class do
           let(:params) {{ 
             :files => { 
               'foo' => {
-                'source' => 'puppet:///foo.zone',
+                'source' => 'puppet:///modules/foo.zone',
               },
               'bar' => {
                 'content' => 'foo.zone',
@@ -189,7 +189,7 @@ describe 'nsd', :type => :class do
             }
           }}
           it { is_expected.to contain_nsd__file('foo').with(
-            :source => 'puppet:///foo.zone'
+            :source => 'puppet:///modules/foo.zone'
           ) }
           it { is_expected.to contain_nsd__file('bar').with(
             :content => 'foo.zone'
@@ -268,15 +268,15 @@ describe 'nsd', :type => :class do
           ) }
         end
         context 'ipv4_edns_size' do
-          let(:params) {{ :ipv4_edns_size => 6 }}
+          let(:params) {{ :ipv4_edns_size => 512 }}
           it { is_expected.to contain_concat_fragment('nsd_server').with_content(
-            /ipv4-edns-size: 6/
+            /ipv4-edns-size: 512/
           ) }
         end
         context 'ipv6_edns_size' do
-          let(:params) {{ :ipv6_edns_size => 6 }}
+          let(:params) {{ :ipv6_edns_size => 512 }}
           it { is_expected.to contain_concat_fragment('nsd_server').with_content(
-            /ipv6-edns-size: 6/
+            /ipv6-edns-size: 512/
           ) }
         end
         context 'pidfile' do
@@ -545,7 +545,7 @@ describe 'nsd', :type => :class do
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'verbosity to big' do
-          let(:params) {{ :verbosity => 3 }}
+          let(:params) {{ :verbosity => 4 }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'hide_version' do

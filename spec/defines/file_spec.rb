@@ -10,7 +10,7 @@ describe 'nsd::file', :type => :define do
       let(:pre_condition) { ['include ::nsd'] }
       let(:title) { 'test' }
       describe 'basic check' do
-        let(:params) {{ 'source' => 'puppet:///source' }}
+        let(:params) {{ 'source' => 'puppet:///modules/source' }}
         it { is_expected.to compile.with_all_deps }
       end
 

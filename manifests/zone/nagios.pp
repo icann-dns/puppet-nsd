@@ -1,11 +1,9 @@
 # nsd::zone::nagios
 #
 define nsd::zone::nagios (
-  $slaves  = [],
-  $masters = [],
+  Array $slaves  = [],
+  Array $masters = [],
 ) {
-  validate_array($slaves)
-  validate_array($masters)
   $_masters  = delete($masters,['127.0.0.1','0::1'])
   $_slaves   = delete($slaves,['127.0.0.1','0::1'])
   $addresses = join($::nsd::ip_addresses, ' ')
