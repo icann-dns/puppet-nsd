@@ -1,46 +1,56 @@
-<%- @zones.each do |zone| -%>
-
 zone:
-    name: "<%= zone %>"
-  <%- if @zonefile then -%>
-    zonefile: "<%= @zone_subdir %>/<%= @zonefile %>"
-  <%- else -%>
-    zonefile: "<%= @zone_subdir %>/<%= zone %>"
+  name: "<%= @name %>"
+<%- if @zonefile then -%>
+  zonefile: "<%= @zone_subdir %>/<%= @zonefile %>"
+<%- else -%>
+  zonefile: "<%= @zone_subdir %>/<%= @name %>"
+<%- end -%>
+<%- @masters.each do |master| 
+  server = @servers[master] 
+  fetch_tsig_name = server.fetch('fetch_tsig_name', @_fetch_tsig_name)  
+-%>
+  <%- if @ipv6_capable and server.has_key?('address6') then -%>
+  allow-notify: <%= server['address6'] %> NOKEY
+  request-xfr: AXFR <%= server['address6'] %> <%= fetch_tsig_name %>
   <%- end -%>
-  <%- if @notify_addresses then -%>
-    <%- @notify_addresses.each do |notify_address| -%>
-      <%- next if not @ipv6_capable and notify_address.include? ":" and ! @ipv6_capable.nil? -%>
-    notify: <%= notify_address %> NOKEY
-    <%- end -%>
+  <%- if server.has_key?('address4') then -%>
+  allow-notify: <%= server['address4'] %> NOKEY
+  request-xfr: AXFR <%= server['address4']  %> <%= fetch_tsig_name %>
   <%- end -%>
-  <%- if @allow_notify then -%>
-    <%- @allow_notify.each do |notify| -%>
-      <%- next if not @ipv6_capable and notify.include? ":" and ! @ipv6_capable.nil? -%>
-    allow-notify: <%= notify %> NOKEY
-    <%- end -%>
+<%- end -%>
+<%- @allow_notify_additions.each do |notify_addition| -%>
+  <%- server = @servers[notify_addition] -%>
+  <%- if @ipv6_capable and server.has_key?('address6') then -%>
+  allow-notify: <%= server['address6'] %> NOKEY
   <%- end -%>
-  <%- if @masters then -%>
-    <%- @masters.each do |master| -%>
-      <%- next if not @ipv6_capable and master.include? ":" and ! @ipv6_capable.nil? -%>
-    request-xfr: AXFR <%= master %> <%- if @_tsig_name %> <%= @_tsig_name %><%-else-%> NOKEY<%- end %>
-    <%- end -%>
+  <%- if server.has_key?('address4') then -%>
+  allow-notify: <%= server['address4'] %> NOKEY
   <%- end -%>
-  <%- if @provide_xfr then -%>
-    <%- @provide_xfr.each do |xfr| -%>
-      <%- next if not @ipv6_capable and xfr.include? ":" and ! @ipv6_capable.nil? -%>
-    provide-xfr: <%= xfr %> NOKEY
-    <%- end -%>
+<%- end -%>
+<%- @provide_xfrs.each do |provide_xfr| 
+  server = @servers[provide_xfr] 
+  provide_tsig_name = server.fetch('provide_tsig_name', @_provide_tsig_name)  
+-%>
+  <%- if @ipv6_capable and server.has_key?('address6') then -%>
+  notify: <%= server['address6'] %> NOKEY
+  provide-xfr: <%= server['address6'] %> <%= provide_tsig_name %>
   <%- end -%>
-  <%- if ! @_slave_addresses.nil? -%>
-    <%- @_slave_addresses.each_pair do |iface, key| -%> 
-      <%- next if not @ipv6_capable and iface.include? ":" and ! @ipv6_capable.nil? -%>
-    provide-xfr: <%= iface %> <%= key %>
-    notify: <%= iface %> NOKEY
-    <%- end -%>
+  <%- if server.has_key?('address4') then -%>
+  notify: <%= server['address4'] %> NOKEY
+  provide-xfr: <%= server['address4']  %> <%= provide_tsig_name %>
   <%- end -%>
-  <%- if @_rrl_whitelist.any? then -%>
-    <%- @_rrl_whitelist.each do |rrl_type| -%>
-    rrl-whitelist: <%= rrl_type %>
-    <%- end -%>
+<%- end -%>
+<%- @send_notify_additions.each do |send_addition| -%>
+  <%- server = @servers[send_addition] -%>
+  <%- if @ipv6_capable and server.has_key?('address6') then -%>
+  notify: <%= server['address6'] %> NOKEY
   <%- end -%>
-<% end -%>
+  <%- if server.has_key?('address4') then -%>
+  notify: <%= server['address4'] %> NOKEY
+  <%- end -%>
+<%- end -%>
+<%- if @_rrl_whitelist.any? then -%>
+  <%- @_rrl_whitelist.each do |rrl_type| -%>
+  rrl-whitelist: <%= rrl_type %>
+  <%- end -%>
+<%- end -%>

@@ -49,6 +49,8 @@ describe 'nsd', :type => :class do
       describe 'check default config' do
 
         it { is_expected.to compile }
+        it { is_expected.to contain_class('nsd') }
+        it { is_expected.to contain_class('nsd::params') }
         it { is_expected.to contain_package(package_name).with_ensure(
           'present') }
         it { is_expected.to contain_concat(conf_file) }
@@ -147,34 +149,23 @@ describe 'nsd', :type => :class do
               :enable   => false,
         ) }
         end
-        context 'tsig' do
-          let(:params) {{ :tsig => {
-            'name' => 'foo',
-            'data' => 'aaaa',
-            }
-          }}
-          it { is_expected.to contain_nsd__tsig('foo').with(
-            :data => 'aaaa'
-          )}
-        end
         context 'zones' do
           let(:params) {{ 
+            :servers => {
+              'test' => {
+                'address4' => '192.0.2.1'
+              }
+            },
             :zones => {
               'test' => { 
-                'masters'          => ['192.0.2.1'],
-                'notify_addresses' => ['192.0.2.1'],
-                'allow_notify'     => ['192.0.2.1'],
-                'provide_xfr'      => ['192.0.2.1'],
-                'zones'            => ['example.com'],
+                'masters'          => ['test'],
+                'provide_xfrs'      => ['test'],
               }
             }
           }}
           it { is_expected.to contain_nsd__zone('test').with(
-            :masters          => ['192.0.2.1'],
-            :notify_addresses => ['192.0.2.1'],
-            :allow_notify     => ['192.0.2.1'],
-            :provide_xfr      => ['192.0.2.1'],
-            :zones            => ['example.com'],
+            :masters          => ['test'],
+            :provide_xfrs      => ['test'],
           )}
         end
         context 'files' do

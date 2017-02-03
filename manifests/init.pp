@@ -1,18 +1,20 @@
 #== Class: nsd
 #
 class nsd (
-  Optional[Integer]           $tcp_timeout       = undef,
-  Optional[Integer]           $statistics        = undef,
-  Optional[Tea::Absolutepath] $chroot            = undef,
-  Optional[Tea::Absolutepath] $logfile           = undef,
-  Optional[Tea::Absolutepath] $difffile          = undef,
-  Optional[Tea::Ip_address]   $control_interface = undef,
+  Optional[Integer]           $tcp_timeout               = undef,
+  Optional[Integer]           $statistics                = undef,
+  Optional[Tea::Absolutepath] $chroot                    = undef,
+  Optional[Tea::Absolutepath] $logfile                   = undef,
+  Optional[Tea::Absolutepath] $difffile                  = undef,
+  Optional[Tea::Ip_address]   $control_interface         = undef,
+  String                 $fetch_tsig_name     = 'NOKEY',
+  String                 $provide_tsig_name   = 'NOKEY',
   Boolean                $enable              = true,
-  Hash                   $tsig                = {},
   Hash                   $slave_addresses     = {},
   Hash                   $zones               = {},
   Hash                   $files               = {},
   Hash                   $tsigs               = {},
+  Hash[String, Nsd::Server] $servers          = {},
   String                 $server_template     = 'nsd/etc/nsd/nsd.server.conf.erb',
   String                 $zones_template      = 'nsd/etc/nsd/nsd.zones.conf.erb',
   Array[Tea::Ip_address] $ip_addresses        = [],
@@ -121,15 +123,28 @@ class nsd (
       postrotate => "/usr/sbin/service ${service_name} restart",
     }
   }
-  #add backwords compatible
-  if ! empty($tsig) {
-    nsd::tsig {$tsig['name']:
-      algo => $tsig['algo'],
-      data => $tsig['data'],
-    }
-  }
 
   create_resources(nsd::file, $files)
   create_resources(nsd::tsig, $tsigs)
+  if ! defined(Nsd::Tsig[$fetch_tsig_name]) and $fetch_tsig_name != 'NOKEY' {
+    fail("Nsd::Tsig['${fetch_tsig_name}'] does not exist")
+  }
+  if ! defined(Nsd::Tsig[$provide_tsig_name]) and $provide_tsig_name != 'NOKEY' {
+    fail("Nsd::Tsig['${provide_tsig_name}'] does not exist")
+  }
+  $servers.each |String $server, Nsd::Server $config| {
+    if has_key($config, 'fetch_tsig_name') {
+      $key = $config['fetch_tsig_name']
+      if ! defined(Nsd::Tsig[$key]) and $key != 'NOKEY' {
+          fail("Nsd::Tsig['${key}'], defined in nsd::server['${server}'] does not exist")
+      }
+    }
+    if has_key($config, 'provide_tsig_name') {
+      $key = $config['provide_tsig_name']
+      if ! defined(Nsd::Tsig[$key]) and $key != 'NOKEY' {
+          fail("Nsd::Tsig['${key}'], defined in nsd::server['${server}'] does not exist")
+      }
+    }
+  }
   create_resources(nsd::zone, $zones)
 }
