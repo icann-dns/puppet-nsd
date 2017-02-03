@@ -55,7 +55,7 @@ describe 'nsd', type: :class do
           ).with_content(
             %r{debug-mode: no}
           ).with_content(
-            %r{database: #{database} }
+            %r{database: #{database}}
           ).with_content(
             %r{identity: foo.example.com}
           ).with_content(
@@ -75,7 +75,7 @@ describe 'nsd', type: :class do
           ).with_content(
             %r{ipv6-edns-size: 4096}
           ).with_content(
-            %r{pidfile: #{pidfile} }
+            %r{pidfile: #{pidfile}}
           ).with_content(
             %r{port: 53}
           ).without_content(
@@ -85,11 +85,11 @@ describe 'nsd', type: :class do
           ).with_content(
             %r{username: nsd}
           ).with_content(
-            %r{zonesdir: #{zonesdir} }
+            %r{zonesdir: #{zonesdir}}
           ).without_content(
             %r{difffile:}
           ).with_content(
-            %r{xfrdfile: #{xfrdfile} }
+            %r{xfrdfile: #{xfrdfile}}
           ).with_content(
             %r{xfrd-reload-timeout: 1}
           ).with_content(
