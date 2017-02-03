@@ -2,7 +2,7 @@
 sudo: false
 language: ruby
 cache: bundler
-bundler_args: --without system_tests development
+bundler_args: --without development
 before_install:
   - bundle -v
   - rm Gemfile.lock || true
@@ -27,6 +27,10 @@ matrix:
     env: PUPPET_VERSION="~> 4.0" CHECK=test
   - rvm: 2.4.0-preview1
     env: PUPPET_VERSION="~> 4.0" CHECK=test
+  - rvm: 2.3.1
+    env: BEAKER_set="docker/ubuntu-14.04" CHECK=beaker
+    services:
+    - docker
   allow_failures:
     - rvm: 2.4.0-preview1
 notifications:
@@ -37,7 +41,7 @@ deploy:
     branch: ha-bug-puppet-forge
   user: icann
   password:
-    secure: ""
+    secure: "r2gqaLkTdxlfYy7yLHM0VZK+Cx4S2nJ9JAJt4/E3UF2N9c5C7xDk/2AZS0At5P7GSwYlnB0yVQKvfwW1/X0RBvRpxpxKXsM2bXu2bM8auE/L4fElfxjjeLmDF/H1sbAv54gXfUWZO3qSk7c9Cw9EWiKtmSGs5Ti5jWHsCE13Hyub3PBMiYrqVrRtYcAG9JOrKNqIialvDbSZgpIKxNDHJEynAWaSE6yQsXO+t591NbRl8ecf3q0KuuoRJUWFvphO9UEbu+rnrIAyDIFD++omELt1yA1kwQpTtkh/w6TOXFeIqTXzd6Z+NKNkE9LDJOhfgFAFV4FpAjPg5jdGDr0QiCwKYgIL8CBmgJcMPZhDeoVX9g3Ja/8eqgHYyy2qjIKNBDxqt5cfhT2SWIN7AgwoAFR3rOQq4sbLuIsagiY86IcpYvygdYsOzkDouphE5r/tiCEHGjJNMDkHhP79bol/1dcqada26Nk6J+k+Uag0XwdZeBKtWOzuD2gFU0w81/ThP/JPJk1Xvh6GrukMpcsscaHIw/gxxqZYhzhLtOIWyjV4RZIhEAnS2Z1akx1ekTteh/oMlhmb/cupfvnUp7wV3NSc6UXsMHkUc07qT2MazdtZVw2W5OLd/yKd6vmO6sUZbgQbwT2PLYzGbbSShqGAxuWiEnIZoRBTeM/eLOgr6wU="
   on:
     tags: true
     # all_branches is required to use tags
