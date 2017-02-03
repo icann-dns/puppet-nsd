@@ -24,7 +24,8 @@ RSpec.configure do |c|
       # Install dependencies
       on(host, puppet('module', 'install', 'puppetlabs-stdlib'))
       on(host, puppet('module', 'install', 'puppetlabs-concat'))
-      on(host, puppet('module', 'install', 'b4ldr-logrotate'))
+      on(host, puppet('module', 'install', 'icann-logrotate'))
+      on(host, puppet('module', 'install', 'icann-tea'))
     end
   end
 end
