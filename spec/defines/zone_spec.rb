@@ -1,15 +1,14 @@
 require 'spec_helper'
 
-describe 'nsd::zone', :type => :define do
-
-  let(:pre_condition) {'
-    class {\'::nsd\':
-      tsigs   => { 
+describe 'nsd::zone', type: :define do
+  let(:pre_condition) do
+    'class {\'::nsd\':
+      tsigs   => {
         \'foobar\' => {
           data => \'asdasd\'
         }
       },
-      servers => { 
+      servers => {
         \'extra_allow_notify\' => {
           \'address4\' => \'192.0.2.4\',
           \'address6\' => \'2001:DB8::4\'
@@ -27,13 +26,13 @@ describe 'nsd::zone', :type => :define do
           \'address6\' => \'2001:DB8::2\'
         }
       }
-    }
-  '}
+    }'
+  end
   let(:title) { 'example.com' }
   let(:params) do
     {
       'masters'       => ['master'],
-      'provide_xfrs'  => ['slave'],
+      'provide_xfrs'  => ['slave']
     }
   end
   on_supported_os.each do |os, facts|
@@ -71,7 +70,7 @@ describe 'nsd::zone', :type => :define do
       end
       describe 'Change Defaults' do
         context 'masters' do
-          let(:params) {{ 'masters' => ['slave'] }}
+          let(:params) { { 'masters' => ['slave'] } }
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat_fragment(
@@ -88,7 +87,7 @@ describe 'nsd::zone', :type => :define do
           end
         end
         context 'provide_xfrs' do
-          let(:params) {{ 'provide_xfrs' => ['master'] }}
+          let(:params) { { 'provide_xfrs' => ['master'] } }
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat_fragment(
@@ -131,7 +130,7 @@ describe 'nsd::zone', :type => :define do
           end
         end
         context 'zonefile' do
-          before { params.merge!( zonefile: 'foobar' ) }
+          before { params.merge!(zonefile: 'foobar') }
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat_fragment(
@@ -142,8 +141,7 @@ describe 'nsd::zone', :type => :define do
           end
         end
         context 'zone_dir' do
-          before { params.merge!(zone_dir: '/foobar' ) }
-          it { is_expected.to compile }
+          before { params.merge!(zone_dir: '/foobar') }
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat_fragment(
@@ -154,7 +152,7 @@ describe 'nsd::zone', :type => :define do
           end
         end
         context 'rrl_whitelist' do
-          before { params.merge!(rrl_whitelist: ['dnskey', 'rrsig']) }
+          before { params.merge!(rrl_whitelist: %w(dnskey rrsig)) }
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat_fragment(
@@ -169,7 +167,7 @@ describe 'nsd::zone', :type => :define do
           end
         end
         context 'fetch_tsig_name' do
-          before { params.merge!(fetch_tsig_name: 'foobar' ) }
+          before { params.merge!(fetch_tsig_name: 'foobar') }
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat_fragment(
@@ -190,7 +188,7 @@ describe 'nsd::zone', :type => :define do
           end
         end
         context 'provide_tsig_name' do
-          before { params.merge!(provide_tsig_name: 'foobar' ) }
+          before { params.merge!(provide_tsig_name: 'foobar') }
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat_fragment(
@@ -211,58 +209,57 @@ describe 'nsd::zone', :type => :define do
           end
         end
       end
-      
       describe 'Check bad params' do
         context 'masters' do
-          let(:params) {{ :masters => 'foo' }}
+          let(:params) { { masters: 'foo' } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'masters server not defined' do
-          let(:params) {{ :masters => ['foo'] }}
+          let(:params) { { masters: ['foo'] } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'provide_xfrs server not defined' do
-          let(:params) {{ :notify_addresses => ['foo'] }}
+          let(:params) { { notify_addresses: ['foo'] } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'allow_notify_additions' do
-          let(:params) {{ :allow_notify => 'foo' }}
+          let(:params) { { allow_notify: 'foo' } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'send_notify_additions' do
-          let(:params) {{ :provide_xfr => 'foo' }}
+          let(:params) { { provide_xfr: 'foo' } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'zonefile' do
-          let(:params) {{ :zones => true }}
+          let(:params) { { zones: true } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'zone_dir' do
-          let(:params) {{ :zone_dir => 'foo' }}
+          let(:params) { { zone_dir: 'foo' } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'rrl_whitelist bad type' do
-          let(:params) {{ :rrl_whitelist => ['foo'] }}
+          let(:params) { { rrl_whitelist: ['foo'] } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'rrl_whitelist' do
-          let(:params) {{ :rrl_whitelist => 'foo' }}
+          let(:params) { { rrl_whitelist: 'foo' } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'fetch_tsig_name' do
-          let(:params) {{ :fetch_tsig_name => true }}
+          let(:params) { { fetch_tsig_name: true } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'fetch_tsig_name tsig not defined' do
-          let(:params) {{ :fetch_tsig_name => 'foo' }}
+          let(:params) { { fetch_tsig_name: 'foo' } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'provide_tsig_name' do
-          let(:params) {{ :provide_tsig_name => true }}
+          let(:params) { { provide_tsig_name: true } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'provide_tsig_name tsig not defined' do
-          let(:params) {{ :provide_tsig_name => 'foo' }}
+          let(:params) { { provide_tsig_name: 'foo' } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
       end

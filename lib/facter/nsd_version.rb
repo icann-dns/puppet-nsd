@@ -1,5 +1,5 @@
-if File.exists? '/usr/sbin/nsd'
-  nsd_version = Facter::Util::Resolution.exec('/usr/sbin/nsd -v 2>&1').split('/n')[0].split()[2]
+if File.exist? '/usr/sbin/nsd'
+  nsd_version = Facter::Util::Resolution.exec('/usr/sbin/nsd -v 2>&1').split('/n')[0].split[2]
   Facter.add(:nsd_version) do
     setcode do
       nsd_version
