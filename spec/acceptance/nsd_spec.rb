@@ -25,23 +25,23 @@ describe 'nsd class' do
       pp = <<-EOS
   class {'::nsd':
       servers => {
-        lax.xfr.dns.icann.org => {
-          address4 => '192.0.32.132'
+        'lax.xfr.dns.icann.org' => {
+          'address4' => '192.0.32.132'
         },
-        iad.xfr.dns.icann.org => {
-          address4 => '192.0.47.132'
+        'iad.xfr.dns.icann.org' => {
+          'address4' => '192.0.47.132'
         },
       },
       rrl_whitelist => ['nxdomain', 'referral']
   }
   nsd::zone {
-    root:
+    '.':
       masters  => ['lax.xfr.dns.icann.org', 'iad.xfr.dns.icann.org'],
-      zonefile => 'root',
-    arpa:
-      masters  => ['lax.xfr.dns.icann.org', 'iad.xfr.dns.icann.org'],
-    root-servers.net:
-      masters  => ['lax.xfr.dns.icann.org', 'iad.xfr.dns.icann.org'],
+      zonefile => 'root';
+    'arpa.':
+      masters  => ['lax.xfr.dns.icann.org', 'iad.xfr.dns.icann.org'];
+    'root-servers.net.':
+      masters  => ['lax.xfr.dns.icann.org', 'iad.xfr.dns.icann.org'];
   }
       EOS
       apply_manifest(pp, catch_failures: true)

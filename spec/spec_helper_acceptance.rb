@@ -8,7 +8,9 @@ hosts.each do |host|
     host.install_package('dns/bind-tools')
     # install_puppet_on(host)
   else
-    install_puppet_on(host)
+    host.install_package('vim')
+    host.install_package('dnsutils')
+    install_puppet_agent_on(host)
   end
 end
 
