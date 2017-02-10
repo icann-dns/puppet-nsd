@@ -8,7 +8,7 @@ describe 'nsd::zone', type: :define do
           data => \'asdasd\'
         }
       },
-      servers => {
+      remotes => {
         \'extra_allow_notify\' => {
           \'address4\' => \'192.0.2.4\',
           \'address6\' => \'2001:DB8::4\'
@@ -50,21 +50,9 @@ describe 'nsd::zone', type: :define do
           ).with_content(
             %r{zonefile:.+example.com}
           ).with_content(
-            %r{allow-notify: 192.0.2.1 NOKEY}
+            %r{include-pattern: master-master}
           ).with_content(
-            %r{request-xfr: AXFR 192.0.2.1 NOKEY}
-          ).without_content(
-            %r{allow-notify: 2001:DB8::1 NOKEY}
-          ).without_content(
-            %r{request-xfr: AXFR 2001:DB8::1 NOKEY}
-          ).with_content(
-            %r{notify: 192.0.2.2 NOKEY}
-          ).with_content(
-            %r{provide-xfr: 192.0.2.2 NOKEY}
-          ).without_content(
-            %r{notify: 2001:DB8::2 NOKEY}
-          ).without_content(
-            %r{provide-xfr: 2001:DB8::2 NOKEY}
+            %r{include-pattern: slave-provide_xfr}
           )
         end
       end
@@ -75,14 +63,10 @@ describe 'nsd::zone', type: :define do
           it do
             is_expected.to contain_concat_fragment(
               'nsd_zones_example.com'
-            ).with_content(
-              %r{allow-notify: 192.0.2.2 NOKEY}
-            ).with_content(
-              %r{request-xfr: AXFR 192.0.2.2 NOKEY}
             ).without_content(
-              %r{allow-notify: 2001:DB8::2 NOKEY}
-            ).without_content(
-              %r{request-xfr: AXFR 2001:DB8::2 NOKEY}
+              %r{include-pattern: master-master}
+            ).with_content(
+              %r{include-pattern: slave-master}
             )
           end
         end
@@ -93,13 +77,9 @@ describe 'nsd::zone', type: :define do
             is_expected.to contain_concat_fragment(
               'nsd_zones_example.com'
             ).with_content(
-              %r{notify: 192.0.2.1 NOKEY}
-            ).with_content(
-              %r{provide-xfr: 192.0.2.1 NOKEY}
+              %r{include-pattern: master-provide_xfr}
             ).without_content(
-              %r{notify: 2001:DB8::1 NOKEY}
-            ).without_content(
-              %r{provide-xfr: 2001:DB8::1 NOKEY}
+              %r{include-pattern: slave-provide_xfr}
             )
           end
         end
@@ -110,9 +90,7 @@ describe 'nsd::zone', type: :define do
             is_expected.to contain_concat_fragment(
               'nsd_zones_example.com'
             ).with_content(
-              %r{allow-notify: 192.0.2.4 NOKEY}
-            ).without_content(
-              %r{allow-notify: 2001:DB8::4 NOKEY}
+              %r{include-pattern: extra_allow_notify-allow-notify-addition}
             )
           end
         end
@@ -123,9 +101,7 @@ describe 'nsd::zone', type: :define do
             is_expected.to contain_concat_fragment(
               'nsd_zones_example.com'
             ).with_content(
-              %r{notify: 192.0.2.3 NOKEY}
-            ).without_content(
-              %r{notify: 2001:DB8::3 NOKEY}
+              %r{include-pattern: extra_notify-send-notify-addition}
             )
           end
         end
@@ -166,48 +142,6 @@ describe 'nsd::zone', type: :define do
             )
           end
         end
-        context 'fetch_tsig_name' do
-          before { params.merge!(fetch_tsig_name: 'foobar') }
-          it { is_expected.to compile }
-          it do
-            is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com'
-            ).with_content(
-              %r{name: "example.com"}
-            ).with_content(
-              %r{zonefile:.+example.com}
-            ).with_content(
-              %r{allow-notify: 192.0.2.1 NOKEY}
-            ).with_content(
-              %r{request-xfr: AXFR 192.0.2.1 foobar}
-            ).with_content(
-              %r{notify: 192.0.2.2 NOKEY}
-            ).with_content(
-              %r{provide-xfr: 192.0.2.2 NOKEY}
-            )
-          end
-        end
-        context 'provide_tsig_name' do
-          before { params.merge!(provide_tsig_name: 'foobar') }
-          it { is_expected.to compile }
-          it do
-            is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com'
-            ).with_content(
-              %r{name: "example.com"}
-            ).with_content(
-              %r{zonefile:.+example.com}
-            ).with_content(
-              %r{allow-notify: 192.0.2.1 NOKEY}
-            ).with_content(
-              %r{request-xfr: AXFR 192.0.2.1 NOKEY}
-            ).with_content(
-              %r{notify: 192.0.2.2 NOKEY}
-            ).with_content(
-              %r{provide-xfr: 192.0.2.2 foobar}
-            )
-          end
-        end
       end
       describe 'Check bad params' do
         context 'masters' do
@@ -244,22 +178,6 @@ describe 'nsd::zone', type: :define do
         end
         context 'rrl_whitelist' do
           let(:params) { { rrl_whitelist: 'foo' } }
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
-        end
-        context 'fetch_tsig_name' do
-          let(:params) { { fetch_tsig_name: true } }
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
-        end
-        context 'fetch_tsig_name tsig not defined' do
-          let(:params) { { fetch_tsig_name: 'foo' } }
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
-        end
-        context 'provide_tsig_name' do
-          let(:params) { { provide_tsig_name: true } }
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
-        end
-        context 'provide_tsig_name tsig not defined' do
-          let(:params) { { provide_tsig_name: 'foo' } }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
       end

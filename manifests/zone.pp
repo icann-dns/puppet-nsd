@@ -8,11 +8,8 @@ define nsd::zone (
   Optional[String]              $zonefile               = undef,
   Optional[Tea::Absolutepath]   $zone_dir               = undef,
   Optional[Array[Nsd::Rrltype]] $rrl_whitelist          = [],
-  Optional[String]              $fetch_tsig_name        = undef,
-  Optional[String]              $provide_tsig_name      = undef,
 ) {
   include ::nsd
-  $servers = $::nsd::servers
   if $zone_dir {
     $zone_subdir = $zone_dir
   } else {
@@ -23,42 +20,24 @@ define nsd::zone (
   } else {
     $_rrl_whitelist = $rrl_whitelist
   }
-  if $fetch_tsig_name {
-    if defined(Nsd::Tsig[$fetch_tsig_name]) or $fetch_tsig_name == 'NOKEY' {
-      $_fetch_tsig_name = $fetch_tsig_name
-    } else {
-      fail("Nsd::Tsig['${fetch_tsig_name}'] does not exist")
-    }
-  } else {
-    $_fetch_tsig_name = $::nsd::fetch_tsig_name
-  }
-  if $provide_tsig_name {
-    if defined(Nsd::Tsig[$provide_tsig_name]) or $provide_tsig_name == 'NOKEY' {
-      $_provide_tsig_name = $provide_tsig_name
-    } else {
-      fail("Nsd::Tsig['${provide_tsig_name}'] does not exist")
-    }
-  } else {
-    $_provide_tsig_name = $::nsd::provide_tsig_name
-  }
   $masters.each |String $server| {
-    if ! has_key($servers, $server) {
-      fail("${name} defines master ${server}.  however this has not been defined as an nsd::server")
+    if ! defined(Nsd::Remote[$server]) {
+      fail("${name} defines master ${server}. however Nsd::Remote[${server}] is not defined")
     }
   }
   $provide_xfrs.each |String $server| {
-    if ! has_key($servers, $server) {
-      fail("${name} defines provide_xfr ${server}.  however this has not been defined as an nsd::server")
+    if ! defined(Nsd::Remote[$server]) {
+      fail("${name} defines provide_xfr ${server}. however Nsd::Remote[${server}] is not defined")
     }
   }
   $allow_notify_additions.each |String $server| {
-    if ! has_key($servers, $server) {
-      fail("${name} defines allow_notify_addition ${server}.  however this has not been defined as an nsd::server")
+    if ! defined(Nsd::Remote[$server]) {
+      fail("${name} defines allow_notify_addition ${server}. however Nsd::Remote[${server}] is not defined")
     }
   }
   $send_notify_additions.each |String $server| {
-    if ! has_key($servers, $server) {
-      fail("${name} defines send_notify_addition ${server}.  however this has not been defined as an nsd::server")
+    if ! defined(Nsd::Remote[$server]) {
+      fail("${name} defines send_notify_addition ${server}. however Nsd::Remote[${server}] is not defined")
     }
   }
 

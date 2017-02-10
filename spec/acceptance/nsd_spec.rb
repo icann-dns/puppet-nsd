@@ -24,7 +24,7 @@ describe 'nsd class' do
     it 'work with no errors' do
       pp = <<-EOS
   class {'::nsd':
-      servers => {
+      remotes => {
         'lax.xfr.dns.icann.org' => {
           'address4' => '192.0.32.132'
         },

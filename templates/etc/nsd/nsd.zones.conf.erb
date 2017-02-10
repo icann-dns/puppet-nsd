@@ -5,49 +5,17 @@ zone:
 <%- else -%>
   zonefile: "<%= @zone_subdir %>/<%= @name %>"
 <%- end -%>
-<%- @masters.each do |master| 
-  server = @servers[master] 
-  fetch_tsig_name = server.fetch('fetch_tsig_name', @_fetch_tsig_name)  
--%>
-  <%- if @ipv6_capable and server.has_key?('address6') then -%>
-  allow-notify: <%= server['address6'] %> NOKEY
-  request-xfr: AXFR <%= server['address6'] %> <%= fetch_tsig_name %>
-  <%- end -%>
-  <%- if server.has_key?('address4') then -%>
-  allow-notify: <%= server['address4'] %> NOKEY
-  request-xfr: AXFR <%= server['address4']  %> <%= fetch_tsig_name %>
-  <%- end -%>
+<%- @masters.each do |master| -%>
+  include-pattern: <%= master %>-master
+<%- end -%>
+<%- @provide_xfrs.each do |provide_xfr| -%>
+  include-pattern: <%= provide_xfr %>-provide_xfr
 <%- end -%>
 <%- @allow_notify_additions.each do |notify_addition| -%>
-  <%- server = @servers[notify_addition] -%>
-  <%- if @ipv6_capable and server.has_key?('address6') then -%>
-  allow-notify: <%= server['address6'] %> NOKEY
-  <%- end -%>
-  <%- if server.has_key?('address4') then -%>
-  allow-notify: <%= server['address4'] %> NOKEY
-  <%- end -%>
-<%- end -%>
-<%- @provide_xfrs.each do |provide_xfr| 
-  server = @servers[provide_xfr] 
-  provide_tsig_name = server.fetch('provide_tsig_name', @_provide_tsig_name)  
--%>
-  <%- if @ipv6_capable and server.has_key?('address6') then -%>
-  notify: <%= server['address6'] %> NOKEY
-  provide-xfr: <%= server['address6'] %> <%= provide_tsig_name %>
-  <%- end -%>
-  <%- if server.has_key?('address4') then -%>
-  notify: <%= server['address4'] %> NOKEY
-  provide-xfr: <%= server['address4']  %> <%= provide_tsig_name %>
-  <%- end -%>
+  include-pattern: <%= notify_addition %>-allow-notify-addition
 <%- end -%>
 <%- @send_notify_additions.each do |send_addition| -%>
-  <%- server = @servers[send_addition] -%>
-  <%- if @ipv6_capable and server.has_key?('address6') then -%>
-  notify: <%= server['address6'] %> NOKEY
-  <%- end -%>
-  <%- if server.has_key?('address4') then -%>
-  notify: <%= server['address4'] %> NOKEY
-  <%- end -%>
+  include-pattern: <%= send_addition %>-send-notify-addition
 <%- end -%>
 <%- if @_rrl_whitelist.any? then -%>
   <%- @_rrl_whitelist.each do |rrl_type| -%>

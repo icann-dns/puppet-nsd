@@ -153,7 +153,7 @@ describe 'nsd', type: :class do
         context 'zones' do
           let(:params) do
             {
-              servers: {
+              remotes: {
                 'test' => {
                   'address4' => '192.0.2.1'
                 }
