@@ -69,10 +69,11 @@ Add config with tsig key
 
 ```puppet
 class {'::nsd': 
-  tsig => {
-    'name' => 'test',
-    'algo' => 'hmac-sha256',
-    'data' => 'adsasdasdasd='
+  tsigs => {
+    'test',=>  {
+      'algo' => 'hmac-sha256',
+      'data' => 'adsasdasdasd='
+    }
   }
 }
 ```
@@ -80,28 +81,33 @@ class {'::nsd':
 or with hiera
 
 ```yaml
-nsd::tsig:
-  name: test
-  algo: hmac-sha256
-  data: adsasdasdasd=
+nsd::tsigs:
+  test:
+    algo: hmac-sha256
+    data: adsasdasdasd=
 ```
 
 add zone files.  zone files are added with sets of common config.
 
 ```puppet
 class {'::nsd': 
+  remotes => {
+    master_v4 => { 'address4' => '192.0.2.1' },
+    master_v6 => { 'address6' => '2001:DB8::1' },
+    slave     => { 'address4' => '192.0.2.2' },
+  }
   zones => {
-    'master1_zones' => {
-      'allow_notify' => ['192.0.2.1'],
-      'masters'      => ['192.0.2.1'],
-      'provide_xfr'  => ['127.0.0.1'],
-      'zones'        => ['example.com', 'example.net']
+    'example.com' => {
+      'masters' => ['master_v4', 'master_v6']
+      'provide_xfrs'  => ['slave'],
     },
-    'master2_zones'  => {
-      'allow_notify' => ['192.0.2.2'],
-      'masters'      => ['192.0.2.2'],
-      'provide_xfr'  => ['127.0.0.2'],
-      'zones'        => ['example.org']
+    'example.net' => {
+      'masters' => ['master_v4', 'master_v6']
+      'provide_xfrs'  => ['slave'],
+    }
+    'example.org' => {
+      'masters' => ['master_v4', 'master_v6']
+      'provide_xfrs'  => ['slave'],
     }
   }
 }
@@ -111,122 +117,32 @@ in hiera
 
 ```yaml
 nsd::zones:
-  master1_zones:
-    allow_notify:
-    - 192.0.2.1
-    masters:
-    - 192.0.2.1
-    provide_xfr:
-    - 192.0.2.1
-    zones:
-    - example.com
-    - example.net
-  master2_zones:
-    allow_notify:
-    - 192.0.2.2
-    masters:
-    - 192.0.2.2
-    provide_xfr:
-    - 192.0.2.2
-    zones:
-    - example.org
+  remotes:
+    master_v4:
+      address4: 192.0.2.1
+    master_v6:
+      address4: 2001:DB8::1
+    slave:
+      address4: 192.0.2.2
+  zones:
+    example.com:
+      masters: &id001
+      - master_v4
+      - master_v6
+      provide_xfrs: &id002
+      - slave
+    example.net:
+      masters: *id001
+      slave: *id002
+    example.org:
+      masters: *id001
+      slave: *id002
 ```
 
-creat and as112 server also uses the nsd::file resource
+create and as112, please look at the as112 class to see how this works under the hood 
 
 ```puppet
-  class {'::nsd': }
-  nsd::zone {
-    'rfc1918': 
-      'zonefile' => 'db.dd-empty',
-      'zones' => [
-        '10.in-addr.arpa',
-        '16.172.in-addr.arpa',
-        '17.172.in-addr.arpa',
-        '18.172.in-addr.arpa',
-        '19.172.in-addr.arpa',
-        '20.172.in-addr.arpa',
-        '21.172.in-addr.arpa',
-        '22.172.in-addr.arpa',
-        '23.172.in-addr.arpa',
-        '24.172.in-addr.arpa',
-        '25.172.in-addr.arpa',
-        '26.172.in-addr.arpa',
-        '27.172.in-addr.arpa',
-        '28.172.in-addr.arpa',
-        '29.172.in-addr.arpa',
-        '30.172.in-addr.arpa',
-        '31.172.in-addr.arpa',
-        '168.192.in-addr.arpa',
-        '254.169.in-addr.arpa'
-      ];
-    'empty.as112.arpa':
-      'zonefile' => 'db.dr-empty',
-      'zones'    => ['empty.as112.arpa'];
-    'hostname.as112.net':
-      'zonefile' => 'hostname.as112.net.zone',
-      'zones'    =>  ['hostname.as112.net'];
-    'hostname.as112.arpa':
-      'zonefile' => 'hostname.as112.arpa.zone',
-      'zones'    => ['hostname.as112.arpa'];
-  }
-  nsd::file {
-    'db.dd-empty':
-      source  => 'puppet:///modules/nsd/etc/nsd/db.dd-empty';
-    'db.dr-empty':
-      source  => 'puppet:///modules/nsd/etc/nsd/db.dr-empty';
-    'hostname.as112.net.zone':
-      content_template => 'nsd/etc/nsd/hostname.as112.net.zone.erb';
-    'hostname.as112.arpa.zone':
-      content_template => 'nsd/etc/nsd/hostname.as112.arpa.zone.erb';
-  }
-```
-
-```yaml
-nsd::files:
-  db.dd-empty:
-    source: 'puppet:///modules/nsd/etc/nsd/db.dd-empty'
-  db.dr-empty:
-    source: 'puppet:///modules/nsd/etc/nsd/db.dr-empty'
-  hostname.as112.net.zone:
-    content_template: 'nsd/etc/nsd/hostname.as112.net.zone.erb'
-  hostname.as112.arpa.zone:
-    content_template: 'nsd/etc/nsd/hostname.as112.arpa.zone.erb'
-nsd::zones:
-  rfc1918:
-    zonefile: db.dd-empty
-    zones:
-    - 10.in-addr.arpa
-    - 16.172.in-addr.arpa
-    - 17.172.in-addr.arpa
-    - 18.172.in-addr.arpa
-    - 19.172.in-addr.arpa
-    - 20.172.in-addr.arpa
-    - 21.172.in-addr.arpa
-    - 22.172.in-addr.arpa
-    - 23.172.in-addr.arpa
-    - 24.172.in-addr.arpa
-    - 25.172.in-addr.arpa
-    - 26.172.in-addr.arpa
-    - 27.172.in-addr.arpa
-    - 28.172.in-addr.arpa
-    - 29.172.in-addr.arpa
-    - 30.172.in-addr.arpa
-    - 31.172.in-addr.arpa
-    - 168.192.in-addr.arpa
-    - 254.169.in-addr.arpa
-  'empty.as112.arpa':
-    zonefile: db.dr-empty
-    zones:
-    - empty.as112.arpa
-  'hostname.as112.net':
-    zonefile: hostname.as112.net.zone
-    zones:
-    - hostname.as112.net
-  'hostname.as112.arpa':
-    zonefile: hostname.as112.arpa.zone
-    zones:
-    - hostname.as112.arpa
+  class {'::nsd::as112': }
 ```
 
 ## Reference
@@ -240,6 +156,7 @@ nsd::zones:
     - [`nsd::file`](#defined-nsdfile)
     - [`nsd::tsig`](#defined-nsdtsig)
     - [`nsd::zone`](#defined-nsdzone)
+    - [`nsd::remote`](#defined-nsdremotes)
 - [**Facts**](#facts)
     - ['nsd_version'](#fact-nsdversion)
 
@@ -253,11 +170,10 @@ nsd::zones:
 ##### Parameters (all optional)
 
 * `enable` (Bool, Default: true): enable or disable the nsd service, config files are still configuered.
-* `tsig`: legacy parameter to pass tsig via hash { name => '', algo => '', data => '' } use nsd::tsig or nsd::tsigs instead
-* `slave_addresses` (Hash, Default: {}): a hash key value pairs representing ip address tsig key name values.  e.g. { '192.0.2.1' : 'tsig-key' }.
 * `zones`: a hash which is passed to create_resoure(nsd::zone, $zones). Default: Empty.
 * `files` (Hash, Default: {}):  a hash which is passed to create_resoure(nsd::file, $files).
 * `tsigs` (Hash, Default: {}): a hash which is passed to create_resoure(nsd::tsig, $tsigs)
+* `remotes` (Hash, Default: {}): a hash which is passed to create_resoure(nsd::remote, $remotes)
 * `logrotate_rotate` (Integer, Default: 5): The number of rotated log files to keep on disk.
 * `logrotate_size` (String, Default: 100M): The String size a log file has to reach before it will be rotated.  The default units are bytes, append k, M or G for kilobytes, megabytes or gigabytes respectively.
 * `master` (Bool, Default: false: Specify if the server is a master or slave.
@@ -342,13 +258,23 @@ Manage a zone set conifg for nsd
 
 ##### Parameters 
 
-* `masters` (Array, Default: []): List of master server to configure
-* `notify_addresses` (Array, Default: []): List of serveres to notify
-* `allow_notify` (Array, Default: []): List of servers allowed to notify
-* `provide_xfr` (Array, Default: []): List of servers allowed to preform xfr
-* `zones` (Array, Default: []): List of zones with this configueration
+* `masters` (Array[String], Default: []): List of nsd::remote keys to configure as masters
+* `provide_xfr` (Array[String], Default: []): List of nsd::remote keys to configure as slave servers
+* `allow_notify_additions` (Array[String], Default: []): List of nsd::remote keys to configure to allow anotifies
+* `send_notify_additions` (Array[String], Default: []): List of nsd::remote keys to configure to also recive notifies
 * `zonefile` (String, Default: undef): zonefile name, (will be used for all zones)
 * `zone_dir` (File Path, Default: undef): override default zone path
+
+#### Defined `nsd::remote`
+
+used to define remote serveres these are used later to configure the system
+
+##### Parameters 
+
+* `address4` (Optional[Variant[Tea::Ipv4, Tea::Ipv4_cidr]]): ipv4 address or prefix for this remote
+* `address6` (Optional[Variant[Tea::Ipv6, Tea::Ipv6_cidr]]): ipv6 address or prefix for this remote
+* `tsig_name`: (Optional[String]): nsd::tsig to use
+* `port`: (Tea::Port, Default: 53): port use to talk to remote.
 
 ### Facts
 
@@ -360,7 +286,7 @@ Determins the version of nsd by parsing the output of `nsd -v`
 
 This module has been tested on:
 
-* Ubuntu 12.04, 14.04
+* Ubuntu 12.04, 14.04, Ubuntu 16.04
 * FreeBSD 10
 
 ## Development
