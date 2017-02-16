@@ -54,13 +54,31 @@ describe 'nsd::remote' do
           is_expected.to contain_concat__fragment(
             'nsd_pattern_xfr.example.com'
           ).with_target(conf_file).with_order('15').with_content(
-            %r{pattern:\s+name: xfr.example.com-master\s+allow-notify: 192.0.2.1 NOKEY\s+request-xfr: AXFR 192.0.2.1 NOKEY}
+            %r{
+              pattern:\n
+              \s+name:\sxfr.example.com-master\n
+              \s+allow-notify:\s192.0.2.1@53\sNOKEY\n
+              \s+request-xfr:\sAXFR\s192.0.2.1@53\sNOKEY\n
+            }x
           ).with_content(
-            %r{pattern:\s+name: xfr.example.com-provide-xfr\s+notify: 192.0.2.1 NOKEY\s+provide-xfr: 192.0.2.1 NOKEY}
+            %r{
+              pattern:\n
+              \s+name:\sxfr.example.com-provide-xfr\n
+              \s+notify:\s192.0.2.1@53\sNOKEY\n
+              \s+provide-xfr:\s192.0.2.1@53\sNOKEY\n
+            }x
           ).with_content(
-            %r{pattern:\s+name: xfr.example.com-allow-notify-addition\s+allow-notify: 192.0.2.1 NOKEY}
+            %r{
+              pattern:\n
+              \s+name:\s+xfr.example.com-allow-notify-addition\n
+              \s+allow-notify:\s192.0.2.1@53\sNOKEY\n
+            }x
           ).with_content(
-            %r{pattern:\s+name: xfr.example.com-send-notify-addition\s+notify: 192.0.2.1 NOKEY}
+            %r{
+              pattern:\n
+              \s+name:\sxfr.example.com-send-notify-addition\n
+              \s+notify:\s192.0.2.1@53\sNOKEY\n
+            }x
           )
         end
       end
@@ -68,32 +86,254 @@ describe 'nsd::remote' do
         context 'ipv4 cidr only' do
           before { params.merge!(address4: '192.0.2.0/24') }
           it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment(
+              'nsd_pattern_xfr.example.com'
+            ).with_target(conf_file).with_order('15').with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-master\n
+                \s+allow-notify:\s192.0.2.0/24@53\sNOKEY\n
+              }x
+            ).without_content(
+              %r{request-xfr: AXFR 192.0.2.0/24@53}
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-provide-xfr\n
+                \s+provide-xfr:\s192.0.2.0/24@53\sNOKEY\n
+              }x
+            ).without_content(
+              %r{\s+notify: 192.0.2.0/24@53 NOKEY}
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-allow-notify-addition\n
+                \s+allow-notify:\s192.0.2.0/24@53\sNOKEY\n
+              }x
+            ).with_content(
+              %r{pattern:\s+name: xfr.example.com-send-notify-addition}
+            )
+          end
         end
         context 'ipv6 only' do
           before { params.merge!(address4: :undef, address6: '2001:DB8::1') }
           it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment(
+              'nsd_pattern_xfr.example.com'
+            ).with_target(conf_file).with_order('15').with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-master\n
+                \s+allow-notify:\s2001:DB8::1@53\sNOKEY\n
+                \s+request-xfr:\sAXFR\s2001:DB8::1@53\sNOKEY\n
+                }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-provide-xfr\n
+                \s+notify:\s2001:DB8::1@53\sNOKEY\n
+                \s+provide-xfr:\s2001:DB8::1@53\sNOKEY
+              }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-allow-notify-addition\n
+                \s+allow-notify:\s2001:DB8::1@53\sNOKEY\n
+              }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-send-notify-addition\n
+                \s+notify:\s2001:DB8::1@53\sNOKEY\n
+              }x
+            )
+          end
         end
         context 'ipv6 cidr only' do
           before { params.merge!(address4: :undef, address6: '2001:DB8::/48') }
           it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment(
+              'nsd_pattern_xfr.example.com'
+            ).with_target(conf_file).with_order('15').with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-master\n
+                \s+allow-notify:\s2001:DB8::/48@53\sNOKEY\n
+              }x
+            ).without_content(
+              %r{request-xfr: AXFR 2001:DB8::/48@53}
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-provide-xfr\n
+                \s+provide-xfr:\s2001:DB8::/48@53\sNOKEY\n
+              }x
+            ).without_content(
+              %r{\s+notify: 2001:DB8::/48@53 NOKEY}
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-allow-notify-addition\n
+                \s+allow-notify:\s2001:DB8::/48@53\sNOKEY\n
+              }x
+            ).with_content(
+              %r{pattern:\s+name: xfr.example.com-send-notify-addition}
+            )
+          end
         end
         context 'ipv4 and ipv6' do
           before { params.merge!(address6: '2001:DB8::1') }
           it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment(
+              'nsd_pattern_xfr.example.com'
+            ).with_target(conf_file).with_order('15').with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-master\n
+                \s+allow-notify:\s192.0.2.1@53\sNOKEY\n
+                \s+request-xfr:\sAXFR\s192.0.2.1@53\sNOKEY\n
+                \s+allow-notify:\s2001:DB8::1@53\sNOKEY\n
+                \s+request-xfr:\sAXFR\s2001:DB8::1@53\sNOKEY\n
+              }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-provide-xfr\n
+                \s+notify:\s192.0.2.1@53\sNOKEY\n
+                \s+provide-xfr:\s192.0.2.1@53\sNOKEY
+                \s+notify:\s2001:DB8::1@53\sNOKEY\n
+                \s+provide-xfr:\s2001:DB8::1@53\sNOKEY
+              }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-allow-notify-addition\n
+                \s+allow-notify:\s192.0.2.1@53\sNOKEY\n
+                \s+allow-notify:\s2001:DB8::1@53\sNOKEY\n
+              }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-send-notify-addition\n
+                \s+notify:\s192.0.2.1@53\sNOKEY\n
+                \s+notify:\s2001:DB8::1@53\sNOKEY\n
+              }x
+            )
+          end
         end
         context 'ipv4 and ipv6 cidr' do
           before do
             params.merge!(address4: '192.0.2.0/24', address6: '2001:DB8::/48')
           end
           it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment(
+              'nsd_pattern_xfr.example.com'
+            ).with_target(conf_file).with_order('15').with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-master\n
+                \s+allow-notify:\s192.0.2.0/24@53\sNOKEY\n
+                \s+allow-notify:\s2001:DB8::/48@53\sNOKEY\n
+              }x
+            ).without_content(
+              %r{request-xfr: AXFR 2001:DB8::/48@53}
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-provide-xfr\n
+                \s+provide-xfr:\s192.0.2.0/24@53\sNOKEY\n
+                \s+provide-xfr:\s2001:DB8::/48@53\sNOKEY\n
+              }x
+            ).without_content(
+              %r{\s+notify: 192.0.2.0/24@53 NOKEY}
+            ).without_content(
+              %r{\s+notify: 2001:DB8::/48@53 NOKEY}
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-allow-notify-addition\n
+                \s+allow-notify:\s192.0.2.0/24@53\sNOKEY\n
+                \s+allow-notify:\s2001:DB8::/48@53\sNOKEY\n
+              }x
+            ).with_content(
+              %r{pattern:\s+name: xfr.example.com-send-notify-addition}
+            )
+          end
         end
         context 'tsig_name' do
           before { params.merge!(tsig_name: 'example_tsig') }
           it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment(
+              'nsd_pattern_xfr.example.com'
+            ).with_target(conf_file).with_order('15').with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-master\n
+                \s+allow-notify:\s192.0.2.1@53\sNOKEY\n
+                \s+request-xfr:\sAXFR\s192.0.2.1@53\sexample_tsig\n
+              }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-provide-xfr\n
+                \s+notify:\s192.0.2.1@53\sNOKEY\n
+                \s+provide-xfr:\s192.0.2.1@53\sexample_tsig\n
+              }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\s+xfr.example.com-allow-notify-addition\n
+                \s+allow-notify:\s192.0.2.1@53\sNOKEY\n
+              }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-send-notify-addition\n
+                \s+notify:\s192.0.2.1@53\sNOKEY\n
+              }x
+            )
+          end
         end
         context 'port' do
           before { params.merge!(port: 5353) }
           it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment(
+              'nsd_pattern_xfr.example.com'
+            ).with_target(conf_file).with_order('15').with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-master\n
+                \s+allow-notify:\s192.0.2.1@5353\sNOKEY\n
+                \s+request-xfr:\sAXFR\s192.0.2.1@5353\sNOKEY\n
+              }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-provide-xfr\n
+                \s+notify:\s192.0.2.1@5353\sNOKEY\n
+                \s+provide-xfr:\s192.0.2.1@5353\sNOKEY\n
+              }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\s+xfr.example.com-allow-notify-addition\n
+                \s+allow-notify:\s192.0.2.1@5353\sNOKEY\n
+              }x
+            ).with_content(
+              %r{
+                pattern:\n
+                \s+name:\sxfr.example.com-send-notify-addition\n
+                \s+notify:\s192.0.2.1@5353\sNOKEY\n
+              }x
+            )
+          end
         end
       end
       describe 'check bad type' do

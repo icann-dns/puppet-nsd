@@ -1,45 +1,45 @@
 pattern:
   name: <%= @name %>-master
 <%- if @address4 -%>
-  allow-notify: <%= @address4 %> NOKEY
+  allow-notify: <%= @address4 %>@<%= @port %> NOKEY
   <%- if ! @address4.include?('/') -%>
-  request-xfr: AXFR <%= @address4 %> <%= @_tsig_name %>
+  request-xfr: AXFR <%= @address4 %>@<%= @port %> <%= @_tsig_name %>
   <%- end -%>
 <%- end -%>
 <%- if @address6 -%>
-  allow-notify: <%= @address6 %> NOKEY
+  allow-notify: <%= @address6 %>@<%= @port %> NOKEY
   <%- if ! @address6.include?('/') -%>
-  request-xfr: AXFR <%= @address6 %> <%= @_tsig_name %>
+  request-xfr: AXFR <%= @address6 %>@<%= @port %> <%= @_tsig_name %>
   <%- end -%>
 <%- end -%>
 pattern:
   name: <%= @name %>-provide-xfr
 <%- if @address4 -%>
   <%- if ! @address4.include?('/') -%>
-  notify: <%= @address4 %> NOKEY
+  notify: <%= @address4 %>@<%= @port %> NOKEY
   <%- end -%>
-  provide-xfr: <%= @address4 %> <%= @_tsig_name %>
+  provide-xfr: <%= @address4 %>@<%= @port %> <%= @_tsig_name %>
 <%- end -%>
 <%- if @address6 -%>
   <%- if ! @address6.include?('/') -%>
-  notify: <%= @address6 %> NOKEY
+  notify: <%= @address6 %>@<%= @port %> NOKEY
   <%- end -%>
-  provide-xfr: AXFR <%= @address6 %> <%= @_tsig_name %>
+  provide-xfr: <%= @address6 %>@<%= @port %> <%= @_tsig_name %>
 <%- end -%>
 pattern:
   name: <%= @name %>-allow-notify-addition
 <%- if @address4 -%>
-  allow-notify: <%= @address4 %> NOKEY
+  allow-notify: <%= @address4 %>@<%= @port %> NOKEY
 <%- end -%>
 <%- if @address6 -%>
-  allow-notify: <%= @address6 %> NOKEY
+  allow-notify: <%= @address6 %>@<%= @port %> NOKEY
 <%- end -%>
 pattern:
   name: <%= @name %>-send-notify-addition
 <%- if @address4 and ! @address4.include?('/') -%>
-  notify: <%= @address4 %> NOKEY
+  notify: <%= @address4 %>@<%= @port %> NOKEY
 <%- end -%>
-<%- if @address6 -%>
-  notify: <%= @address6  and ! @address6.include?('/') -%> NOKEY
+<%- if @address6 and  ! @address6.include?('/') -%>
+  notify: <%= @address6 -%>@<%= @port %> NOKEY
 <%- end -%>
 
