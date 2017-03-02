@@ -1,6 +1,6 @@
 {
   "name": "icann-nsd",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "author": "john.bond@icann.org",
   "summary": "puppet module to manage NSD",
   "license": "Apache-2.0",
@@ -13,13 +13,13 @@
     "network"
   ],
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 4.11.0"},
-    {"name":"puppetlabs-concat","version_requirement":">= 1.2.0"}
+    {"name":"puppetlabs-stdlib","version_requirement":">= 4.11.0 <5.0.0"},
+    {"name":"puppetlabs-concat","version_requirement":">= 1.2.0 <2.0.0"}
   ],
   "operatingsystem_support": [
     {
       "operatingsystem" : "Ubuntu",
-      "operatingsystemrelease" : [ "12.0.4", "14.04" ]
+      "operatingsystemrelease" : [ "12.0.4", "14.04", "16.06" ]
     },
     {
       "operatingsystem" : "FreeBSD",

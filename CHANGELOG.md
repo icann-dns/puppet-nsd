@@ -1,3 +1,6 @@
+### 2016-08-08 0.1.10
+* Dont install upstart file for ubuntu 16.04
+
 ### 2016-08-08 0.1.9
 * Disable logrotate rule on freebsd
 
