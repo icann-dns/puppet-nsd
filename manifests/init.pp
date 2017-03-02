@@ -174,7 +174,7 @@ class nsd (
       require  => Package[$package_name];
     }
   } else {
-    if $::operatingsystem == 'ubuntu' {
+    if $::operatingsystem == 'ubuntu' and $::lsbdistcodename == 'trusty' {
       file { '/etc/init/nsd.conf':
         ensure => file,
         source => 'puppet:///modules/nsd/etc/init/nsd.conf',
