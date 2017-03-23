@@ -12,8 +12,8 @@ define nsd::remote (
     fail("${name} must specify either address4 or address6")
   }
   if $tsig {
-    if ! defined(Knot::Tsig[$tsig]) {
-      fail("Knot::Tsig['${tsig}'] does not exist")
+    if ! defined(Nsd::Tsig[$tsig]) {
+      fail("Nsd::Tsig['${tsig}'] does not exist")
     }
     if ! $tsig_name {
       fail(' you must define tsig_name when you deinfe tsig')
