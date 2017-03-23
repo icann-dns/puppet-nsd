@@ -12,7 +12,7 @@ begin
   end
   response_json = JSON.pasre(response.body)
   response_json.each do |resource|
-    if resource['certname'] == @certname && resource['title'] =~ /dns::export_.+/
+    if resource['certname'] == @certname && resource['title'] =~ /dns__export_.+/
 -%>
   include-pattern: <%= resource['title'] %>-provide-xfr
 <%-
