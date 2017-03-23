@@ -18,7 +18,7 @@ class nsd (
   String                 $zones_template      = 'nsd/etc/nsd/nsd.zones.conf.erb',
   String                 $pattern_template    = 'nsd/etc/nsd/nsd.patterns.conf.erb',
   String                 $gather_template     = 'nsd/etc/nsd/nsd.gather.conf.erb',
-  Tea::Ip_address        $puppetdb_server     = 'localhost',
+  Tea::Ip_address        $puppetdb_server     = '127.0.0.1',
   Tea::Port              $puppetdb_port       = 8080,
   Array[Tea::Ip_address] $ip_addresses        = [],
   Boolean                $ip_transparent      = false,
@@ -134,8 +134,8 @@ class nsd (
   }
   create_resources(nsd::remote, $remotes)
   concat::fragment {'nsd_pattern_gather':
-    target  => $::conf_file,
-    content => template($::gather_template),
+    target  => $conf_file,
+    content => template($gather_template),
     order   => '16',
   }
   create_resources(nsd::zone, $zones)
