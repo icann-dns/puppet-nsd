@@ -2,7 +2,7 @@ pattern:
   name: slave_servers
 <%-
 require 'net/http'
-require 'multi_json'
+require 'json'
 http     = Net::HTTP.new(@puppetdb_server, @puppetdb_port)
 request  = Net::HTTP::Get.new('/pdb/query/v4/resources/Nsd::Remote')
 begin
@@ -10,7 +10,7 @@ begin
   if response.code != 200
     scope.call_function('warning', ['unable to connect to the puppet server, exported resources wont work'])
   end
-  response_json = MultiJson.load(response.body)
+  response_json = JSON.pasre(response.body)
   response_json.each do |resource|
     if resource['certname'] == @certname && resource['title'] =~ /dns::export_.+/
 -%>
