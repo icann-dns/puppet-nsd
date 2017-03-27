@@ -6,11 +6,23 @@ zone:
   zonefile: "<%= @zone_subdir %>/<%= @name %>"
 <%- end -%>
   include-pattern: slave_servers
-<%- @masters.each do |master| -%>
-  include-pattern: <%= master %>-master
+<%- if @masters.any? -%>
+  <%- @masters.each do |master| -%>
+    include-pattern: <%= master %>-master
+  <%- end -%>
+<%- else -%>
+  <%- @default_masters.each do |master| -%>
+    include-pattern: <%= master %>-master
+  <%- end -%>
 <%- end -%>
-<%- @provide_xfrs.each do |provide_xfr| -%>
+<%- if @provide_xfrs.any? -%>
+  <%- @provide_xfrs.each do |provide_xfr| -%>
   include-pattern: <%= provide_xfr %>-provide_xfr
+  <%- end -%>
+<%- else -%>
+  <%- @default_provide_xfrs.each do |provide_xfr| -%>
+  include-pattern: <%= provide_xfr %>-provide_xfr
+  <%- end -%>
 <%- end -%>
 <%- @allow_notify_additions.each do |notify_addition| -%>
   include-pattern: <%= notify_addition %>-allow-notify-addition

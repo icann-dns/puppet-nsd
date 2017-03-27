@@ -10,6 +10,8 @@ define nsd::zone (
   Optional[Array[Nsd::Rrltype]] $rrl_whitelist          = [],
 ) {
   include ::nsd
+  $default_masters      = $nsd::default_masters
+  $default_provide_xfrs = $nsd::default_provide_xfrs
   if $zone_dir {
     $zone_subdir = $zone_dir
   } else {
