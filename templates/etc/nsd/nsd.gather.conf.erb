@@ -8,9 +8,12 @@ request  = Net::HTTP::Get.new('/pdb/query/v4/resources/Nsd::Remote')
 begin
   response = http.request(request)
   if response.code != 200
-    scope.call_function('warning', ['unable to connect to the puppet server, exported resources wont work'])
+    scope.call_function(
+      'warning', 
+      ["unable to connect to the puppet server, exported resources wont work\nHTTP #{response.code}"]
+    )
   end
-  response_json = JSON.pasre(response.body)
+  response_json = JSON.parse(response.body)
   response_json.each do |resource|
     if resource['certname'] == @certname && resource['title'] =~ /dns__export_.+/
 -%>
