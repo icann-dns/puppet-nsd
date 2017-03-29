@@ -8,11 +8,11 @@ zone:
   include-pattern: slave_servers
 <%- if @masters.any? -%>
   <%- @masters.each do |master| -%>
-    include-pattern: <%= master %>-master
+  include-pattern: <%= master %>-master
   <%- end -%>
 <%- else -%>
   <%- @default_masters.each do |master| -%>
-    include-pattern: <%= master %>-master
+  include-pattern: <%= master %>-master
   <%- end -%>
 <%- end -%>
 <%- if @provide_xfrs.any? -%>
