@@ -1,6 +1,6 @@
 {
   "name": "icann-nsd",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "author": "john.bond@icann.org",
   "summary": "puppet module to manage NSD",
   "license": "Apache-2.0",
@@ -14,7 +14,7 @@
   ],
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 4.11.0 <5.0.0"},
-    {"name":"icann-tea","version_requirement":">= 0.2.5 <1.0.0"},
+    {"name":"icann-tea","version_requirement":">= 0.2.8 <1.0.0"},
     {"name":"puppetlabs-concat","version_requirement":">= 1.2.0 <2.0.0"}
   ],
   "operatingsystem_support": [
