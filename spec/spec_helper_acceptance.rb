@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'beaker-rspec'
 
 # Install Puppet on all hosts
@@ -10,10 +12,10 @@ hosts.each do |host|
     host.install_package('dnsutils')
   end
   install_puppet_on(
-	host,
-	version: '4',
-	puppet_agent_version: '1.6.1',
-	default_action: 'gem_install'
+    host,
+    version: '4',
+    puppet_agent_version: '1.6.1',
+    default_action: 'gem_install'
   )
 end
 

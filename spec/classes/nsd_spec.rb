@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 describe 'nsd', type: :class do
   on_supported_os.each do |os, facts|
@@ -5,7 +7,6 @@ describe 'nsd', type: :class do
       let(:facts) do
         facts
       end
-
       case facts[:operatingsystem]
       when 'Ubuntu'
         case facts['lsbdistcodename']
@@ -39,6 +40,7 @@ describe 'nsd', type: :class do
       let(:conf_file)        { "#{conf_dir}/nsd.conf" }
       let(:logrotate_enable) { true }
       let(:zone_subdir) { "#{zonesdir}/zone" }
+
       describe 'check default config' do
         it { is_expected.to compile }
         it { is_expected.to contain_class('nsd') }
@@ -143,6 +145,7 @@ describe 'nsd', type: :class do
       describe 'check changin default parameters' do
         context 'enable' do
           let(:params) { { enable: false } }
+
           it do
             is_expected.to contain_service(service_name).with(
               ensure: false,
@@ -166,6 +169,7 @@ describe 'nsd', type: :class do
               }
             }
           end
+
           it do
             is_expected.to contain_nsd__zone('test').with(
               masters: ['test'],
@@ -186,6 +190,7 @@ describe 'nsd', type: :class do
               }
             }
           end
+
           it do
             is_expected.to contain_nsd__file('foo').with_source(
               'puppet:///modules/foo.zone'
@@ -203,10 +208,12 @@ describe 'nsd', type: :class do
               }
             }
           end
+
           it { is_expected.to contain_nsd__tsig('foo').with_data('aaaa') }
         end
         context 'ip_addresses' do
           let(:params) { { ip_addresses: ['192.0.2.1'] } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{ip-address: 192.0.2.1}
@@ -215,6 +222,7 @@ describe 'nsd', type: :class do
         end
         context 'ip_transparent' do
           let(:params) { { ip_transparent: true } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{ip-transparent: yes}
@@ -223,6 +231,7 @@ describe 'nsd', type: :class do
         end
         context 'debug_mode' do
           let(:params) { { debug_mode: true } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{debug-mode: yes}
@@ -231,6 +240,7 @@ describe 'nsd', type: :class do
         end
         context 'identity' do
           let(:params) { { identity: 'foo' } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{identity: foo}
@@ -239,6 +249,7 @@ describe 'nsd', type: :class do
         end
         context 'nsid' do
           let(:params) { { nsid: 'foo' } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{nsid: "666f6f"}
@@ -247,6 +258,7 @@ describe 'nsd', type: :class do
         end
         context 'logfile' do
           let(:params) { { logfile: '/foo' } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{logfile: /foo}
@@ -255,6 +267,7 @@ describe 'nsd', type: :class do
         end
         context 'server_count' do
           let(:params) { { server_count: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{server-count: 6}
@@ -263,6 +276,7 @@ describe 'nsd', type: :class do
         end
         context 'tcp_count' do
           let(:params) { { tcp_count: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{tcp-count: 6}
@@ -271,6 +285,7 @@ describe 'nsd', type: :class do
         end
         context 'tcp_query_count' do
           let(:params) { { tcp_query_count: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{tcp-query-count: 6}
@@ -279,6 +294,7 @@ describe 'nsd', type: :class do
         end
         context 'tcp_timeout' do
           let(:params) { { tcp_timeout: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{tcp-timeout: 6}
@@ -287,6 +303,7 @@ describe 'nsd', type: :class do
         end
         context 'ipv4_edns_size' do
           let(:params) { { ipv4_edns_size: 512 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{ipv4-edns-size: 512}
@@ -295,6 +312,7 @@ describe 'nsd', type: :class do
         end
         context 'ipv6_edns_size' do
           let(:params) { { ipv6_edns_size: 512 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{ipv6-edns-size: 512}
@@ -303,6 +321,7 @@ describe 'nsd', type: :class do
         end
         context 'pidfile' do
           let(:params) { { pidfile: '/foo' } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{pidfile: \/foo}
@@ -311,6 +330,7 @@ describe 'nsd', type: :class do
         end
         context 'port' do
           let(:params) { { port: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{port: 6}
@@ -319,6 +339,7 @@ describe 'nsd', type: :class do
         end
         context 'statistics' do
           let(:params) { { statistics: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{statistics: 6}
@@ -327,6 +348,7 @@ describe 'nsd', type: :class do
         end
         context 'chroot' do
           let(:params) { { chroot: '/foo' } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{chroot: /foo}
@@ -335,6 +357,7 @@ describe 'nsd', type: :class do
         end
         context 'username' do
           let(:params) { { username: 'foo' } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{username: foo}
@@ -343,6 +366,7 @@ describe 'nsd', type: :class do
         end
         context 'zonesdir' do
           let(:params) { { zonesdir: '/foo' } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{zonesdir: /foo}
@@ -351,6 +375,7 @@ describe 'nsd', type: :class do
         end
         context 'difffile' do
           let(:params) { { difffile: '/foo' } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{difffile: /foo}
@@ -359,6 +384,7 @@ describe 'nsd', type: :class do
         end
         context 'xfrdfile' do
           let(:params) { { xfrdfile: '/foo' } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{xfrdfile: /foo}
@@ -367,6 +393,7 @@ describe 'nsd', type: :class do
         end
         context 'xfrd_reload_timeout' do
           let(:params) { { xfrd_reload_timeout: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{xfrd-reload-timeout: 6}
@@ -375,6 +402,7 @@ describe 'nsd', type: :class do
         end
         context 'verbosity' do
           let(:params) { { verbosity: 1 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{verbosity: 1}
@@ -383,6 +411,7 @@ describe 'nsd', type: :class do
         end
         context 'hide_version' do
           let(:params) { { hide_version: true } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{hide-version: yes}
@@ -391,6 +420,7 @@ describe 'nsd', type: :class do
         end
         context 'rrl_size' do
           let(:params) { { rrl_size: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{rrl-size: 6}
@@ -399,6 +429,7 @@ describe 'nsd', type: :class do
         end
         context 'rrl_ratelimit' do
           let(:params) { { rrl_ratelimit: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{rrl-ratelimit: 6}
@@ -407,6 +438,7 @@ describe 'nsd', type: :class do
         end
         context 'rrl_slip' do
           let(:params) { { rrl_slip: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{rrl-slip: 6}
@@ -415,6 +447,7 @@ describe 'nsd', type: :class do
         end
         context 'rrl_ipv4_prefix_length' do
           let(:params) { { rrl_ipv4_prefix_length: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{rrl-ipv4-prefix-length: 6}
@@ -423,6 +456,7 @@ describe 'nsd', type: :class do
         end
         context 'rrl_ipv6_prefix_length' do
           let(:params) { { rrl_ipv6_prefix_length: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{rrl-ipv6-prefix-length: 6}
@@ -431,6 +465,7 @@ describe 'nsd', type: :class do
         end
         context 'rrl_whitelist_ratelimit' do
           let(:params) { { rrl_whitelist_ratelimit: 6 } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{rrl-whitelist-ratelimit: 6}
@@ -439,6 +474,7 @@ describe 'nsd', type: :class do
         end
         context 'control_enable' do
           let(:params) { { control_enable: true } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{control-enable: yes}
@@ -447,6 +483,7 @@ describe 'nsd', type: :class do
         end
         context 'database' do
           let(:params) { { database: '/foo' } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{database: \/foo}
@@ -455,14 +492,17 @@ describe 'nsd', type: :class do
         end
         context 'package_name' do
           let(:params) { { package_name: 'foo' } }
+
           it { is_expected.to contain_package('foo').with_ensure('present') }
         end
         context 'service_name' do
           let(:params) { { service_name: 'foo' } }
+
           it { is_expected.to contain_service('foo') }
         end
         context 'conf_file' do
           let(:params) { { conf_file: '/foo.cfg' } }
+
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_target(
               '/foo.cfg'
@@ -473,226 +513,282 @@ describe 'nsd', type: :class do
       describe 'check bad parameters' do
         context 'enable' do
           let(:params) { { enable: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'tsig' do
           let(:params) { { tsig: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'slave_addresses' do
           let(:params) { { slave_addresses: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'zones' do
           let(:params) { { zones: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'files' do
           let(:params) { { files: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'tsigs' do
           let(:params) { { tsigs: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'logrotate_enable' do
           let(:params) { { logrotate_enable: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'logrotate_rotate' do
           let(:params) { { logrotate_rotate: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'logrotate_size' do
           let(:params) { { logrotate_size: true } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'master' do
           let(:params) { { master: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'server_template' do
           let(:params) { { server_template: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'zones_template' do
           let(:params) { { tsig: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'ip_addresses' do
           let(:params) { { ip_addresses: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'debug_mode' do
           let(:params) { { debug_mode: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'identity' do
           let(:params) { { identity: true } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'nsid' do
           let(:params) { { nsid: true } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'logfile' do
           let(:params) { { logfile: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'server_count' do
           let(:params) { { server_count: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'tcp_count' do
           let(:params) { { tcp_count: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'tcp_query_count' do
           let(:params) { { tcp_query_count: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'tcp_timeout' do
           let(:params) { { tcp_timeout: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'ipv4_edns_size' do
           let(:params) { { ipv4_edns_size: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'ipv6_edns_size' do
           let(:params) { { ipv6_edns_size: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'pidfile' do
           let(:params) { { pidfile: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'port' do
           let(:params) { { port: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'port to big' do
           let(:params) { { port: 9_999_999 } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'statistics' do
           let(:params) { { statistics: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'chroot' do
           let(:params) { { chroot: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'username' do
           let(:params) { { username: true } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'zonesdir' do
           let(:params) { { zonesdir: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'difffile' do
           let(:params) { { difffile: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'xfrdfile' do
           let(:params) { { xfrdfile: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'xfrd_reload_timeout' do
           let(:params) { { xfrd_reload_timeout: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'verbosity' do
           let(:params) { { verbosity: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'verbosity to big' do
           let(:params) { { verbosity: 4 } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'hide_version' do
           let(:params) { { hide_version: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'rrl_size' do
           let(:params) { { rrl_size: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'rrl_ratelimit' do
           let(:params) { { rrl_ratelimit: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'rrl_slip' do
           let(:params) { { rrl_slip: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'rrl_ipv4_prefix_length' do
           let(:params) { { rrl_ipv4_prefix_length: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'rrl_ipv6_prefix_length' do
           let(:params) { { rrl_ipv6_prefix_length: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'rrl_whitelist_ratelimit' do
           let(:params) { { rrl_whitelist_ratelimit: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'rrl_whitelist' do
           let(:params) { { rrl_whitelist: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'control_enable' do
           let(:params) { { control_enable: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'control_interface' do
           let(:params) { { control_interface: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'server_key_file' do
           let(:params) { { server_key_file: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'server_cert_file' do
           let(:params) { { server_cert_file: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'control_key_file' do
           let(:params) { { control_key_file: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'control_cert_file' do
           let(:params) { { control_cert_file: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'init' do
           let(:params) { { init: true } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'database' do
           let(:params) { { database: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'package_name' do
           let(:params) { { package_name: true } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'service_name' do
           let(:params) { { service_name: true } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'conf_dir' do
           let(:params) { { conf_dir: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'zone_subdir' do
           let(:params) { { zone_subdir: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'conf_file' do
           let(:params) { { conf_file: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
       end

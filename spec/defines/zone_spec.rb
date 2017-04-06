@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nsd::zone', type: :define do
@@ -35,11 +37,11 @@ describe 'nsd::zone', type: :define do
       'provide_xfrs'  => ['slave']
     }
   end
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) do
-        facts
-      end
+      let(:facts) { facts }
+
       describe 'basic check' do
         it { is_expected.to compile.with_all_deps }
         it do
@@ -59,6 +61,7 @@ describe 'nsd::zone', type: :define do
       describe 'Change Defaults' do
         context 'masters' do
           let(:params) { { 'masters' => ['slave'] } }
+
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat_fragment(
@@ -72,6 +75,7 @@ describe 'nsd::zone', type: :define do
         end
         context 'provide_xfrs' do
           let(:params) { { 'provide_xfrs' => ['master'] } }
+
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat_fragment(
@@ -146,38 +150,47 @@ describe 'nsd::zone', type: :define do
       describe 'Check bad params' do
         context 'masters' do
           let(:params) { { masters: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'masters server not defined' do
           let(:params) { { masters: ['foo'] } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'provide_xfrs server not defined' do
           let(:params) { { notify_addresses: ['foo'] } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'allow_notify_additions' do
           let(:params) { { allow_notify: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'send_notify_additions' do
           let(:params) { { provide_xfr: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'zonefile' do
           let(:params) { { zones: true } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'zone_dir' do
           let(:params) { { zone_dir: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'rrl_whitelist bad type' do
           let(:params) { { rrl_whitelist: ['foo'] } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'rrl_whitelist' do
           let(:params) { { rrl_whitelist: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
       end

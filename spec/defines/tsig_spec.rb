@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nsd::tsig', type: :define do
@@ -8,8 +10,10 @@ describe 'nsd::tsig', type: :define do
       end
       let(:pre_condition) { ['include ::nsd'] }
       let(:title) { 'test' }
+
       describe 'basic check' do
         let(:params) { { data: 'aaaa' } }
+
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_concat_fragment(
@@ -24,14 +28,17 @@ describe 'nsd::tsig', type: :define do
       describe 'Check bad params' do
         context 'algo' do
           let(:params) { { also: 'bla' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'data' do
           let(:params) { { data: true } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'template' do
           let(:params) { { template: 'foo' } }
+
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
       end
