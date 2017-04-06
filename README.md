@@ -3,6 +3,8 @@
 [![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/icann/nsd.svg?maxAge=2592000)](https://forge.puppet.com/icann/nsd)
 # nsd
 
+# WARNING: 0.2.x is *NOT* backwards compatiple with 0.1.x
+
 #### Table of Contents
 
 1. [Overview](#overview)
@@ -34,9 +36,11 @@ file, keys and zonefiles.
 * dynamicly sets processor count based on installed processes
 * can manage nsd control
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements 
 
-* depends on stdlib 4.11.0 (may work with earlier versions)
+* puppetlabs-stdlib 4.11.0
+* icann-tea 0.2.5
+* puppetlabs-concat 1.2.0
 
 ### Beginning with nsd
 
