@@ -39,7 +39,7 @@ file, keys and zonefiles.
 ### Setup Requirements 
 
 * puppetlabs-stdlib 4.11.0
-* icann-tea 0.2.5
+* icann-tea 0.2.8
 * puppetlabs-concat 1.2.0
 
 ### Beginning with nsd
@@ -73,6 +73,7 @@ Add config with tsig key
 
 ```puppet
 class {'::nsd': 
+  default_tsig_name: 'test',
   tsigs => {
     'test',=>  {
       'algo' => 'hmac-sha256',
@@ -85,6 +86,7 @@ class {'::nsd':
 or with hiera
 
 ```yaml
+nsd::default_tsig_name: test
 nsd::tsigs:
   test:
     algo: hmac-sha256
@@ -120,27 +122,26 @@ class {'::nsd':
 in hiera
 
 ```yaml
+nsd::remotes:
+  master_v4:
+    address4: 192.0.2.1
+  master_v6:
+    address4: 2001:DB8::1
+  slave:
+    address4: 192.0.2.2
 nsd::zones:
-  remotes:
-    master_v4:
-      address4: 192.0.2.1
-    master_v6:
-      address4: 2001:DB8::1
-    slave:
-      address4: 192.0.2.2
-  zones:
-    example.com:
-      masters: &id001
-      - master_v4
-      - master_v6
-      provide_xfrs: &id002
-      - slave
-    example.net:
-      masters: *id001
-      slave: *id002
-    example.org:
-      masters: *id001
-      slave: *id002
+  example.com:
+    masters: &id001
+    - master_v4
+    - master_v6
+    provide_xfrs: &id002
+    - slave
+  example.net:
+    masters: *id001
+    slave: *id002
+  example.org:
+    masters: *id001
+    slave: *id002
 ```
 
 create and as112, please look at the as112 class to see how this works under the hood 
@@ -173,6 +174,9 @@ create and as112, please look at the as112 class to see how this works under the
   
 ##### Parameters (all optional)
 
+* `default_tsig_name` (Optional[String], Default: undef): the default tsig to use when fetching zone data. Knot::Tsig[$default_tsig_name] must exist
+* `default_masters` (Array[String], Default: []): Array of Knot::Remote names to use as the default master servers if none are specified in the zone hash
+* `default_provide_xfrs` (Array[String], Default: []): Array of Knot::Remote names to use as the provide_xfr servers if none are specified in the zone hash
 * `enable` (Bool, Default: true): enable or disable the nsd service, config files are still configuered.
 * `zones`: a hash which is passed to create_resoure(nsd::zone, $zones). Default: Empty.
 * `files` (Hash, Default: {}):  a hash which is passed to create_resoure(nsd::file, $files).
