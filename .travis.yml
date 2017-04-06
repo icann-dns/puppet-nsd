@@ -28,10 +28,6 @@ matrix:
     env: PUPPET_VERSION="~> 4.0" CHECK=rubocop
   - rvm: 2.4.0
     env: PUPPET_VERSION="~> 4.0" CHECK=build DEPLOY_TO_FORGE=yes
-branches:
-  only:
-  - master
-  - /^v\d/
 notifications:
   email: false
 deploy:
