@@ -4,14 +4,17 @@ require 'beaker-rspec'
 hosts.each do |host|
   if host['platform'] =~ %r{freebsd}
     # default installs incorect version
-    host.install_package('sysutils/puppet38')
     host.install_package('dns/bind-tools')
-    # install_puppet_on(host)
   else
     host.install_package('vim')
     host.install_package('dnsutils')
-    install_puppet_agent_on(host)
   end
+  install_puppet_on(
+	host,
+	version: '4',
+	puppet_agent_version: '1.6.1',
+	default_action: 'gem_install'
+  )
 end
 
 RSpec.configure do |c|
