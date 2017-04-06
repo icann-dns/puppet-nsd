@@ -1,140 +1,72 @@
 #== Class: nsd
 #
 class nsd (
-  $enable                   = true,
-  $tsig                     = {},
-  $slave_addresses          = {},
-  $zones                    = {},
-  $files                    = {},
-  $tsigs                    = {},
-  $server_template          = 'nsd/etc/nsd/nsd.server.conf.erb',
-  $zones_template           = 'nsd/etc/nsd/nsd.zones.conf.erb',
-  $ip_addresses             = [],
-  $ip_transparent           = false,
-  $debug_mode               = false,
-  $identity                 = $::nsd::params::identity,
-  $nsid                     = $::nsd::params::nsid,
-  $logfile                  = undef,
-  $server_count             = $::nsd::params::server_count,
-  $tcp_count                = 250,
-  $tcp_query_count          = 0,
-  $tcp_timeout              = undef,
-  $ipv4_edns_size           = 4096,
-  $ipv6_edns_size           = 4096,
-  $pidfile                  = $::nsd::params::pidfile,
-  $port                     = 53,
-  $statistics               = undef,
-  $chroot                   = undef,
-  $username                 = 'nsd',
-  $zonesdir                 = $::nsd::params::zonesdir,
-  $difffile                 = undef,
-  $xfrdfile                 = $::nsd::params::xfrdfile,
-  $xfrd_reload_timeout      = 1,
-  $verbosity                = 0,
-  $hide_version             = false,
-  $rrl_size                 = 1000000,
-  $rrl_ratelimit            = 200,
-  $rrl_slip                 = 2,
-  $rrl_ipv4_prefix_length   = 24,
-  $rrl_ipv6_prefix_length   = 64,
-  $rrl_whitelist_ratelimit  = 4000,
-  $rrl_whitelist            = [],
-  $control_enable           = false,
-  $control_interface        = undef,
-  $control_port             = 8952,
-  $server_key_file          = $::nsd::params::server_key_file,
-  $server_cert_file         = $::nsd::params::server_cert_file,
-  $control_key_file         = $::nsd::params::control_key_file,
-  $control_cert_file        = $::nsd::params::control_cert_file,
-  $init                     = $::nsd::params::init,
-  $database                 = $::nsd::params::database,
-  $package_name             = $::nsd::params::package_name,
-  $service_name             = $::nsd::params::service_name,
-  $conf_dir                 = $::nsd::params::conf_dir,
-  $zone_subdir              = $::nsd::params::zone_subdir,
-  $conf_file                = $::nsd::params::conf_file,
-  $manage_nagios            = false,
-  $logrotate_enable         = $::nsd::params::logrotate_enable,
-  $logrotate_rotate         = 5,
-  $logrotate_size           = '100M',
+  Optional[Integer]           $tcp_timeout               = undef,
+  Optional[Integer]           $statistics                = undef,
+  Optional[Tea::Absolutepath] $chroot                    = undef,
+  Optional[Tea::Absolutepath] $logfile                   = undef,
+  Optional[Tea::Absolutepath] $difffile                  = undef,
+  Optional[Tea::Ip_address]   $control_interface         = undef,
+  String                 $default_tsig_name    = 'NOKEY',
+  Array[String]          $default_masters      = [],
+  Array[String]          $default_provide_xfrs = [],
+  Boolean                $enable               = true,
+  Hash                   $slave_addresses      = {},
+  Hash                   $zones                = {},
+  Hash                   $files                = {},
+  Hash                   $tsigs                = {},
+  Hash                   $remotes              = {},
+  String                 $server_template      = 'nsd/etc/nsd/nsd.server.conf.erb',
+  String                 $zones_template       = 'nsd/etc/nsd/nsd.zones.conf.erb',
+  String                 $pattern_template     = 'nsd/etc/nsd/nsd.patterns.conf.erb',
+  String                 $gather_template      = 'nsd/etc/nsd/nsd.gather.conf.erb',
+  Tea::Ip_address        $puppetdb_server      = '127.0.0.1',
+  Tea::Port              $puppetdb_port        = 8080,
+  Array[Tea::Ip_address] $ip_addresses         = [],
+  Boolean                $ip_transparent       = false,
+  Boolean                $debug_mode           = false,
+  Integer                $tcp_count            = 250,
+  Integer                $tcp_query_count      = 0,
+  Integer[512,4096]      $ipv4_edns_size       = 4096,
+  Integer[512,4096]      $ipv6_edns_size       = 4096,
+  Tea::Port              $port                 = 53,
+  String                 $username             = 'nsd',
+  Integer                $xfrd_reload_timeout  = 1,
+  Integer[0,3]           $verbosity            = 0,
+  Boolean                $hide_version         = false,
+  Boolean                $control_enable       = false,
+  Tea::Port              $control_port         = 8952,
+  Boolean                $manage_nagios        = false,
+  Integer                $logrotate_rotate     = 5,
+  String                 $logrotate_size       = '100M',
+  Integer                $rrl_size             = 1000000,
+  Integer                $rrl_ratelimit        = 200,
+  Integer                $rrl_slip             = 2,
+  Array[String]          $rrl_whitelist        = [],
+  Integer[1,32]          $rrl_ipv4_prefix_length  = 24,
+  Integer[1,128]         $rrl_ipv6_prefix_length  = 64,
+  Integer                $rrl_whitelist_ratelimit = 4000,
+  String                 $identity            = $::nsd::params::identity,
+  String                 $nsid                = $::nsd::params::nsid,
+  Integer[1,255]         $server_count        = $::nsd::params::server_count,
+  Tea::Absolutepath      $pidfile             = $::nsd::params::pidfile,
+  Tea::Absolutepath      $zonesdir            = $::nsd::params::zonesdir,
+  Tea::Absolutepath      $xfrdfile            = $::nsd::params::xfrdfile,
+  Tea::Absolutepath      $server_key_file     = $::nsd::params::server_key_file,
+  Tea::Absolutepath      $server_cert_file    = $::nsd::params::server_cert_file,
+  Tea::Absolutepath      $control_key_file    = $::nsd::params::control_key_file,
+  Tea::Absolutepath      $control_cert_file   = $::nsd::params::control_cert_file,
+  String                 $init                = $::nsd::params::init,
+  Tea::Absolutepath      $database            = $::nsd::params::database,
+  String                 $package_name        = $::nsd::params::package_name,
+  String                 $service_name        = $::nsd::params::service_name,
+  Tea::Absolutepath      $conf_dir            = $::nsd::params::conf_dir,
+  Tea::Absolutepath      $zone_subdir         = $::nsd::params::zone_subdir,
+  Tea::Absolutepath      $conf_file           = $::nsd::params::conf_file,
+  Boolean                $logrotate_enable    = $::nsd::params::logrotate_enable,
 ) inherits nsd::params  {
 
-  validate_bool($enable)
-  validate_hash($tsig)
-  validate_hash($slave_addresses)
-  validate_hash($zones)
-  validate_hash($files)
-  validate_hash($tsigs)
-  validate_bool($logrotate_enable)
-  validate_integer($logrotate_rotate)
-  validate_string($logrotate_size)
-  validate_string($package_name)
-  validate_string($service_name)
-  validate_absolute_path($conf_dir)
-  validate_absolute_path($zone_subdir)
-  validate_absolute_path($conf_file)
-  validate_string($init)
-  validate_string($server_template)
-  validate_string($zones_template)
-  validate_array($ip_addresses)
-  validate_bool($ip_transparent)
-  validate_bool($debug_mode)
-  validate_absolute_path($database)
-  if $identity {
-    validate_string($identity)
-  }
-  if $nsid {
-    validate_string($nsid)
-  }
-  if $logfile {
-    validate_absolute_path($logfile)
-  }
-  validate_integer($server_count)
-  validate_integer($tcp_count)
-  validate_integer($tcp_query_count)
-  if $tcp_timeout {
-    validate_integer($tcp_timeout)
-  }
-  validate_integer($ipv4_edns_size, 4096)
-  validate_integer($ipv6_edns_size, 4096)
-  validate_absolute_path($pidfile)
-  validate_integer($port, 65535)
-  if $statistics {
-    validate_integer($statistics)
-  }
-  if $chroot {
-    validate_absolute_path($chroot)
-  }
-  validate_string($username)
-  if $zonesdir {
-    validate_absolute_path($zonesdir)
-  }
-  if $difffile {
-    validate_absolute_path($difffile)
-  }
-  validate_absolute_path($xfrdfile)
-  validate_integer($xfrd_reload_timeout)
-  validate_integer($verbosity,2)
-  validate_bool($hide_version)
-  validate_integer($rrl_size)
-  validate_integer($rrl_ratelimit)
-  validate_integer($rrl_slip)
-  validate_integer($rrl_ipv4_prefix_length,32)
-  validate_integer($rrl_ipv6_prefix_length,128)
-  validate_integer($rrl_whitelist_ratelimit)
-  validate_array($rrl_whitelist)
-
-  ensure_packages($package_name)
-  validate_bool($control_enable)
-  if $control_interface {
-    validate_array($control_interface)
-  }
-  validate_integer($control_port, 65535)
-  validate_absolute_path($server_key_file)
-  validate_absolute_path($server_cert_file)
-  validate_absolute_path($control_key_file)
-  validate_absolute_path($control_cert_file)
-
+  ensure_packages([$package_name])
   concat{$conf_file:
     require => Package[$package_name],
     notify  => Service[$service_name];
@@ -196,15 +128,27 @@ class nsd (
       postrotate => "/usr/sbin/service ${service_name} restart",
     }
   }
-  #add backwords compatible
-  if ! empty($tsig) {
-    nsd::tsig {$tsig['name']:
-      algo => $tsig['algo'],
-      data => $tsig['data'],
-    }
-  }
 
   create_resources(nsd::file, $files)
   create_resources(nsd::tsig, $tsigs)
+  if ! defined(Nsd::Tsig[$default_tsig_name]) and $default_tsig_name != 'NOKEY' {
+    fail("Nsd::Tsig['${default_tsig_name}'] does not exist")
+  }
+  create_resources(nsd::remote, $remotes)
+  concat::fragment {'nsd_pattern_gather':
+    target  => $conf_file,
+    content => template($gather_template),
+    order   => '16',
+  }
+  $default_masters.each |String $master| {
+    if ! defined(Nsd::Remote[$master]) {
+      fail("Nsd::Remote['${master}'] does not exist but defined as default master")
+    }
+  }
+  $default_provide_xfrs.each |String $provider_xfr| {
+    if ! defined(Nsd::Remote[$provider_xfr]) {
+      fail("Nsd::Remote['${provider_xfr}'] does not exist but defined as default master")
+    }
+  }
   create_resources(nsd::zone, $zones)
 }

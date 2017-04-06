@@ -1,46 +1,37 @@
-<%- @zones.each do |zone| -%>
-
 zone:
-    name: "<%= zone %>"
-  <%- if @zonefile then -%>
-    zonefile: "<%= @zone_subdir %>/<%= @zonefile %>"
-  <%- else -%>
-    zonefile: "<%= @zone_subdir %>/<%= zone %>"
+  name: "<%= @name %>"
+<%- if @zonefile then -%>
+  zonefile: "<%= @zone_subdir %>/<%= @zonefile %>"
+<%- else -%>
+  zonefile: "<%= @zone_subdir %>/<%= @name %>"
+<%- end -%>
+  include-pattern: slave_servers
+<%- if @masters.any? -%>
+  <%- @masters.each do |master| -%>
+  include-pattern: <%= master %>-master
   <%- end -%>
-  <%- if @notify_addresses then -%>
-    <%- @notify_addresses.each do |notify_address| -%>
-      <%- next if not @ipv6_capable and notify_address.include? ":" and ! @ipv6_capable.nil? -%>
-    notify: <%= notify_address %> NOKEY
-    <%- end -%>
+<%- else -%>
+  <%- @default_masters.each do |master| -%>
+  include-pattern: <%= master %>-master
   <%- end -%>
-  <%- if @allow_notify then -%>
-    <%- @allow_notify.each do |notify| -%>
-      <%- next if not @ipv6_capable and notify.include? ":" and ! @ipv6_capable.nil? -%>
-    allow-notify: <%= notify %> NOKEY
-    <%- end -%>
+<%- end -%>
+<%- if @provide_xfrs.any? -%>
+  <%- @provide_xfrs.each do |provide_xfr| -%>
+  include-pattern: <%= provide_xfr %>-provide_xfr
   <%- end -%>
-  <%- if @masters then -%>
-    <%- @masters.each do |master| -%>
-      <%- next if not @ipv6_capable and master.include? ":" and ! @ipv6_capable.nil? -%>
-    request-xfr: AXFR <%= master %> <%- if @_tsig_name %> <%= @_tsig_name %><%-else-%> NOKEY<%- end %>
-    <%- end -%>
+<%- else -%>
+  <%- @default_provide_xfrs.each do |provide_xfr| -%>
+  include-pattern: <%= provide_xfr %>-provide_xfr
   <%- end -%>
-  <%- if @provide_xfr then -%>
-    <%- @provide_xfr.each do |xfr| -%>
-      <%- next if not @ipv6_capable and xfr.include? ":" and ! @ipv6_capable.nil? -%>
-    provide-xfr: <%= xfr %> NOKEY
-    <%- end -%>
+<%- end -%>
+<%- @allow_notify_additions.each do |notify_addition| -%>
+  include-pattern: <%= notify_addition %>-allow-notify-addition
+<%- end -%>
+<%- @send_notify_additions.each do |send_addition| -%>
+  include-pattern: <%= send_addition %>-send-notify-addition
+<%- end -%>
+<%- if @_rrl_whitelist.any? then -%>
+  <%- @_rrl_whitelist.each do |rrl_type| -%>
+  rrl-whitelist: <%= rrl_type %>
   <%- end -%>
-  <%- if ! @_slave_addresses.nil? -%>
-    <%- @_slave_addresses.each_pair do |iface, key| -%> 
-      <%- next if not @ipv6_capable and iface.include? ":" and ! @ipv6_capable.nil? -%>
-    provide-xfr: <%= iface %> <%= key %>
-    notify: <%= iface %> NOKEY
-    <%- end -%>
-  <%- end -%>
-  <%- if @_rrl_whitelist.any? then -%>
-    <%- @_rrl_whitelist.each do |rrl_type| -%>
-    rrl-whitelist: <%= rrl_type %>
-    <%- end -%>
-  <%- end -%>
-<% end -%>
+<%- end -%>

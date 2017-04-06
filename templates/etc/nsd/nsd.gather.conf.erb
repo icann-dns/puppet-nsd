@@ -1,0 +1,27 @@
+pattern:
+  name: slave_servers
+<%-
+require 'net/http'
+require 'json'
+http     = Net::HTTP.new(@puppetdb_server, @puppetdb_port)
+request  = Net::HTTP::Get.new('/pdb/query/v4/resources/Nsd::Remote')
+begin
+  response = http.request(request)
+  if response.code != "200"
+    scope.call_function(
+      'warning', 
+      ["unable to connect to the puppet server, exported resources wont work: #{response.code}"]
+    )
+  end
+  response_json = JSON.parse(response.body)
+  response_json.each do |resource|
+    if resource['certname'] == @trusted['certname'] && resource['title'] =~ /dns__export_.+/
+-%>
+  include-pattern: <%= resource['title'] %>-provide-xfr
+<%-
+    end
+  end
+rescue Exception => e
+  scope.call_function('warning', ["unable to connect to the puppetdb server, exported resources wont work: #{e}"])
+end
+%>

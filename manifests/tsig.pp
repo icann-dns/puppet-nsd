@@ -1,14 +1,12 @@
 # Define: nsd::tsig
 #
 define nsd::tsig (
-    $algo     = 'hmac-sha256',
-    $data     = false,
-    $template = 'nsd/etc/nsd/nsd.key.conf.erb',
+    String           $data,
+    Nsd::Algo        $algo     = 'hmac-sha256',
+    String           $template = 'nsd/etc/nsd/nsd.key.conf.erb',
+    Optional[String] $key_name = undef,
 ) {
-  validate_re($algo, ['^hmac-sha(1|224|256|384|512)$', '^hmac-md5$'])
-  validate_string($data)
-  validate_absolute_path("/${template}")
-
+  include ::nsd
   concat::fragment{ "nsd_key_${name}":
     target  => $::nsd::conf_file,
     content => template($template),

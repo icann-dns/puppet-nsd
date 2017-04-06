@@ -1,27 +1,18 @@
 #== Class: nsd
 #
 define nsd::zone (
-  $masters          = [],
-  $notify_addresses = [],
-  $allow_notify     = [],
-  $provide_xfr      = [],
-  $zones            = [],
-  $zonefile         = undef,
-  $zone_dir         = undef,
-  $rrl_whitelist    = [],
-  $tsig_name        = undef,
-  $slave_addresses  = {},
+  Optional[Array[String]]       $masters                = [],
+  Optional[Array[String]]       $provide_xfrs           = [],
+  Optional[Array[String]]       $allow_notify_additions = [],
+  Optional[Array[String]]       $send_notify_additions  = [],
+  Optional[String]              $zonefile               = undef,
+  Optional[Tea::Absolutepath]   $zone_dir               = undef,
+  Optional[Array[Nsd::Rrltype]] $rrl_whitelist          = [],
 ) {
-  validate_array($masters)
-  validate_array($notify_addresses)
-  validate_array($allow_notify)
-  validate_array($provide_xfr)
-  validate_array($zones)
-  if $zonefile {
-    validate_string($zonefile)
-  }
+  include ::nsd
+  $default_masters      = $nsd::default_masters
+  $default_provide_xfrs = $nsd::default_provide_xfrs
   if $zone_dir {
-    validate_absolute_path($zone_dir)
     $zone_subdir = $zone_dir
   } else {
     $zone_subdir = $::nsd::zone_subdir
@@ -31,22 +22,25 @@ define nsd::zone (
   } else {
     $_rrl_whitelist = $rrl_whitelist
   }
-  validate_array($_rrl_whitelist)
-  if $tsig_name {
-    validate_string($tsig_name)
-    if defined(Nsd::Tsig[$tsig_name]) {
-      $_tsig_name = $tsig_name
-    } else {
-      fail("Nsd::Tsig['${tsig_name}'] does not exist")
+  $masters.each |String $server| {
+    if ! defined(Nsd::Remote[$server]) {
+      fail("${name} defines master ${server}. however Nsd::Remote[${server}] is not defined")
     }
-  } elsif has_key($::nsd::tsig, 'name') {
-    $_tsig_name = $::nsd::tsig['name']
   }
-  if empty($slave_addresses) {
-    $_slave_addresses = $::nsd::slave_addresses
-  } else {
-    validate_hash($slave_addresses)
-    $_slave_addresses = $slave_addresses
+  $provide_xfrs.each |String $server| {
+    if ! defined(Nsd::Remote[$server]) {
+      fail("${name} defines provide_xfr ${server}. however Nsd::Remote[${server}] is not defined")
+    }
+  }
+  $allow_notify_additions.each |String $server| {
+    if ! defined(Nsd::Remote[$server]) {
+      fail("${name} defines allow_notify_addition ${server}. however Nsd::Remote[${server}] is not defined")
+    }
+  }
+  $send_notify_additions.each |String $server| {
+    if ! defined(Nsd::Remote[$server]) {
+      fail("${name} defines send_notify_addition ${server}. however Nsd::Remote[${server}] is not defined")
+    }
   }
 
   concat::fragment{ "nsd_zones_${name}":
@@ -54,10 +48,10 @@ define nsd::zone (
     content => template($::nsd::zones_template),
     order   => 20;
   }
-  if $::nsd::manage_nagios {
-    nsd::zone::nagios {$zones:
-      masters => $masters,
-      slaves  => $provide_xfr,
-    }
-  }
+  #if $::nsd::manage_nagios {
+  #  nsd::zone::nagios {$zones:
+  #    masters => $masters,
+  #    slaves  => $provide_xfr,
+  #  }
+  #}
 }
