@@ -132,7 +132,7 @@ describe 'nsd::zone', type: :define do
           end
         end
         context 'rrl_whitelist' do
-          before { params.merge!(rrl_whitelist: %w(dnskey rrsig)) }
+          before { params.merge!(rrl_whitelist: %w[dnskey rrsig]) }
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat_fragment(

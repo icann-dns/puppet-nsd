@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if File.exist? '/usr/sbin/nsd'
   nsd_version = Facter::Util::Resolution.exec('/usr/sbin/nsd -v 2>&1').split('/n')[0].split[2]
   Facter.add(:nsd_version) do
