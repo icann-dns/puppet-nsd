@@ -1,0 +1,13 @@
+---
+.travis.yml:
+  install_system_tests: true
+  extras:
+  - rvm: 2.3.1
+    env:
+    - BEAKER_set="docker/ubuntu-14.04"
+    - CHECK=beaker
+    - BEAKER_TESTMODE=apply
+    sudo: required
+    services:
+    - docker
+  secure: "2cEspuT4XUyxKWCccBVg/VazGC6Foj8SGXhXjbL2AajglUi3wH+MqWAwN1ixuI3q2R1ulWVCAb6yd8W5QoZQTj6uoK5CRXFbozXETSHoNGHDL+B4Ew7gUjybprhIUiG+STyDIGSd9UhlcuBbS6lAnPpcc/MCjwso5WIhPxzPdCHG07LjqJSnGB9+uJRSu9lzihUsbmPr4WZVj0UMLUuihan27eO5L50s7fb44iuj7Amin3kHqPueJ4KK5CDqyNPATCxFG5qWWu95kSpOWcVcjSXyGxG9qxX9X7qfH2Ckv1ZxelGlIhhZn5NG3DwfQDz2wNaoJEohS/ok4G2BNRb0VYkZdk3dBodDolv+mlezutgYS5+Eo7AWqmwvf39bZM8oPO9k3FLkWiIfgTJVJ0sJJItSAhD3acLm9RW/08JlglwwIwAMWPnoq4seRlS7vQxd5Y/97i9VxYnJzCrwR/uJ36KjTqJQc/k7O6HfZsooTJ86loaccOtdoeGeliwH1ID+bRMSn0xWI+n9FzyaEt3/eKB3PjykdvYg/+zhIVyscm/NEUOwqPmTA1vEjjtrSbVe2sksC6lj0gy3lPNLSUGpHfXHMa499KYKxBntud4UK8O2AEdKY00IKrNNq09+WaX8NrqCb9rRD5xUsTJqR0Yq7OAIBNufgtQBbHZePAFQk6Q="
