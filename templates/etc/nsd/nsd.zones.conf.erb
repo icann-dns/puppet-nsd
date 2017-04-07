@@ -17,7 +17,7 @@ zone:
 <%- end -%>
 <%- if @provide_xfrs.any? -%>
   <%- @provide_xfrs.each do |provide_xfr| -%>
-  include-pattern: <%= provide_xfr %>-provider-xfr
+  include-pattern: <%= provide_xfr %>-provide-xfr
   <%- end -%>
 <%- else -%>
   <%- @default_provide_xfrs.each do |provide_xfr| -%>
