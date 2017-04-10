@@ -13,10 +13,10 @@ define nsd::remote (
   }
   if $tsig {
     if ! defined(Nsd::Tsig[$tsig]) {
-      fail("Nsd::Tsig['${tsig}'] does not exist")
+      fail("${name}: Nsd::Tsig['${tsig}'] does not exist")
     }
     if ! $tsig_name {
-      fail(' you must define tsig_name when you deinfe tsig')
+      fail("${name}: you must define tsig_name when you deinfe tsig")
     } else {
       $_tsig_name = $tsig_name
     }
@@ -24,7 +24,7 @@ define nsd::remote (
     if defined(Nsd::Tsig[$tsig_name]) {
       $_tsig_name = $tsig_name
     } else {
-      fail("Nsd::Tsig['${tsig_name}'] does not exist")
+      fail("${name}: Nsd::Tsig['${tsig_name}'] does not exist")
     }
   } else {
     $_tsig_name = $::nsd::default_tsig_name
