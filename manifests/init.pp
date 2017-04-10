@@ -147,7 +147,7 @@ class nsd (
   }
   $default_provide_xfrs.each |String $provider_xfr| {
     if ! defined(Nsd::Remote[$provider_xfr]) {
-      fail("Nsd::Remote['${provider_xfr}'] does not exist but defined as default master")
+      fail("Nsd::Remote['${provider_xfr}'] does not exist but defined as default provide xfr")
     }
   }
   create_resources(nsd::zone, $zones)
