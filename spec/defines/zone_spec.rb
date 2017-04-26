@@ -54,7 +54,7 @@ describe 'nsd::zone', type: :define do
           ).with_content(
             %r{include-pattern: master-master}
           ).with_content(
-            %r{include-pattern: slave-provide_xfr}
+            %r{include-pattern: slave-provide-xfr}
           )
         end
       end
@@ -81,9 +81,9 @@ describe 'nsd::zone', type: :define do
             is_expected.to contain_concat_fragment(
               'nsd_zones_example.com'
             ).with_content(
-              %r{include-pattern: master-provide_xfr}
+              %r{include-pattern: master-provide-xfr}
             ).without_content(
-              %r{include-pattern: slave-provide_xfr}
+              %r{include-pattern: slave-provide-xfr}
             )
           end
         end
