@@ -1,4 +1,4 @@
-### 2017-04-10 0.2.1
+### 2017-07-26 0.2.2
 * Change how exported resources are handled
 * force control-enable: no if set to false
 
