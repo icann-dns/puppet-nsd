@@ -1,4 +1,8 @@
 ### 2017-04-10 0.2.1
+* Change how exported resources are handled
+* force control-enable: no if set to false
+
+### 2017-04-10 0.2.1
 * Fix a few typos
 
 ### 2017-04-06 0.2.0
