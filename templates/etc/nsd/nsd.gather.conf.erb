@@ -5,6 +5,7 @@ require 'net/http'
 require 'json'
 require 'uri'
 # move to https://github.com/dalen/puppet-puppetdbquery in future
+if @imports.empty? then return end
 headers = { 'Accept' => 'application/json' }
 query    = ['and', ['=', 'exported', true], ['~', 'tag', "dns__(#{@imports.join('|')})"]]
 uri      = '/pdb/query/v4/resources/Nsd::Remote'
