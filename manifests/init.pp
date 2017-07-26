@@ -64,6 +64,8 @@ class nsd (
   Tea::Absolutepath      $zone_subdir         = $::nsd::params::zone_subdir,
   Tea::Absolutepath      $conf_file           = $::nsd::params::conf_file,
   Boolean                $logrotate_enable    = $::nsd::params::logrotate_enable,
+  Array[String]          $imports             = [],
+  Array[String]          $exports             = [],
 ) inherits nsd::params  {
 
   ensure_packages([$package_name])
