@@ -3,10 +3,15 @@ pattern:
 <%-
 require 'net/http'
 require 'json'
+require 'uri'
+# move to https://github.com/dalen/puppet-puppetdbquery in future
+headers = { 'Accept' => 'application/json' }
+query    = ['and' ['=', 'exported', true], ['~', 'title', 'dns__export_']]
+uri      = '/pdb/query/v4/resources/Nsd::Remote'
+uri      += URI.escape("?query=#{query.to_json}")
 http     = Net::HTTP.new(@puppetdb_server, @puppetdb_port)
-request  = Net::HTTP::Get.new('/pdb/query/v4/resources/Nsd::Remote')
 begin
-  response = http.request(request)
+  response = http.get(uri, headers)
   if response.code != "200"
     scope.call_function(
       'warning', 
@@ -15,11 +20,9 @@ begin
   end
   response_json = JSON.parse(response.body)
   response_json.each do |resource|
-    if resource['certname'] == @trusted['certname'] && resource['title'] =~ /dns__export_.+/
 -%>
   include-pattern: <%= resource['title'] %>-provide-xfr
 <%-
-    end
   end
 rescue Exception => e
   scope.call_function('warning', ["unable to connect to the puppetdb server, exported resources wont work: #{e}"])
