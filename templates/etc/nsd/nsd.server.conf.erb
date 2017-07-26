@@ -101,8 +101,10 @@ server:
 <%- if @rrl_whitelist_ratelimit -%>
     rrl-whitelist-ratelimit: <%= @rrl_whitelist_ratelimit %>
 <%- end -%>
-<%- if @control_enable -%>
 remote-control:
+<%- if !@control_enable -%>
+    control-enable: no
+<%- else -%>
     control-enable: yes
   <%- if @control_interface -%>
     <%- @control_interface.each do |interface| -%>
