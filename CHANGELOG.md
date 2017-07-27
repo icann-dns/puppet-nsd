@@ -1,3 +1,6 @@
+### 2017-07-27 0.2.5
+* Add acceptance tests to check notifies are working
+
 ### 2017-07-26 0.2.2
 * Change how exported resources are handled
 * force control-enable: no if set to false
