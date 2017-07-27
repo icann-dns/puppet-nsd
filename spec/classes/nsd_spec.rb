@@ -65,7 +65,7 @@ describe 'nsd', type: :class do
           ).without_content(
             %r{logfile:}
           ).with_content(
-            %r{server-count: 1}
+            %r{server-count: #{facts[:processors]['count']}}
           ).with_content(
             %r{tcp-count: 250}
           ).with_content(
@@ -110,8 +110,8 @@ describe 'nsd', type: :class do
             %r{rrl-ipv6-prefix-length: 64}
           ).with_content(
             %r{rrl-whitelist-ratelimit: 4000}
-          ).without_content(
-            %r{control-enable:}
+          ).with_content(
+            %r{control-enable: no}
           )
         end
         it do

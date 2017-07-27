@@ -1,3 +1,13 @@
+### 2017-07-27 0.2.3
+* Add acceptance tests to check notifies are working
+
+### 2017-07-26 0.2.2
+* Change how exported resources are handled
+* force control-enable: no if set to false
+
+### 2017-04-10 0.2.1
+* Fix a few typos
+
 ### 2017-04-06 0.2.0
 * Complete rewrite of the zones hash. 
 * depricated the old $tsig hash now all hashs have to be defined in $tsisg and then refrenced by name in the remotes
