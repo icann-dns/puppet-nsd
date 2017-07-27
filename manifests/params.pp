@@ -59,7 +59,7 @@ class nsd::params {
   $identity                 = $::fqdn
   $nsid                     = $::fqdn
   $zone_subdir              = "${zonesdir}/zone"
-  $server_count             = $::processorcount
+  $server_count             = $facts['processors']['count']
   $server_key_file          = "${conf_dir}/nsd_server.key"
   $server_cert_file         = "${conf_dir}/nsd_server.pem"
   $control_key_file         = "${conf_dir}/nsd_control.key"
