@@ -1,4 +1,4 @@
-### 2017-07-27 0.2.5
+### 2017-07-27 0.2.3
 * Add acceptance tests to check notifies are working
 
 ### 2017-07-26 0.2.2
