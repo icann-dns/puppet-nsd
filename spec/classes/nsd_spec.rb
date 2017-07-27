@@ -110,8 +110,8 @@ describe 'nsd', type: :class do
             %r{rrl-ipv6-prefix-length: 64}
           ).with_content(
             %r{rrl-whitelist-ratelimit: 4000}
-          ).without_content(
-            %r{control-enable:}
+          ).with_content(
+            %r{control-enable: no}
           )
         end
         it do
