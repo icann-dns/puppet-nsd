@@ -65,7 +65,7 @@ describe 'nsd', type: :class do
           ).without_content(
             %r{logfile:}
           ).with_content(
-            %r{server-count: 1}
+            %r{server-count: #{facts[:processors]['count']}}
           ).with_content(
             %r{tcp-count: 250}
           ).with_content(
