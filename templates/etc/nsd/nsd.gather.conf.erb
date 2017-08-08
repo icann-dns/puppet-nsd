@@ -7,7 +7,7 @@ require 'uri'
 # move to https://github.com/dalen/puppet-puppetdbquery in future
 if !@imports.empty? 
   headers = { 'Accept' => 'application/json' }
-  query    = ['and', ['=', 'exported', true], ['~', 'tag', "dns__(#{@imports.join('|')})"]]
+  query    = ['and', ['=', 'exported', true], ['~', 'tag', "^(#{@imports.join('|')})$"]]
   uri      = '/pdb/query/v4/resources/Nsd::Remote'
   uri      += URI.escape("?query=#{query.to_json}")
   http     = Net::HTTP.new(@puppetdb_server, @puppetdb_port)
