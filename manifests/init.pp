@@ -69,6 +69,7 @@ class nsd (
   Array[String]          $exports             = [],
 ) inherits nsd::params  {
 
+  $_restart_cmd = "${restart_cmd} || nsd-checkconf ${conf_file} && service nsd restart"
   ensure_packages([$package_name])
   concat{$conf_file:
     require => Package[$package_name],
@@ -103,7 +104,7 @@ class nsd (
     service { $service_name:
       ensure   => $enable,
       provider => 'base',
-      restart  => $restart_cmd,
+      restart  => $_restart_cmd,
       start    => "/etc/init.d/${service_name} start",
       stop     => "/etc/init.d/${service_name} stop",
       enable   => $enable,
@@ -120,7 +121,7 @@ class nsd (
     service { $service_name:
       ensure  => $enable,
       enable  => $enable,
-      restart => $restart_cmd,
+      restart => $_restart_cmd,
       require => Package[$package_name];
     }
   }

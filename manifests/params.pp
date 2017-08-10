@@ -3,7 +3,7 @@
 class nsd::params {
   case $::operatingsystem {
     'ubuntu': {
-      $restart_cmd = '/usr/sbin/nsd-control reconfig'
+      $restart_cmd = 'PATH=/usr/sbin/ nsd-control reconfig'
       case $::lsbdistcodename {
         'precise': {
           $package_name     = 'nsd3'
@@ -32,7 +32,7 @@ class nsd::params {
       }
     }
     'FreeBSD': {
-      $restart_cmd          = '/usr/local/sbin/nsd-control reconfig'
+      $restart_cmd          = 'PATH=/usr/local/sbin/ nsd-control reconfig'
       $package_name         = 'nsd'
       $service_name         = 'nsd'
       $conf_dir             = '/usr/local/etc/nsd'
@@ -45,7 +45,7 @@ class nsd::params {
       $logrotate_enable     = false
     }
     default: {
-      $restart_cmd          = '/usr/sbin/nsd-control reconfig'
+      $restart_cmd          = 'PATH=/usr/sbin/ nsd-control reconfig'
       $package_name         = 'nsd'
       $service_name         = 'nsd'
       $conf_dir             = '/etc/nsd'
