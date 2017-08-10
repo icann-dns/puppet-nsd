@@ -60,6 +60,7 @@ class nsd (
   Tea::Absolutepath      $database            = $::nsd::params::database,
   String                 $package_name        = $::nsd::params::package_name,
   String                 $service_name        = $::nsd::params::service_name,
+  String                 $restart_cmd         = $::nsd::params::restart_cmd,
   Tea::Absolutepath      $conf_dir            = $::nsd::params::conf_dir,
   Tea::Absolutepath      $zone_subdir         = $::nsd::params::zone_subdir,
   Tea::Absolutepath      $conf_file           = $::nsd::params::conf_file,
@@ -102,6 +103,7 @@ class nsd (
     service { $service_name:
       ensure   => $enable,
       provider => 'base',
+      restart  => $restart_cmd,
       start    => "/etc/init.d/${service_name} start",
       stop     => "/etc/init.d/${service_name} stop",
       enable   => $enable,
@@ -118,6 +120,7 @@ class nsd (
     service { $service_name:
       ensure  => $enable,
       enable  => $enable,
+      restart => $restart_cmd,
       require => Package[$package_name];
     }
   }
