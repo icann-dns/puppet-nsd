@@ -27,7 +27,7 @@ end
 unless @imports.empty? 
   nsd_resources = exported_resources('Nsd::Remote', @imports)
   dns_resources = exported_resources('Dns::Remote', @imports)
-  resources = (nsd_resources + dns_resources).uniq { |h| h['title'] }.sort{ |h| h['title'] }
+  resources = (nsd_resources + dns_resources).uniq { |h| h['title'] }.sort_by{ |h| h['title'] }
   resources.each do |resource|
 -%>
   include-pattern: <%= resource['title'] %>-provide-xfr
