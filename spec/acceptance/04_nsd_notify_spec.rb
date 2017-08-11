@@ -26,8 +26,8 @@ EOS
           }
         },
       }
-      Nsd::Tsig <<| tag == 'nofiy_test' |>>
-      Nsd::Remote <<| tag == 'nofiy_test' |>>
+      Nsd::Tsig <<| tag == 'dns__nofiy_test' |>>
+      Nsd::Remote <<| tag == 'dns__nofiy_test' |>>
       EOS
       dnsslave_pp = <<-EOS
       class {'::nsd':
@@ -51,13 +51,13 @@ EOS
         algo => 'hmac-sha256',
         data => 'qneKJvaiXqVrfrS4v+Oi/9GpLqrkhSGLTCZkf0dyKZ0=',
         key_name => '#{dnsslave}-test',
-        tag => 'nofiy_test',
+        tag => 'dns__nofiy_test',
       }
       @@nsd::remote {'dns__export_nofiy_test_#{dnsslave}':
         address4 => '#{dnsslave_ip}',
         tsig => 'dns__export_nofiy_test_#{dnsslave}-test',
         tsig_name => '#{dnsslave}-test',
-        tag => 'nofiy_test',
+        tag => 'dns__nofiy_test',
       }
       EOS
       it 'run puppet a bunch of times' do
