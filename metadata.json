@@ -1,6 +1,6 @@
 {
   "name": "icann-nsd",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": "john.bond@icann.org",
   "summary": "puppet module to manage NSD",
   "license": "Apache-2.0",

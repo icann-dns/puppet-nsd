@@ -1,3 +1,6 @@
+### 2017-08-30 0.2.4
+* Change how we export resources
+
 ### 2017-07-27 0.2.3
 * Add acceptance tests to check notifies are working
 
