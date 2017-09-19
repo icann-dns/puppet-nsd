@@ -6,7 +6,7 @@ require 'json'
 require 'uri'
 def exported_resources(resource, tags, exported=true)
   headers = { 'Accept' => 'application/json' }
-  query    = ['and', ['=', 'exported', true], ['~', 'tag', "dns__(#{tags.join('|')})"]]
+  query    = ['and', ['=', 'exported', true], ['~', 'tag', "(#{tags.join('|')})"]]
   uri      = "/pdb/query/v4/resources/#{resource}"
   uri      += URI.escape("?query=#{query.to_json}")
   http     = Net::HTTP.new(@puppetdb_server, @puppetdb_port)
@@ -26,8 +26,7 @@ def exported_resources(resource, tags, exported=true)
 end
 unless @imports.empty? 
   nsd_resources = exported_resources('Nsd::Remote', @imports)
-  dns_resources = exported_resources('Dns::Remote', @imports)
-  resources = (nsd_resources + dns_resources).uniq { |h| h['title'] }.sort_by{ |h| h['title'] }
+  resources = nsd_resources.uniq { |h| h['title'] }.sort_by{ |h| h['title'] }
   resources.each do |resource|
 -%>
   include-pattern: <%= resource['title'] %>-provide-xfr
