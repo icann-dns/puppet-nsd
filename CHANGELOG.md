@@ -1,3 +1,6 @@
+### 2017-08-30 0.2.5
+* remove refrences to the icann-dns modules objects
+
 ### 2017-08-30 0.2.4
 * Change how we export resources
 
