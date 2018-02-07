@@ -17,7 +17,7 @@ class nsd::params {
           $pidfile          = '/run/nsd3/nsd.pid'
           $logrotate_enable = true
         }
-        'precise': {
+        'trusty': {
           $package_name     = 'nsd'
           $service_name     = 'nsd'
           $conf_dir         = '/etc/nsd'
