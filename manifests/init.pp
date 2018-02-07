@@ -1,12 +1,13 @@
 #== Class: nsd
 #
 class nsd (
-  Optional[Integer]           $tcp_timeout               = undef,
-  Optional[Integer]           $statistics                = undef,
-  Optional[Tea::Absolutepath] $chroot                    = undef,
-  Optional[Tea::Absolutepath] $logfile                   = undef,
-  Optional[Tea::Absolutepath] $difffile                  = undef,
-  Optional[Tea::Ip_address]   $control_interface         = undef,
+  Optional[Integer]           $tcp_timeout       = undef,
+  Optional[Integer]           $statistics        = undef,
+  Optional[Tea::Absolutepath] $chroot            = undef,
+  Optional[Tea::Absolutepath] $logfile           = undef,
+  Optional[Tea::Absolutepath] $difffile          = undef,
+  Optional[Tea::Absolutepath] $database          = undef,
+  Optional[Tea::Ip_address]   $control_interface = undef,
   String                 $default_tsig_name    = 'NOKEY',
   Array[String]          $default_masters      = [],
   Array[String]          $default_provide_xfrs = [],
@@ -57,7 +58,6 @@ class nsd (
   Tea::Absolutepath      $control_key_file    = $::nsd::params::control_key_file,
   Tea::Absolutepath      $control_cert_file   = $::nsd::params::control_cert_file,
   String                 $init                = $::nsd::params::init,
-  Tea::Absolutepath      $database            = $::nsd::params::database,
   String                 $package_name        = $::nsd::params::package_name,
   String                 $service_name        = $::nsd::params::service_name,
   String                 $restart_cmd         = $::nsd::params::restart_cmd,

@@ -1,3 +1,7 @@
+### 2017-02-07 0.2.6
+* change default for database in line with the following comment from the devs: 
+  * We recommend to run NSD without the precompiled database.  With recent optimizations, the DB doesn't give any big/measurable advantages but does use a substantial more amount of runtime memory.
+
 ### 2017-08-30 0.2.5
 * remove refrences to the icann-dns modules objects
 

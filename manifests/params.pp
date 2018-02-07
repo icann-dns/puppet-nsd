@@ -11,7 +11,6 @@ class nsd::params {
           $conf_dir         = '/etc/nsd3'
           $zonesdir         = '/var/lib/nsd3'
           $conf_file        = "${conf_dir}/nsd.conf"
-          $database         = "${zonesdir}/nsd.db"
           $xfrdfile         = "${zonesdir}/xfrd.state"
           $init             = 'base'
           $pidfile          = '/run/nsd3/nsd.pid'
@@ -23,7 +22,6 @@ class nsd::params {
           $conf_dir         = '/etc/nsd'
           $zonesdir         = '/var/lib/nsd'
           $conf_file        = "${conf_dir}/nsd.conf"
-          $database         = "${zonesdir}/nsd.db"
           $xfrdfile         = "${zonesdir}/xfrd.state"
           $init             = 'upstart'
           $pidfile          = '/run/nsd/nsd.pid'
@@ -38,7 +36,6 @@ class nsd::params {
       $conf_dir             = '/usr/local/etc/nsd'
       $zonesdir             = "${conf_dir}/data"
       $conf_file            = "${conf_dir}/nsd.conf"
-      $database             = '/var/db/nsd/nsd.db'
       $xfrdfile             = '/var/db/nsd/xfrd.state'
       $init                 = 'freebsd'
       $pidfile              = '/var/run/nsd/nsd.pid'
@@ -51,7 +48,6 @@ class nsd::params {
       $conf_dir             = '/etc/nsd'
       $zonesdir             = '/var/lib/nsd3/zone'
       $conf_file            = "${conf_dir}/nsd.conf"
-      $database             = "${zonesdir}/nsd.db"
       $xfrdfile             = "${zonesdir}/xfrd.state"
       $init                 = 'base'
       $pidfile              = '/run/nsd3/nsd.pid'

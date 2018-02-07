@@ -25,14 +25,12 @@ describe 'nsd', type: :class do
           let(:init)             { 'upstart' }
           let(:pidfile)          { '/run/nsd/nsd.pid' }
         end
-        let(:database)         { "#{zonesdir}/nsd.db" }
         let(:xfrdfile)         { "#{zonesdir}/xfrd.state" }
       else
         let(:package_name)     { 'nsd' }
         let(:service_name)     { 'nsd' }
         let(:conf_dir)         { '/usr/local/etc/nsd' }
         let(:zonesdir)         { "#{conf_dir}/data" }
-        let(:database)         { '/var/db/nsd/nsd.db' }
         let(:xfrdfile)         { '/var/db/nsd/xfrd.state' }
         let(:init)             { 'freebsd' }
         let(:pidfile)          { '/var/run/nsd/nsd.pid' }
@@ -57,7 +55,7 @@ describe 'nsd', type: :class do
           ).with_content(
             %r{debug-mode: no}
           ).with_content(
-            %r{database: #{database}}
+            %r{database: ""}
           ).with_content(
             %r{identity: foo.example.com}
           ).with_content(

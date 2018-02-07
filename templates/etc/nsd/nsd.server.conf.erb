@@ -20,6 +20,8 @@ server:
 <%- end -%>
 <%- if @database -%>
     database: <%= @database %>
+<%- else -%>
+    database: ""
 <%- end -%>
 <%- if @identity -%>
     identity: <%= @identity %>
