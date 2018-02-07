@@ -12,8 +12,25 @@ class nsd::params {
           $zonesdir         = '/var/lib/nsd3'
           $conf_file        = "${conf_dir}/nsd.conf"
           $xfrdfile         = "${zonesdir}/xfrd.state"
+          $database         = "${zonesdir}/nsd.db"
           $init             = 'base'
           $pidfile          = '/run/nsd3/nsd.pid'
+          $logrotate_enable = true
+        }
+        'precise': {
+          $package_name     = 'nsd'
+          $service_name     = 'nsd'
+          $conf_dir         = '/etc/nsd'
+          $zonesdir         = '/var/lib/nsd'
+          $conf_file        = "${conf_dir}/nsd.conf"
+          $xfrdfile         = "${zonesdir}/xfrd.state"
+          if defined('$::nsd_version') and versioncmp($::nsd_version, '4.1.0') >= 0 {
+            $database         = undef
+          } else {
+            $database         = "${zonesdir}/nsd.db"
+          }
+          $init             = 'upstart'
+          $pidfile          = '/run/nsd/nsd.pid'
           $logrotate_enable = true
         }
         default: {
@@ -23,6 +40,7 @@ class nsd::params {
           $zonesdir         = '/var/lib/nsd'
           $conf_file        = "${conf_dir}/nsd.conf"
           $xfrdfile         = "${zonesdir}/xfrd.state"
+          $database         = undef
           $init             = 'upstart'
           $pidfile          = '/run/nsd/nsd.pid'
           $logrotate_enable = true
@@ -36,6 +54,7 @@ class nsd::params {
       $conf_dir             = '/usr/local/etc/nsd'
       $zonesdir             = "${conf_dir}/data"
       $conf_file            = "${conf_dir}/nsd.conf"
+      $database             = undef
       $xfrdfile             = '/var/db/nsd/xfrd.state'
       $init                 = 'freebsd'
       $pidfile              = '/var/run/nsd/nsd.pid'
@@ -49,6 +68,7 @@ class nsd::params {
       $zonesdir             = '/var/lib/nsd3/zone'
       $conf_file            = "${conf_dir}/nsd.conf"
       $xfrdfile             = "${zonesdir}/xfrd.state"
+      $database             = "${zonesdir}/nsd.db"
       $init                 = 'base'
       $pidfile              = '/run/nsd3/nsd.pid'
       $logrotate_enable     = true
