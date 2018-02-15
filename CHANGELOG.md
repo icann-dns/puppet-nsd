@@ -1,3 +1,6 @@
+### 2018-02-15 0.2.8
+* update to include home.arpa on as112 servers
+
 ### 2017-02-08 0.2.7
 * FIX: trusty default NSD is 4.0.1 which needs to have a database file
 
