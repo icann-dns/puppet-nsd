@@ -1,5 +1,6 @@
-### 2018-02-15 0.3.0
-* update to include home.arpa on as112 servers
+### 2018-06-26 0.3.0
+* Add support for REHL/Centos
+* convert to pdk
 
 ### 2018-02-15 0.2.8
 * update to include home.arpa on as112 servers
