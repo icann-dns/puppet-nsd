@@ -6,16 +6,16 @@ if ENV['BEAKER_TESTMODE'] == 'apply'
   describe 'nsd class' do
     context 'root' do
       it 'work with no errors' do
-        if fact('osfamily') == 'Debian'
-          root_zone = <<-EOS
+        root_zone = if fact('osfamily') == 'Debian' # noqa
+                      <<-EOS
       '.':
         masters  => ['lax.xfr.dns.icann.org', 'iad.xfr.dns.icann.org'],
         zonefile => 'root';
           EOS
-        else
-          # centos is not configuered with the roo server flag
-          root_zone = ''
-        end
+                    else
+                      # centos is not configuered with the roo server flag
+                      ''
+                    end
         pp = <<-EOS
     class {'::nsd':
         remotes => {

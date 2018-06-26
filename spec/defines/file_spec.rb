@@ -20,32 +20,32 @@ describe 'nsd::file', type: :define do
         context 'owner' do
           let(:params) { { owner: true } }
 
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
         context 'group' do
           let(:params) { { group: true } }
 
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
         context 'mode' do
           let(:params) { { allow_notify: 'foo' } }
 
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
         context 'source' do
           let(:params) { { source: true } }
 
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
         context 'content' do
           let(:params) { { content: true } }
 
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
         context 'ensure' do
           let(:params) { { ensure: true } }
 
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
       end
     end

@@ -9,11 +9,11 @@ if ENV['BEAKER_TESTMODE'] == 'agent'
       dnsmaster_ip = fact_on(dnsmaster, 'ipaddress')
       dnsslave     = find_host_with_role('dnsslave')
       dnsslave_ip  = fact_on(dnsslave, 'ipaddress')
-      example_zone = <<EOS
-example.com. 3600 IN SOA sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600
-example.com. 86400 IN NS a.iana-servers.net.
-example.com. 86400 IN NS b.iana-servers.net.
-EOS
+      example_zone = <<-EOS.gsub(%r{^\s+\|}, '')
+        |example.com. 3600 IN SOA sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600
+        |example.com. 86400 IN NS a.iana-servers.net.
+        |example.com. 86400 IN NS b.iana-servers.net.
+      EOS
       dnsmaster_pp = <<-EOS
       class {'::nsd':
         imports => ['nofiy_test'],
@@ -99,7 +99,7 @@ EOS
         its(:exit_status) { is_expected.to eq 0 }
         its(:stdout) do
           is_expected.to match(
-            %r{sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600}
+            %r{sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600},
           )
         end
       end
@@ -107,7 +107,7 @@ EOS
         its(:exit_status) { is_expected.to eq 0 }
         its(:stdout) do
           is_expected.to match(
-            %r{sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600}
+            %r{sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600},
           )
         end
       end
@@ -123,7 +123,7 @@ EOS
         its(:exit_status) { is_expected.to eq 0 }
         its(:stdout) do
           is_expected.to match(
-            %r{sns.dns.icann.org. noc.dns.icann.org. 2 7200 3600 1209600 3600}
+            %r{sns.dns.icann.org. noc.dns.icann.org. 2 7200 3600 1209600 3600},
           )
         end
       end
@@ -131,7 +131,7 @@ EOS
         its(:exit_status) { is_expected.to eq 0 }
         its(:stdout) do
           is_expected.to match(
-            %r{sns.dns.icann.org. noc.dns.icann.org. 2 7200 3600 1209600 3600}
+            %r{sns.dns.icann.org. noc.dns.icann.org. 2 7200 3600 1209600 3600},
           )
         end
       end
