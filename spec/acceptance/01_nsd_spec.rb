@@ -6,7 +6,7 @@ if ENV['BEAKER_TESTMODE'] == 'apply'
   describe 'nsd class' do
     context 'defaults' do
       it 'work with no errors' do
-        pp = 'class {\'::nsd\': }'
+        pp = "include nsd"
         apply_manifest(pp, catch_failures: true)
         apply_manifest(pp, catch_failures: true)
         expect(apply_manifest(pp, catch_failures: true).exit_code).to eq 0

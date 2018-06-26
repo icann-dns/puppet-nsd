@@ -8,7 +8,8 @@ require 'progressbar'
 modules = [
   'puppetlabs-stdlib',
   'puppetlabs-concat',
-  'icann-tea'
+  'stahnma-epel',
+  'icann-tea',
 ]
 git_repos = []
 def install_modules(host, modules, git_repos)
@@ -26,12 +27,14 @@ end
 hosts.each do |host|
   step "install packages on #{host}"
   host.install_package('git')
+  host.install_package('vim')
   if host['platform'] =~ %r{freebsd}
     # default installs incorect version
     host.install_package('sysutils/puppet4')
     host.install_package('dns/bind-tools')
+  elsif host['platform'] =~ %r{^el-}
+    host.install_package('bind-utils')
   else
-    host.install_package('vim')
     host.install_package('dnsutils')
   end
   # remove search list and domain from resolve.conf
@@ -61,10 +64,13 @@ else
     install_puppet_on(
       host,
       version: '4',
-      puppet_agent_version: '1.6.1',
+      puppet_agent_version: '1.9.1',
       default_action: 'gem_install'
     )
     install_modules(host, modules, git_repos)
+    if host['platform'] =~ %r{^el-}
+      apply_manifest_on(host, 'include epel', catch_failures: true)
+    end
   end
 end
 RSpec.configure do |c|

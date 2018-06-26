@@ -7,8 +7,8 @@ describe 'nsd', type: :class do
       let(:facts) do
         facts
       end
-      case facts[:operatingsystem]
-      when 'Ubuntu'
+      case facts[:os]['family']
+      when 'Debian'
         case facts['lsbdistcodename']
         when 'precise'
           let(:package_name)     { 'nsd3' }
@@ -26,7 +26,15 @@ describe 'nsd', type: :class do
           let(:pidfile)          { '/run/nsd/nsd.pid' }
         end
         let(:xfrdfile)         { "#{zonesdir}/xfrd.state" }
-      else
+      when 'RedHat'
+        let(:package_name)     { 'nsd' }
+        let(:service_name)     { 'nsd' }
+        let(:conf_dir)         { '/etc/nsd' }
+        let(:zonesdir)         { '/var/lib/nsd' }
+        let(:init)             { 'upstart' }
+        let(:pidfile)          { '/run/nsd/nsd.pid' }
+        let(:xfrdfile)         { "#{zonesdir}/xfrd.state" }
+      when 'FreeBSD'
         let(:package_name)     { 'nsd' }
         let(:service_name)     { 'nsd' }
         let(:conf_dir)         { '/usr/local/etc/nsd' }

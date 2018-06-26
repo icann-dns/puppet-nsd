@@ -57,7 +57,7 @@ class nsd (
   Tea::Absolutepath      $server_cert_file    = $::nsd::params::server_cert_file,
   Tea::Absolutepath      $control_key_file    = $::nsd::params::control_key_file,
   Tea::Absolutepath      $control_cert_file   = $::nsd::params::control_cert_file,
-  String                 $init                = $::nsd::params::init,
+  Optional[String]       $init                = $::nsd::params::init,
   String                 $package_name        = $::nsd::params::package_name,
   String                 $service_name        = $::nsd::params::service_name,
   String                 $restart_cmd         = $::nsd::params::restart_cmd,

@@ -29,8 +29,8 @@ describe 'nsd::remote' do
       let(:facts) do
         facts
       end
-      case facts[:operatingsystem]
-      when 'Ubuntu'
+      case facts[:kernel]
+      when 'Linux'
         let(:conf_dir) { '/etc/nsd' }
       else
         let(:conf_dir) { '/usr/local/etc/nsd' }
