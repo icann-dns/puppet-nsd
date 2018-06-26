@@ -63,7 +63,7 @@ class nsd::params {
     'RedHat': {
       $restart_cmd          = 'PATH=/usr/sbin/ nsd-control reconfig'
       $zonesdir             = '/var/lib/nsd'
-      $database             = "${zonesdir}/nsd.db"
+      $database             = undef
       $pidfile              = '/run/nsd/nsd.pid'
       $package_name         = 'nsd'
       $service_name         = 'nsd'

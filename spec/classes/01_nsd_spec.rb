@@ -8,21 +8,31 @@ describe 'nsd', type: :class do
 
       case facts[:os]['family']
       when 'Debian'
-        case facts['lsbdistcodename']
-        when 'precise'
+        case facts[:os]['release']['major']
+        when '12.04'
           let(:package_name)     { 'nsd3' }
           let(:service_name)     { 'nsd3' }
           let(:conf_dir)         { '/etc/nsd3' }
           let(:zonesdir)         { '/var/lib/nsd3' }
           let(:init)             { 'base' }
           let(:pidfile)          { '/run/nsd3/nsd.pid' }
-        else
+          let(:database)          { '/var/lib/nsd3/nsd.db' }
+        when '14.04'
           let(:package_name)     { 'nsd' }
           let(:service_name)     { 'nsd' }
           let(:conf_dir)         { '/etc/nsd' }
           let(:zonesdir)         { '/var/lib/nsd' }
           let(:init)             { 'upstart' }
           let(:pidfile)          { '/run/nsd/nsd.pid' }
+          let(:database)         { '/var/lib/nsd/nsd.db' }
+        when '16.04'
+          let(:package_name)     { 'nsd' }
+          let(:service_name)     { 'nsd' }
+          let(:conf_dir)         { '/etc/nsd' }
+          let(:zonesdir)         { '/var/lib/nsd' }
+          let(:init)             { 'upstart' }
+          let(:pidfile)          { '/run/nsd/nsd.pid' }
+          let(:database)         { '""' }
         end
         let(:xfrdfile)         { "#{zonesdir}/xfrd.state" }
       when 'RedHat'
@@ -33,6 +43,7 @@ describe 'nsd', type: :class do
         let(:init)             { 'upstart' }
         let(:pidfile)          { '/run/nsd/nsd.pid' }
         let(:xfrdfile)         { "#{zonesdir}/xfrd.state" }
+        let(:database)         { '""' }
       when 'FreeBSD'
         let(:package_name)     { 'nsd' }
         let(:service_name)     { 'nsd' }
@@ -41,6 +52,7 @@ describe 'nsd', type: :class do
         let(:xfrdfile)         { '/var/db/nsd/xfrd.state' }
         let(:init)             { 'freebsd' }
         let(:pidfile)          { '/var/run/nsd/nsd.pid' }
+        let(:database)         { '""' }
       end
       # rubocop:disable RSpec/ScatteredLet
       let(:conf_file)        { "#{conf_dir}/nsd.conf" } # noqa
@@ -65,7 +77,7 @@ describe 'nsd', type: :class do
           ).with_content(
             %r{debug-mode: no},
           ).with_content(
-            %r{database: ""},
+            %r{database: #{database}},
           ).with_content(
             %r{identity: foo.example.com},
           ).with_content(
