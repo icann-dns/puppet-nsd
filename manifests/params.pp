@@ -60,6 +60,19 @@ class nsd::params {
       $pidfile              = '/var/run/nsd/nsd.pid'
       $logrotate_enable     = false
     }
+    'RedHat': {
+      $restart_cmd          = 'PATH=/usr/sbin/ nsd-control reconfig'
+      $zonesdir             = '/var/lib/nsd'
+      $database             = "${zonesdir}/nsd.db"
+      $pidfile              = '/run/nsd/nsd.pid'
+      $package_name         = 'nsd'
+      $service_name         = 'nsd'
+      $conf_dir             = '/etc/nsd'
+      $conf_file            = "${conf_dir}/nsd.conf"
+      $xfrdfile             = "${zonesdir}/xfrd.state"
+      $init                 = undef
+      $logrotate_enable     = true
+    }
     default: {
       $restart_cmd          = 'PATH=/usr/sbin/ nsd-control reconfig'
       $zonesdir             = '/var/lib/nsd'

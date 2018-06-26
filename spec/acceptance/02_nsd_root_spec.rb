@@ -6,6 +6,16 @@ if ENV['BEAKER_TESTMODE'] == 'apply'
   describe 'nsd class' do
     context 'root' do
       it 'work with no errors' do
+        if fact('osfamily') == 'Debian'
+          root_zone = <<-EOS
+      '.':
+        masters  => ['lax.xfr.dns.icann.org', 'iad.xfr.dns.icann.org'],
+        zonefile => 'root';
+          EOS
+        else
+          # centos is not configuered with the roo server flag
+          root_zone = ''
+        end
         pp = <<-EOS
     class {'::nsd':
         remotes => {
@@ -19,9 +29,7 @@ if ENV['BEAKER_TESTMODE'] == 'apply'
         rrl_whitelist => ['nxdomain', 'referral']
     }
     nsd::zone {
-      '.':
-        masters  => ['lax.xfr.dns.icann.org', 'iad.xfr.dns.icann.org'],
-        zonefile => 'root';
+      #{root_zone}
       'arpa.':
         masters  => ['lax.xfr.dns.icann.org', 'iad.xfr.dns.icann.org'];
       'root-servers.net.':
@@ -46,9 +54,11 @@ if ENV['BEAKER_TESTMODE'] == 'apply'
       describe command('nsd-checkconf /usr/local/etc/nsd/nsd.conf || cat /usr/local/etc/nsd/nsd.conf'), if: os[:family] == 'freebsd' do
         its(:stdout) { is_expected.to match %r{} }
       end
-      describe command('dig +short soa . @127.0.0.1') do
-        its(:exit_status) { is_expected.to eq 0 }
-        its(:stdout) { is_expected.to match %r{a.root-servers.net. nstld.verisign-grs.com.} }
+      if fact('osfamily') == 'Debian'
+        describe command('dig +short soa . @127.0.0.1') do
+          its(:exit_status) { is_expected.to eq 0 }
+          its(:stdout) { is_expected.to match %r{a.root-servers.net. nstld.verisign-grs.com.} }
+        end
       end
       describe command('dig +short soa arpa. @127.0.0.1') do
         its(:exit_status) { is_expected.to eq 0 }
