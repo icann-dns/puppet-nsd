@@ -8,6 +8,7 @@ if ENV['BEAKER_TESTMODE'] == 'apply'
       it 'work with no errors' do
         pp = 'class {\'::nsd\': }'
         apply_manifest(pp, catch_failures: true)
+        apply_manifest(pp, catch_failures: true)
         expect(apply_manifest(pp, catch_failures: true).exit_code).to eq 0
       end
       describe service('nsd') do

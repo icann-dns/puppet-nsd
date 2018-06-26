@@ -1,8 +1,8 @@
 #== Class: nsd
 #
 class nsd::params {
-  case $::operatingsystem {
-    'ubuntu': {
+  case $::osfamily {
+    'Debian': {
       $restart_cmd = 'PATH=/usr/sbin/ nsd-control reconfig'
       case $::lsbdistcodename {
         'precise': {
@@ -62,15 +62,15 @@ class nsd::params {
     }
     default: {
       $restart_cmd          = 'PATH=/usr/sbin/ nsd-control reconfig'
+      $zonesdir             = '/var/lib/nsd'
+      $database             = "${zonesdir}/nsd.db"
+      $pidfile              = '/run/nsd/nsd.pid'
       $package_name         = 'nsd'
       $service_name         = 'nsd'
       $conf_dir             = '/etc/nsd'
-      $zonesdir             = '/var/lib/nsd3/zone'
       $conf_file            = "${conf_dir}/nsd.conf"
       $xfrdfile             = "${zonesdir}/xfrd.state"
-      $database             = "${zonesdir}/nsd.db"
-      $init                 = 'base'
-      $pidfile              = '/run/nsd3/nsd.pid'
+      $init                 = undef
       $logrotate_enable     = true
     }
   }
