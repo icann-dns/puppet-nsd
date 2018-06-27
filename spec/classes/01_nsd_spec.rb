@@ -16,7 +16,7 @@ describe 'nsd', type: :class do
           let(:zonesdir)         { '/var/lib/nsd3' }
           let(:init)             { 'base' }
           let(:pidfile)          { '/run/nsd3/nsd.pid' }
-          let(:database)          { '/var/lib/nsd3/nsd.db' }
+          let(:database)         { '/var/lib/nsd3/nsd.db' }
         when '14.04'
           let(:package_name)     { 'nsd' }
           let(:service_name)     { 'nsd' }
