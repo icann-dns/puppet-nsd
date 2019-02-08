@@ -1,3 +1,6 @@
+### 2018-06-26 0.3.2
+* fix spec tests
+
 ### 2018-06-26 0.3.1
 * Add logrotate as a dependency
 
