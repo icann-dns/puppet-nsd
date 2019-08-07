@@ -189,6 +189,7 @@ create and as112, please look at the as112 class to see how this works under the
 * `zones_template` (File Path, Default: 'nsd/etc/nsd/nsd.zones.conf.erb'): template file to use for zone config.  only change if you know what you are doing.
 * `ip_addresses` (Array, Default: []): Array of IP addresses to listen on.
 * `ip_transparent` (Bool, Default: false): Allows NSD to bind to non local addresses.  This is useful to have NSD listen to IP addresses that are not (yet) added to the network interface, so that it can answer immediately when the address is added.
+* `reuseport` (Bool, Default: false): create file descriptors for every server in the server-count.  This improves performance of the  network  stack.
 * `identity` (String, Default: $::fqdn): A string to specify the identity when asked for CH TXT ID.SERVER
 * `nsid` (String, Default: $::fqdn): A string representing the nsid to add to the EDNS section of the answer when queried with an NSID EDNS enabled packet.
 * `logfile` (File Path, Default: undef): A string to specify the logfile to use.
