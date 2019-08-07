@@ -1,0 +1,5 @@
+<%- @includes.each do |include| -%>
+  <%- if include != :undef -%>
+include: <%= "${include}" %>
+  <%- end -%>
+<%- end -%>
