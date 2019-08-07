@@ -110,12 +110,12 @@ remote-control:
     control-enable: yes
   <%- if @control_interface -%>
     <%- @control_interface.each do |interface| -%>
-   control-interface: <%= interface %>
+    control-interface: <%= interface %>
     <%- end -%>
   <%- end -%>
-   control-port: <%= @control_port %>
-   server-key-file: <%= @server_key_file %>
-   server-cert-file: <%= @server_cert_file %>
-   control-key-file: <%= @control_key_file %>
-   control-cert-file: <%= @control_cert_file %>
+    control-port: <%= @control_port %>
+    server-key-file: <%= @server_key_file %>
+    server-cert-file: <%= @server_cert_file %>
+    control-key-file: <%= @control_key_file %>
+    control-cert-file: <%= @control_cert_file %>
 <%- end -%>
