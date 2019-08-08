@@ -255,7 +255,7 @@ describe 'nsd', type: :class do
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
               %r{reuseport: yes},
-              )
+            )
           end
         end
         context 'debug_mode' do
