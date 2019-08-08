@@ -240,6 +240,15 @@ describe 'nsd', type: :class do
             )
           end
         end
+        context 'includes' do
+          let(:params) { { includes: ['/etc/nsd/foo/'] } }
+
+          it do
+            is_expected.to contain_concat_fragment('includes').with_content(
+              %r{include: "/etc/nsd/foo/"},
+            )
+          end
+        end
         context 'ip_transparent' do
           let(:params) { { ip_transparent: true } }
 
@@ -593,6 +602,11 @@ describe 'nsd', type: :class do
         end
         context 'ip_addresses' do
           let(:params) { { ip_addresses: 'foo' } }
+
+          it { is_expected.to raise_error(Puppet::Error) }
+        end
+        context 'includes' do
+          let(:params) { { includes: [''] } }
 
           it { is_expected.to raise_error(Puppet::Error) }
         end
