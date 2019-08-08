@@ -228,6 +228,7 @@ create and as112, please look at the as112 class to see how this works under the
 * `nsd_service_name` (String, Default: OS Specific): The service to manage
 * `zone_subdir` (File Path, Default: OS Specific): The zone directory
 * `nsd_conf_file` (File Path, Default: OS Specific): The config file
+* `includes` (Array[String[1]], Default: []): Array of file paths, that are included into nsd config. Inclusion happens second to last, before zone definitions.
 
 ### Private Classes
 
