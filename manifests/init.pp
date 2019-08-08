@@ -25,7 +25,7 @@ class nsd (
   Tea::Ip_address        $puppetdb_server      = '127.0.0.1',
   Tea::Port              $puppetdb_port        = 8080,
   Array[Tea::Ip_address] $ip_addresses         = [],
-  Array[String[1]]          $includes          = [],
+  Array[String[1]]       $includes             = [],
   Boolean                $ip_transparent       = false,
   Boolean                $debug_mode           = false,
   Integer                $tcp_count            = 250,
