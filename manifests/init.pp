@@ -85,7 +85,7 @@ class nsd (
   concat::fragment{'includes':
     target  => $conf_file,
     content => template($includes_template),
-    order   => '20',
+    order   => '19',
   }
   if $control_enable {
     exec { 'nsd-control-setup':
