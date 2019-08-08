@@ -249,6 +249,15 @@ describe 'nsd', type: :class do
             )
           end
         end
+        context 'reuseport' do
+          let(:params) { { reuseport: true } }
+
+          it do
+            is_expected.to contain_concat_fragment('nsd_server').with_content(
+              %r{reuseport: yes},
+            )
+          end
+        end
         context 'debug_mode' do
           let(:params) { { debug_mode: true } }
 
