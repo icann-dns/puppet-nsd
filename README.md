@@ -195,8 +195,8 @@ create and as112, please look at the as112 class to see how this works under the
 * `logfile` (File Path, Default: undef): A string to specify the logfile to use.
 * `server_count (Integer. Default: if $::processorcount < 4 otherwise $::processorcount - 3)`:  Start this many NSD servers.
 * `tcp_count` (Integer, Default: 250):  The maximum number of concurrent, active TCP connections by each server. valid options: Integer.
-* `tcp-query-count` (Integer, Default: 0 (unlimited): The maximum number of queries served on a single TCP connection.
-* `tcp-timeout` (Integer, Default: undef):  Overrides the default TCP timeout.
+* `tcp_query_count` (Integer, Default: 0 (unlimited): The maximum number of queries served on a single TCP connection.
+* `tcp_timeout` (Integer, Default: undef):  Overrides the default TCP timeout.
 * `ipv4_edns_size` (Integer < 4097, Default: 4096): Preferred EDNS buffer size for IPv4.
 * `ipv6_edns_size` (Integer < 4097, Default: 4096): Preferred EDNS buffer size for IPv6.
 * `pidfile` (File Path, Default: OS Specific): Use the pid file.
