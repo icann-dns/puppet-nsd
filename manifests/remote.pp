@@ -34,10 +34,4 @@ define nsd::remote (
     content => template($::nsd::pattern_template),
     order   => '15';
   }
-  #if $::nsd::manage_nagios and $::nsd::enable {
-  #  nsd::zone::nagios {$zones:
-  #    masters => $masters,
-  #    slaves  => $provide_xfr,
-  #  }
-  #}
 }
