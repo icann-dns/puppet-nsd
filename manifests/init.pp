@@ -38,7 +38,6 @@ class nsd (
   Boolean                $hide_version         = false,
   Boolean                $control_enable       = false,
   Tea::Port              $control_port         = 8952,
-  Boolean                $manage_nagios        = false,
   Integer                $logrotate_rotate     = 5,
   String                 $logrotate_size       = '100M',
   Integer                $rrl_size             = 1000000,
