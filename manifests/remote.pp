@@ -29,9 +29,9 @@ define nsd::remote (
   } else {
     $_tsig_name = $::nsd::default_tsig_name
   }
-  concat::fragment{ "nsd_pattern_${name}":
+  concat::fragment{ "nsd_remote_${name}":
     target  => $::nsd::conf_file,
-    content => template($::nsd::pattern_template),
+    content => template($::nsd::remote_template),
     order   => '15';
   }
 }
