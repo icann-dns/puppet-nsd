@@ -1,45 +1,81 @@
 pattern:
-  name: <%= @name %>-master
-<%- if @address4 -%>
-  allow-notify: <%= @address4 %><%- if @port != 53 -%>@<%= @port %><%- end -%> NOKEY
-  <%- if ! @address4.include?('/') -%>
-  request-xfr: AXFR <%= @address4 %><%- if @port != 53 -%>@<%= @port %><%- end -%> <%= @_tsig_name %>
-  <%- end -%>
+  name: <%= @name %>
+<%- if @zonefile -%>
+  zonefile: "<%= @zonefile %>"
 <%- end -%>
-<%- if @address6 -%>
-  allow-notify: <%= @address6 %><%- if @port != 53 -%>@<%= @port %><%- end -%> NOKEY
-  <%- if ! @address6.include?('/') -%>
-  request-xfr: AXFR <%= @address6 %><%- if @port != 53 -%>@<%= @port %><%- end -%> <%= @_tsig_name %>
-  <%- end -%>
+<%- @allow_notifies.each do |allow_notify| -%>
+<%- if allow_notify['address4'] -%>
+  allow-notify: <%= allow_notify['address4'] %>@<%= allow_notify['port'] || 53 -%> <%= allow_notify['tsig_name'] || 'NOKEY' %>
 <%- end -%>
-pattern:
-  name: <%= @name %>-provide-xfr
-<%- if @address4 -%>
-  <%- if ! @address4.include?('/') -%>
-  notify: <%= @address4 %><%- if @port != 53 -%>@<%= @port %><%- end -%> NOKEY
-  <%- end -%>
-  provide-xfr: <%= @address4 %><%- if @port != 53 -%>@<%= @port %><%- end -%> <%= @_tsig_name %>
+<%- if allow_notify['address6'] -%>
+  allow-notify: <%= allow_notify['address6'] %>@<%= allow_notify['port'] || 53 -%> <%= allow_notify['tsig_name'] || 'NOKEY' %>
 <%- end -%>
-<%- if @address6 -%>
-  <%- if ! @address6.include?('/') -%>
-  notify: <%= @address6 %><%- if @port != 53 -%>@<%= @port %><%- end -%> NOKEY
-  <%- end -%>
-  provide-xfr: <%= @address6 %><%- if @port != 53 -%>@<%= @port %><%- end -%> <%= @_tsig_name %>
 <%- end -%>
-pattern:
-  name: <%= @name %>-allow-notify-addition
-<%- if @address4 -%>
-  allow-notify: <%= @address4 %><%- if @port != 53 -%>@<%= @port %><%- end -%> NOKEY
+<%- @request_xfrs.each do |request_xfr| -%>
+<%- if request_xfr['address4'] -%>
+  request-xfr: <%= request_xfr['address4'] %>@<%= request_xfr['port'] || 53 -%> <%= request_xfr['tsig_name'] || 'NOKEY' %>
 <%- end -%>
-<%- if @address6 -%>
-  allow-notify: <%= @address6 %><%- if @port != 53 -%>@<%= @port %><%- end -%> NOKEY
+<%- if request_xfr['address6'] -%>
+  request-xfr: <%= request_xfr['address6'] %>@<%= request_xfr['port'] || 53 -%> <%= request_xfr['tsig_name'] || 'NOKEY' %>
 <%- end -%>
-pattern:
-  name: <%= @name %>-send-notify-addition
-<%- if @address4 and ! @address4.include?('/') -%>
-  notify: <%= @address4 %><%- if @port != 53 -%>@<%= @port %><%- end -%> NOKEY
 <%- end -%>
-<%- if @address6 and  ! @address6.include?('/') -%>
-  notify: <%= @address6 -%><%- if @port != 53 -%>@<%= @port %><%- end -%> NOKEY
+<%- if defined?(@allow_axfr_fallback) -%>
+<%- if @allow_axfr_fallback -%>
+  allow-axfr-fallback: yes
+<%- else -%>
+  allow-axfr-fallback: no
 <%- end -%>
-
+<%- end -%>
+<%- if @size_limit_xfr -%>
+  size-limit-xfr: <%= @size_limit_xfr %>
+<%- end -%>
+<%- @notifies.each do |notify| -%>
+<%- if notify['address4'] -%>
+  notify: <%= notify['address4'] %>@<%= notify['port'] || 53 -%> <%= notify['tsig_name'] || 'NOKEY' %>
+<%- end -%>
+<%- if notify['address6'] -%>
+  notify: <%= notify['address6'] %>@<%= notify['port'] || 53 -%> <%= notify['tsig_name'] || 'NOKEY' %>
+<%- end -%>
+<%- end -%>
+<%- if @notify_retry -%>
+  notify-retry: <%= @notify_retry %>
+<%- end -%>
+<%- @provide_xfrs.each do |provide_xfr| -%>
+<%- if provide_xfr['address4'] -%>
+  provide-xfr: <%= provide_xfr['address4'] %>@<%= provide_xfr['port'] || 53 -%> <%= provide_xfr['tsig_name'] || 'NOKEY' %>
+<%- end -%>
+<%- if provide_xfr['address6'] -%>
+  provide-xfr: <%= provide_xfr['address6'] %>@<%= provide_xfr['port'] || 53 -%> <%= provide_xfr['tsig_name'] || 'NOKEY' %>
+<%- end -%>
+<%- end -%>
+<%- if @outgoing_interface4 -%>
+  outgoing-interface: <%= @outgoing_interface4 %>
+<%- end -%>
+<%- if @outgoing_interface6 -%>
+  outgoing-interface: <%= @outgoing_interface6 %>
+<%- end -%>
+<%- if @max_refresh_time -%>
+  max-refresh-time: <%= @max_refresh_time %>
+<%- end -%>
+<%- if @min_refresh_time -%>
+  min-refresh-time: <%= @min_refresh_time %>
+<%- end -%>
+<%- if @max_retry_time -%>
+  max-retry-time: <%= @max_retry_time %>
+<%- end -%>
+<%- if @min_retry_time -%>
+  min-retry-time: <%= @min_retry_time %>
+<%- end -%>
+<%- if @zonestats -%>
+  zonestats: "<%= @zonestats %>"
+<%- end -%>
+<%- @include_patterns.each do |include_pattern| -%>
+  include-pattern: <%= include_pattern %>
+<%- end -%>
+<%- if defined?(@multi_master_check) -%>
+<%- if @multi_master_check -%>
+  multi-master-check: yes
+<%- else -%>
+  multi-master-check: no
+<%- end -%>
+<%- end -%>

@@ -162,6 +162,7 @@ create and as112, please look at the as112 class to see how this works under the
     - [`nsd::tsig`](#defined-nsdtsig)
     - [`nsd::zone`](#defined-nsdzone)
     - [`nsd::remote`](#defined-nsdremotes)
+    - [`nsd::pattern`](#defined-nsdpatterns)
 - [**Facts**](#facts)
     - ['nsd_version'](#fact-nsdversion)
 
@@ -286,11 +287,50 @@ used to define remote serveres these are used later to configure the system
 * `tsig_name`: (Optional[String]): nsd::tsig to use
 * `port`: (Tea::Port, Default: 53): port use to talk to remote.
 
+#### Defined `nsd::pattern`
+
+used to define reusable patterns.
+
+The variable names mostly map to the corresponding option from NSD configuration file definition, so reading the the [man page of nsd.conf](https://www.nlnetlabs.nl/documentation/nsd/nsd.conf/) is highly recommended. 
+
+##### Parameters 
+
+* `zonefile` (Optional[String[1]]): ipv4 address or prefix for this remote
+* `allow_notifies` (Array[Nsd::Server]): ACL, set of servers, which are allowed to notify this server
+* `request_xfrs`: (Array[Nsd::Server]): ACL, set of servers, from which zone update are requested
+* `allow_axfr_fallback`: (Optional[Boolean]): allow AXFR if IXFR is not supported by remote server
+* `size_limit_xfr`: (Optional[Integer]): specifies XFR temporary file size limit
+* `notifies` (Array[Nsd::Server]): ACL, set of servers, which will receive notifies by this server
+* `notify_retry`: (Optional[Integer]): number of retries when sending notifies
+* `provide_xfrs`: (Array[Nsd::Server]): ACL, set of servers, which are allowed to send AXFR to this server
+* `outgoing_interface4`: (Tea::Ipv4): address is used to request AXFR|IXFR or used to send notifies
+* `outgoing_interface6`: (Tea::Ipv6): address is used to request AXFR|IXFR or used to send notifies
+* `max_refresh_time`: (Optional[Integer]): limit refresh time for secondary zone
+* `min_refresh_time`: (Optional[Integer]): limit refresh time for secondary zone
+* `max_retry_time`: (Optional[Integer]): limit retry time for secondary zones
+* `min_retry_time`: (Optional[Integer]): limit retry time for secondary zones
+* `zonestats`: (Optional[String[1]]): gives the group where request statistics are added to
+* `include_patterns`: (Array[String[1]], Default: []): gives the group where request statistics are added to
+* `mutli_master_check`: (Optional[Boolean]): checks all masters for the last version (if there are multiple)
+* `order`: (Optional[String[1]]): override for default pattern options
+
 ### Facts
 
 #### Fact `nsd_version`
 
 Determins the version of nsd by parsing the output of `nsd -v`
+
+### Types
+
+#### Type `nsd::server`
+
+##### Parameters 
+
+* `addres4` (Optional[Variant[Tea::Ipv4, Tea::Ipv4_cidr]]): used in ACLs of patterns
+* `addres6` (Optional[Variant[Tea::Ipv6, Tea::Ipv6_cidr]]): used in ACLs of patterns
+* `addres6` (Optional[[Tea::Port]): port, used in combination with the addresses from above
+* `tsig_name` (Optional[[Tea::Port]): name of a `Nsd::Tsig` resource, which is used for signing communication with the addresses from above
+
 
 ## Limitations
 

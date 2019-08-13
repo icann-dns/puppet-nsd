@@ -44,7 +44,7 @@ describe 'nsd::remote' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_concat__fragment(
-            'nsd_pattern_xfr.example.com',
+            'nsd_remote_xfr.example.com',
           ).with_target(conf_file).with_order('15').with_content(
             %r{
               pattern:\n
@@ -80,7 +80,7 @@ describe 'nsd::remote' do
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com',
+              'nsd_remote_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
@@ -113,7 +113,7 @@ describe 'nsd::remote' do
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com',
+              'nsd_remote_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
@@ -148,7 +148,7 @@ describe 'nsd::remote' do
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com',
+              'nsd_remote_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
@@ -181,7 +181,7 @@ describe 'nsd::remote' do
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com',
+              'nsd_remote_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
@@ -224,7 +224,7 @@ describe 'nsd::remote' do
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com',
+              'nsd_remote_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
@@ -262,7 +262,7 @@ describe 'nsd::remote' do
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com',
+              'nsd_remote_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
@@ -297,7 +297,7 @@ describe 'nsd::remote' do
           it { is_expected.to compile }
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com',
+              'nsd_remote_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
