@@ -21,10 +21,13 @@ class nsd (
   String                 $zones_template       = 'nsd/etc/nsd/nsd.zones.conf.erb',
   String                 $pattern_template     = 'nsd/etc/nsd/nsd.patterns.conf.erb',
   String                 $gather_template      = 'nsd/etc/nsd/nsd.gather.conf.erb',
+  String                 $includes_template    = 'nsd/etc/nsd/nsd.includes.conf.erb',
   Tea::Ip_address        $puppetdb_server      = '127.0.0.1',
   Tea::Port              $puppetdb_port        = 8080,
   Array[Tea::Ip_address] $ip_addresses         = [],
+  Array[String[1]]       $includes             = [],
   Boolean                $ip_transparent       = false,
+  Boolean                $reuseport            = false,
   Boolean                $debug_mode           = false,
   Integer                $tcp_count            = 250,
   Integer                $tcp_query_count      = 0,
@@ -37,7 +40,6 @@ class nsd (
   Boolean                $hide_version         = false,
   Boolean                $control_enable       = false,
   Tea::Port              $control_port         = 8952,
-  Boolean                $manage_nagios        = false,
   Integer                $logrotate_rotate     = 5,
   String                 $logrotate_size       = '100M',
   Boolean                $rrl_enable           = true,
@@ -80,6 +82,11 @@ class nsd (
     target  => $conf_file,
     content => template($server_template),
     order   => '01',
+  }
+  concat::fragment{'includes':
+    target  => $conf_file,
+    content => template($includes_template),
+    order   => '19',
   }
   if $control_enable {
     exec { 'nsd-control-setup':

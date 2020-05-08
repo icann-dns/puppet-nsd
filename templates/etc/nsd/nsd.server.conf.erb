@@ -22,6 +22,9 @@ server:
 <%- else -%>
     ip-transparent: no
 <%- end -%>
+<%- if @reuseport -%>
+    reuseport: yes
+<%- end -%>
 <%- if @debug_mode -%>
     debug-mode: yes
 <%- else -%>

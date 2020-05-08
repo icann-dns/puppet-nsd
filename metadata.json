@@ -1,6 +1,6 @@
 {
   "name": "icann-nsd",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "author": "john.bond@icann.org",
   "summary": "puppet module to manage NSD",
   "license": "Apache-2.0",
@@ -19,6 +19,10 @@
     {
       "name": "puppetlabs-concat",
       "version_requirement": ">= 1.2.0 <5.0.0"
+    },
+    {
+      "name": "puppet-logrotate",
+      "version_requirement": ">= 3.3.0 <4.0.0"
     }
   ],
   "operatingsystem_support": [
