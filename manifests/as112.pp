@@ -1,7 +1,7 @@
 # helper class to configure an as112 server
 #
 class nsd::as112 {
-  include ::nsd
+  include nsd
   nsd::zone {
     '10.in-addr.arpa':
       zonefile => 'db.dd-empty';
