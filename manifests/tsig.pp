@@ -6,7 +6,7 @@ define nsd::tsig (
     String           $template = 'nsd/etc/nsd/nsd.key.conf.erb',
     Optional[String] $key_name = undef,
 ) {
-  include ::nsd
+  include nsd
   concat::fragment{ "nsd_key_${name}":
     target  => $::nsd::conf_file,
     content => template($template),

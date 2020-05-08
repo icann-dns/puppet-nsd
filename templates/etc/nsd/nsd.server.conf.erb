@@ -1,3 +1,12 @@
+<%-
+if @rrl_enable then
+  @_rrl_ratelimit = @rrl_ratelimit
+  @_rrl_whitelist_ratelimit = @rrl_whitelist_ratelimit
+else
+  @_rrl_ratelimit = '0'
+  @_rrl_whitelist_ratelimit = '0'
+end
+-%>
 server:
 <%- @ip_addresses.each do |address| -%>
   <%- if address != :undef -%>
@@ -88,8 +97,8 @@ server:
 <%- if @rrl_size -%>
     rrl-size: <%= @rrl_size %>
 <%- end -%>
-<%- if @rrl_ratelimit -%>
-    rrl-ratelimit: <%= @rrl_ratelimit %>
+<%- if @_rrl_ratelimit -%>
+    rrl-ratelimit: <%= @_rrl_ratelimit %>
 <%- end -%>
 <%- if @rrl_slip -%>
     rrl-slip: <%= @rrl_slip %>
@@ -100,8 +109,8 @@ server:
 <%- if @rrl_ipv6_prefix_length -%>
     rrl-ipv6-prefix-length: <%= @rrl_ipv6_prefix_length %>
 <%- end -%>
-<%- if @rrl_whitelist_ratelimit -%>
-    rrl-whitelist-ratelimit: <%= @rrl_whitelist_ratelimit %>
+<%- if @_rrl_whitelist_ratelimit -%>
+    rrl-whitelist-ratelimit: <%= @_rrl_whitelist_ratelimit %>
 <%- end -%>
 remote-control:
 <%- if !@control_enable -%>
@@ -110,12 +119,12 @@ remote-control:
     control-enable: yes
   <%- if @control_interface -%>
     <%- @control_interface.each do |interface| -%>
-   control-interface: <%= interface %>
+    control-interface: <%= interface %>
     <%- end -%>
   <%- end -%>
-   control-port: <%= @control_port %>
-   server-key-file: <%= @server_key_file %>
-   server-cert-file: <%= @server_cert_file %>
-   control-key-file: <%= @control_key_file %>
-   control-cert-file: <%= @control_cert_file %>
+    control-port: <%= @control_port %>
+    server-key-file: <%= @server_key_file %>
+    server-cert-file: <%= @server_cert_file %>
+    control-key-file: <%= @control_key_file %>
+    control-cert-file: <%= @control_cert_file %>
 <%- end -%>

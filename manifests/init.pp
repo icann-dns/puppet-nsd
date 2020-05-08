@@ -40,6 +40,7 @@ class nsd (
   Boolean                $manage_nagios        = false,
   Integer                $logrotate_rotate     = 5,
   String                 $logrotate_size       = '100M',
+  Boolean                $rrl_enable           = true,
   Integer                $rrl_size             = 1000000,
   Integer                $rrl_ratelimit        = 200,
   Integer                $rrl_slip             = 2,

@@ -9,7 +9,7 @@ define nsd::zone (
   Optional[Tea::Absolutepath]   $zone_dir               = undef,
   Optional[Array[Nsd::Rrltype]] $rrl_whitelist          = [],
 ) {
-  include ::nsd
+  include nsd
   $default_masters      = $nsd::default_masters
   $default_provide_xfrs = $nsd::default_provide_xfrs
   if $zone_dir {
