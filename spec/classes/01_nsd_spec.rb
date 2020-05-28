@@ -79,7 +79,7 @@ describe 'nsd', type: :class do
           ).with_content(
             %r{database: #{database}},
           ).with_content(
-            %r{identity: foo.example.com},
+            %r{identity: "foo.example.com"},
           ).with_content(
             %r{nsid: "666f6f2e6578616d706c652e636f6d"},
           ).without_content(
@@ -277,11 +277,11 @@ describe 'nsd', type: :class do
           end
         end
         context 'identity' do
-          let(:params) { { identity: 'foo' } }
+          let(:params) { { identity: 'foo bar' } }
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{identity: foo},
+              %r{identity: "foo bar"},
             )
           end
         end

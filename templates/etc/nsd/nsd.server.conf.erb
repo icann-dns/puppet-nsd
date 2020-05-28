@@ -36,7 +36,7 @@ server:
     database: ""
 <%- end -%>
 <%- if @identity -%>
-    identity: <%= @identity %>
+    identity: "<%= @identity %>"
 <%- end -%>
 <%- if @nsid -%>
     nsid: "<% @nsid.each_byte do |byte| -%><%= byte.to_s(base=16) %><% end -%>"
