@@ -96,6 +96,9 @@ server:
     hide-version: yes
 <%- else -%>
     hide-version: no
+  <%- if @version -%>
+    version: <%= @version %>
+  <%- end -%>
 <%- end -%>
 <%- if @rrl_size -%>
     rrl-size: <%= @rrl_size %>
