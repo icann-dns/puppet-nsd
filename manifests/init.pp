@@ -38,6 +38,7 @@ class nsd (
   Integer                $xfrd_reload_timeout  = 1,
   Integer[0,3]           $verbosity            = 0,
   Boolean                $hide_version         = false,
+  Optional[String]       $version              = undef,
   Boolean                $control_enable       = false,
   Tea::Port              $control_port         = 8952,
   Integer                $logrotate_rotate     = 5,

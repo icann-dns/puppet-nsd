@@ -209,7 +209,9 @@ create and as112, please look at the as112 class to see how this works under the
 * `xfrdfile`: The  soa  timeout  and zone transfer daemon in NSD will save its. Valid options: valid absolute path.  Default: OS Specific
 * `xfrd_reload_timeout`: If this value is -1, xfrd will not trigger a reload after a zone transfer. If positive xfrd will trigger a reload after a zone transfer, then it will wait for the number of seconds before it will trigger a new reload. Setting this value throttles the reloads to once per the number of seconds. Valid options: Integer. Default: 1
 * `verbosity`: This value specifies the verbosity level for (non-debug) logging. Default is 0. 1 gives more information about incoming notifies and zone transfers. 2 lists soft warnings that are encountered. 3 prints more information. Valid options: Integer < 3. Default: 0
-* `hide_version`: Prevent NSD from replying with the version string on CHAOS class queries. Valid Optional: bool. Default: false
+* `hide_version`: (Boolean, Default: false): Prevent NSD from replying with the version string on CHAOS class queries. Valid Optional: bool.
+* `version`: (String): The version of the server software returned in the response to the query for TXT record version.server. or version.bind. in the CHAOS class.
+* `rrl_enable` (Bool, Default: true): Enable RRL configuration.
 * `rrl_size`: This option gives the size of the  hashtable. Valid Optional Integer. Default: 1000000
 * `rrl_ratelimit` (Integer, Default:200):  The max qps allowed.
 * `rrl_slip` (Integer=2): This option controls the number of packets discarded before we send back a SLIP response
