@@ -8,6 +8,8 @@ define nsd::zone (
   Optional[String]              $zonefile               = undef,
   Optional[Tea::Absolutepath]   $zone_dir               = undef,
   Optional[Array[Nsd::Rrltype]] $rrl_whitelist          = [],
+  Optional[Enum['on','off']]    $zonemd_verify          = undef,
+  Optional[Nsd::Zonemd_generate] $zonemd_generate       = undef,
 ) {
   include nsd
   $default_masters      = $nsd::default_masters
