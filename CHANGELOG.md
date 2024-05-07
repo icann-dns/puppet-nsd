@@ -1,3 +1,6 @@
+### 2018-06-26 0.3.8
+* Check for empty not nil as default_pick(undef, undef) returns empty string
+
 ### 2018-06-26 0.3.7
 * Allow setting global defaults for ixfr settings
 
