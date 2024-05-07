@@ -1,22 +1,25 @@
 #== Class: nsd
 #
 define nsd::zone (
-  Optional[Array[String]]       $masters                = [],
-  Optional[Array[String]]       $provide_xfrs           = [],
-  Optional[Array[String]]       $allow_notify_additions = [],
-  Optional[Array[String]]       $send_notify_additions  = [],
-  Optional[String]              $zonefile               = undef,
-  Optional[Tea::Absolutepath]   $zone_dir               = undef,
-  Optional[Array[Nsd::Rrltype]] $rrl_whitelist          = [],
-  Optional[Enum['on','off']]    $zonemd_verify          = undef,
+  Optional[Array[String]]        $masters                = [],
+  Optional[Array[String]]        $provide_xfrs           = [],
+  Optional[Array[String]]        $allow_notify_additions = [],
+  Optional[Array[String]]        $send_notify_additions  = [],
+  Optional[String]               $zonefile               = undef,
+  Optional[Tea::Absolutepath]    $zone_dir               = undef,
+  Optional[Array[Nsd::Rrltype]]  $rrl_whitelist          = [],
+  Optional[Enum['on','off']]     $zonemd_verify          = undef,
   Optional[Nsd::Zonemd_generate] $zonemd_generate       = undef,
-  Optional[Enum['yes','no']]    $allow_axfr_fallback    = undef,
-  Optional[Enum['yes','no']]    $create_ixfr            = undef,
-  Optional[Integer]             $ixfr_size              = undef,
+  Optional[Stdlib::Yes_no]       $allow_axfr_fallback    = undef,
+  Optional[Stdlib::Yes_no]       $create_ixfr            = undef,
+  Optional[Integer]              $ixfr_size              = undef,
 ) {
   include nsd
   $default_masters      = $nsd::default_masters
   $default_provide_xfrs = $nsd::default_provide_xfrs
+  $_allow_axfr_fallback = pick_default($allow_axfr_fallback, $nsd::default_allow_axfr_fallback)
+  $_create_ixfr         = pick_default($create_ixfr, $nsd::default_create_ixfr)
+  $_ixfr_size           = pick_default($ixfr_size, $nsd::default_ixfr_size)
   if $zone_dir {
     $zone_subdir = $zone_dir
   } else {

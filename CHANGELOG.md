@@ -1,3 +1,6 @@
+### 2018-06-26 0.3.7
+* Allow setting global defaults for ixfr settings
+
 ### 2018-06-26 0.3.6
 * Add IXFR support
 
