@@ -35,12 +35,13 @@ zone:
   rrl-whitelist: <%= rrl_type %>
   <%- end -%>
 <%- end -%>
-<%- if @_allow_axfr_fallback -%>
+<%# pick_default returns an empty string if both values undef -%>
+<%- unless @_allow_axfr_fallback.empty? -%>
   allow-axfr-fallback: <%= @_allow_axfr_fallback %>
 <%- end -%>
-<%- if @_create_ixfr -%>
+<%- unless @_create_ixfr.empty? -%>
   create-ixfr: <%= @_create_ixfr %>
 <%- end -%>
-<%- if @_ixfr_size -%>
+<%- unless @_ixfr_size.empty? -%>
   ixfr-size: <%= @_ixfr_size %>
 <%- end -%>
