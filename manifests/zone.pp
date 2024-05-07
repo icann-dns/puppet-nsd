@@ -10,6 +10,9 @@ define nsd::zone (
   Optional[Array[Nsd::Rrltype]] $rrl_whitelist          = [],
   Optional[Enum['on','off']]    $zonemd_verify          = undef,
   Optional[Nsd::Zonemd_generate] $zonemd_generate       = undef,
+  Optional[Enum['yes','no']]    $allow_axfr_fallback    = undef,
+  Optional[Enum['yes','no']]    $create_ixfr            = undef,
+  Optional[Integer]             $ixfr_size              = undef,
 ) {
   include nsd
   $default_masters      = $nsd::default_masters
