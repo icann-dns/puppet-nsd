@@ -43,6 +43,8 @@ class nsd::as112 {
       zonefile => 'db.dd-empty';
     'home.arpa':
       zonefile => 'db.dd-empty';
+    'service.arpa':
+      zonefile => 'db.dd-empty';
     'empty.as112.arpa':
       zonefile => 'db.dr-empty';
     'hostname.as112.net':
