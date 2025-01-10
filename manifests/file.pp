@@ -11,10 +11,10 @@ define nsd::file (
   String                       $ensure           = 'present',
   String                       $owner            = 'root',
   String                       $group            = 'nsd',
-  Pattern[/^\d+$/]             $mode             = '0640',
-  Optional[Tea::Puppetsource]  $source           = undef,
+  Stdlib::Filemode             $mode             = '0640',
+  Optional[Stdlib::Filesource] $source           = undef,
   Optional[String]             $content          = undef,
-  Optional[Tea::Puppetcontent] $content_template = undef,
+  Optional[String] $content_template = undef,
 ) {
   if $content and $content_template {
     fail('can\'t set $content and $content_template')

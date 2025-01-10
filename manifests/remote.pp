@@ -6,11 +6,11 @@
 # @param port the port to connect to
 #
 define nsd::remote (
-  Optional[Variant[Tea::Ipv4, Tea::Ipv4_cidr]] $address4  = undef,
-  Optional[Variant[Tea::Ipv6, Tea::Ipv6_cidr]] $address6  = undef,
-  Optional[String]                             $tsig      = undef,
-  Optional[String]                             $tsig_name = undef,
-  Tea::Port                                    $port      = 53,
+  Optional[Stdlib::IP::Address] $address4  = undef,
+  Optional[Stdlib::IP::Address] $address6  = undef,
+  Optional[String]              $tsig      = undef,
+  Optional[String]              $tsig_name = undef,
+  Stdlib::Port                  $port      = 53,
 ) {
   include nsd
   if ! $address4 and ! $address6 {
