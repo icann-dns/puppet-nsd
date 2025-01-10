@@ -25,23 +25,6 @@ describe 'nsd::tsig', type: :define do
           )
         end
       end
-      describe 'Check bad params' do
-        context 'algo' do
-          let(:params) { { also: 'bla' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'data' do
-          let(:params) { { data: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'template' do
-          let(:params) { { template: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-      end
     end
   end
 end

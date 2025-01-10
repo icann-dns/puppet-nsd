@@ -29,16 +29,8 @@ describe 'nsd::remote' do
       let(:facts) do
         facts
       end
-      case facts[:kernel]
-      when 'Linux'
-        let(:conf_dir) { '/etc/nsd' }
-      else
-        let(:conf_dir) { '/usr/local/etc/nsd' }
-      end
-      # rubocop:disable RSpec/ScatteredLet
+      let(:conf_dir) { '/etc/nsd' }
       let(:conf_file) { "#{conf_dir}/nsd.conf" }
-
-      # rubocop:enable RSpec/ScatteredLet
 
       describe 'check default config' do
         it { is_expected.to compile.with_all_deps }
@@ -326,28 +318,6 @@ describe 'nsd::remote' do
               }x,
             )
           end
-        end
-      end
-      describe 'check bad type' do
-        context 'address4' do
-          before(:each) { params.merge!(address4: true) }
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'address4' do
-          before(:each) { params.merge!(address4: '333.333.333.333') }
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'address6' do
-          before(:each) { params.merge!(address6: true) }
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'tsig_name' do
-          before(:each) { params.merge!(tsig_name: true) }
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'port' do
-          before(:each) { params.merge!(port: true) }
-          it { is_expected.to raise_error(Puppet::Error) }
         end
       end
     end

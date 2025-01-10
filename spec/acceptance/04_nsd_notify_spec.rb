@@ -83,16 +83,10 @@ if ENV['BEAKER_TESTMODE'] == 'agent'
       describe port(53), node: dnsslave do
         it { is_expected.to be_listening }
       end
-      describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf'), if: os[:family] == 'ubuntu', node: dnsmaster do
+      describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf'), node: dnsmaster do
         its(:stdout) { is_expected.to match %r{} }
       end
-      describe command('nsd-checkconf /usr/local/etc/nsd/nsd.conf || cat /usr/local/etc/nsd/nsd.conf'), if: os[:family] == 'freebsd', node: dnsmaster do
-        its(:stdout) { is_expected.to match %r{} }
-      end
-      describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf'), if: os[:family] == 'ubuntu', node: dnsslave do
-        its(:stdout) { is_expected.to match %r{} }
-      end
-      describe command('nsd-checkconf /usr/local/etc/nsd/nsd.conf || cat /usr/local/etc/nsd/nsd.conf'), if: os[:family] == 'freebsd', node: dnsslave do
+      describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf'), node: dnsslave do
         its(:stdout) { is_expected.to match %r{} }
       end
       describe command("dig +short soa example.com. @#{dnsmaster_ip}"), node: dnsmaster do

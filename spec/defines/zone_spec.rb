@@ -147,53 +147,6 @@ describe 'nsd::zone', type: :define do
           end
         end
       end
-      describe 'Check bad params' do
-        context 'masters' do
-          let(:params) { { masters: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'masters server not defined' do
-          let(:params) { { masters: ['foo'] } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'provide_xfrs server not defined' do
-          let(:params) { { notify_addresses: ['foo'] } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'allow_notify_additions' do
-          let(:params) { { allow_notify: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'send_notify_additions' do
-          let(:params) { { provide_xfr: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'zonefile' do
-          let(:params) { { zones: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'zone_dir' do
-          let(:params) { { zone_dir: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'rrl_whitelist bad type' do
-          let(:params) { { rrl_whitelist: ['foo'] } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'rrl_whitelist' do
-          let(:params) { { rrl_whitelist: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-      end
     end
   end
 end

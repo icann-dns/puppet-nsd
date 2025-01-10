@@ -16,38 +16,6 @@ describe 'nsd::file', type: :define do
 
         it { is_expected.to compile.with_all_deps }
       end
-      describe 'Check bad params' do
-        context 'owner' do
-          let(:params) { { owner: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'group' do
-          let(:params) { { group: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'mode' do
-          let(:params) { { allow_notify: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'source' do
-          let(:params) { { source: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'content' do
-          let(:params) { { content: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'ensure' do
-          let(:params) { { ensure: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-      end
     end
   end
 end

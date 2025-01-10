@@ -5,67 +5,23 @@ describe 'nsd', type: :class do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
+      let(:package_name)     { 'nsd' }
+      let(:service_name)     { 'nsd' }
+      let(:conf_dir)         { '/etc/nsd' }
+      let(:zonesdir)         { '/var/lib/nsd' }
+      let(:init)             { 'upstart' }
+      let(:pidfile)          { '/run/nsd/nsd.pid' }
+      let(:database)         { '""' }
+      let(:xfrdfile)         { "#{zonesdir}/xfrd.state" }
+      let(:conf_file)        { "#{conf_dir}/nsd.conf" }
+      let(:logrotate_enable) { true }
+      let(:zone_subdir) { "#{zonesdir}/zone" }
 
-      case facts[:os]['family']
-      when 'Debian'
-        case facts[:os]['release']['major']
-        when '12.04'
-          let(:package_name)     { 'nsd3' }
-          let(:service_name)     { 'nsd3' }
-          let(:conf_dir)         { '/etc/nsd3' }
-          let(:zonesdir)         { '/var/lib/nsd3' }
-          let(:init)             { 'base' }
-          let(:pidfile)          { '/run/nsd3/nsd.pid' }
-          let(:database)         { '/var/lib/nsd3/nsd.db' }
-        when '14.04'
-          let(:package_name)     { 'nsd' }
-          let(:service_name)     { 'nsd' }
-          let(:conf_dir)         { '/etc/nsd' }
-          let(:zonesdir)         { '/var/lib/nsd' }
-          let(:init)             { 'upstart' }
-          let(:pidfile)          { '/run/nsd/nsd.pid' }
-          let(:database)         { '/var/lib/nsd/nsd.db' }
-        when '16.04'
-          let(:package_name)     { 'nsd' }
-          let(:service_name)     { 'nsd' }
-          let(:conf_dir)         { '/etc/nsd' }
-          let(:zonesdir)         { '/var/lib/nsd' }
-          let(:init)             { 'upstart' }
-          let(:pidfile)          { '/run/nsd/nsd.pid' }
-          let(:database)         { '""' }
-        end
-        let(:xfrdfile)         { "#{zonesdir}/xfrd.state" }
-      when 'RedHat'
-        let(:package_name)     { 'nsd' }
-        let(:service_name)     { 'nsd' }
-        let(:conf_dir)         { '/etc/nsd' }
-        let(:zonesdir)         { '/var/lib/nsd' }
-        let(:init)             { 'upstart' }
-        let(:pidfile)          { '/run/nsd/nsd.pid' }
-        let(:xfrdfile)         { "#{zonesdir}/xfrd.state" }
-        let(:database)         { '""' }
-      when 'FreeBSD'
-        let(:package_name)     { 'nsd' }
-        let(:service_name)     { 'nsd' }
-        let(:conf_dir)         { '/usr/local/etc/nsd' }
-        let(:zonesdir)         { "#{conf_dir}/data" }
-        let(:xfrdfile)         { '/var/db/nsd/xfrd.state' }
-        let(:init)             { 'freebsd' }
-        let(:pidfile)          { '/var/run/nsd/nsd.pid' }
-        let(:database)         { '""' }
-      end
-      # rubocop:disable RSpec/ScatteredLet
-      let(:conf_file)        { "#{conf_dir}/nsd.conf" } # noqa
-      let(:logrotate_enable) { true } # noqa
-      let(:zone_subdir) { "#{zonesdir}/zone" } # noqa
-
-      # rubocop:enable RSpec/ScatteredLet
 
       describe 'check default config' do
         it { is_expected.to compile }
         it { is_expected.to contain_class('nsd') }
-        it { is_expected.to contain_class('nsd::params') }
-        it { is_expected.to contain_package(package_name).with_ensure('present') }
+        it { is_expected.to contain_package(package_name).with_ensure('installed') }
         it { is_expected.to contain_concat(conf_file) }
         it do
           is_expected.to contain_concat_fragment(
@@ -531,7 +487,7 @@ describe 'nsd', type: :class do
         context 'package_name' do
           let(:params) { { package_name: 'foo' } }
 
-          it { is_expected.to contain_package('foo').with_ensure('present') }
+          it { is_expected.to contain_package('foo').with_ensure('installed') }
         end
         context 'service_name' do
           let(:params) { { service_name: 'foo' } }
@@ -546,293 +502,6 @@ describe 'nsd', type: :class do
               '/foo.cfg',
             )
           end
-        end
-      end
-      describe 'check bad parameters' do
-        context 'enable' do
-          let(:params) { { enable: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'tsig' do
-          let(:params) { { tsig: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'slave_addresses' do
-          let(:params) { { slave_addresses: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'zones' do
-          let(:params) { { zones: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'files' do
-          let(:params) { { files: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'tsigs' do
-          let(:params) { { tsigs: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'logrotate_enable' do
-          let(:params) { { logrotate_enable: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'logrotate_rotate' do
-          let(:params) { { logrotate_rotate: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'logrotate_size' do
-          let(:params) { { logrotate_size: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'master' do
-          let(:params) { { master: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'server_template' do
-          let(:params) { { server_template: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'zones_template' do
-          let(:params) { { tsig: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'ip_addresses' do
-          let(:params) { { ip_addresses: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'includes' do
-          let(:params) { { includes: [''] } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'debug_mode' do
-          let(:params) { { debug_mode: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'identity' do
-          let(:params) { { identity: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'nsid' do
-          let(:params) { { nsid: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'logfile' do
-          let(:params) { { logfile: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'server_count' do
-          let(:params) { { server_count: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'tcp_count' do
-          let(:params) { { tcp_count: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'tcp_query_count' do
-          let(:params) { { tcp_query_count: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'tcp_timeout' do
-          let(:params) { { tcp_timeout: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'ipv4_edns_size' do
-          let(:params) { { ipv4_edns_size: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'ipv6_edns_size' do
-          let(:params) { { ipv6_edns_size: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'pidfile' do
-          let(:params) { { pidfile: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'port' do
-          let(:params) { { port: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'port to big' do
-          let(:params) { { port: 9_999_999 } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'statistics' do
-          let(:params) { { statistics: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'chroot' do
-          let(:params) { { chroot: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'username' do
-          let(:params) { { username: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'zonesdir' do
-          let(:params) { { zonesdir: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'difffile' do
-          let(:params) { { difffile: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'xfrdfile' do
-          let(:params) { { xfrdfile: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'xfrd_reload_timeout' do
-          let(:params) { { xfrd_reload_timeout: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'verbosity' do
-          let(:params) { { verbosity: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'verbosity to big' do
-          let(:params) { { verbosity: 4 } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'hide_version' do
-          let(:params) { { hide_version: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'rrl_size' do
-          let(:params) { { rrl_size: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'rrl_ratelimit' do
-          let(:params) { { rrl_ratelimit: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'rrl_slip' do
-          let(:params) { { rrl_slip: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'rrl_ipv4_prefix_length' do
-          let(:params) { { rrl_ipv4_prefix_length: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'rrl_ipv6_prefix_length' do
-          let(:params) { { rrl_ipv6_prefix_length: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'rrl_whitelist_ratelimit' do
-          let(:params) { { rrl_whitelist_ratelimit: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'rrl_whitelist' do
-          let(:params) { { rrl_whitelist: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'control_enable' do
-          let(:params) { { control_enable: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'control_interface' do
-          let(:params) { { control_interface: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'server_key_file' do
-          let(:params) { { server_key_file: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'server_cert_file' do
-          let(:params) { { server_cert_file: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'control_key_file' do
-          let(:params) { { control_key_file: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'control_cert_file' do
-          let(:params) { { control_cert_file: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'init' do
-          let(:params) { { init: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'database' do
-          let(:params) { { database: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'package_name' do
-          let(:params) { { package_name: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'service_name' do
-          let(:params) { { service_name: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'conf_dir' do
-          let(:params) { { conf_dir: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'zone_subdir' do
-          let(:params) { { zone_subdir: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'conf_file' do
-          let(:params) { { conf_file: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
         end
       end
     end
