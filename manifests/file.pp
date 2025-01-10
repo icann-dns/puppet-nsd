@@ -1,13 +1,20 @@
-# Define: nsd::file
+# @summary define for creating nsd zone files
+# @param ensure the ensure value for the file
+# @param owner the owner of the file
+# @param group the group of the file
+# @param mode the mode of the file
+# @param source the source of the file
+# @param content the content of the file
+# @param content_template the template to use for the content
 #
 define nsd::file (
+    String                       $ensure           = 'present',
     String                       $owner            = 'root',
     String                       $group            = 'nsd',
     Pattern[/^\d+$/]             $mode             = '0640',
     Optional[Tea::Puppetsource]  $source           = undef,
     Optional[String]             $content          = undef,
     Optional[Tea::Puppetcontent] $content_template = undef,
-    String                       $ensure           = 'present',
 ) {
   if $content and $content_template {
     fail('can\'t set $content and $content_template')

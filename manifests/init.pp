@@ -1,7 +1,79 @@
-#== Class: nsd
-#
+# @summary Configure NSD authoritative DNS server
+# @param tcp_timeout TCP timeout in seconds
+# @param statistics Interval in seconds for statistics
+# @param chroot Directory to chroot to
+# @param logfile Path to the log file
+# @param difffile Path to the differences file
+# @param control_interface IP address for control interface
+# @param database Path to the database file
+# @param default_tsig_name Default TSIG key name
+# @param default_masters List of default master servers
+# @param default_provide_xfrs List of default servers to provide zone transfers
+# @param enable Whether to enable the service
+# @param slave_addresses Hash of slave addresses
+# @param zones Hash of DNS zones
+# @param files Hash of files to manage
+# @param tsigs Hash of TSIG keys
+# @param remotes Hash of remote servers
+# @param server_template Template for server configuration
+# @param zones_template Template for zones configuration
+# @param pattern_template Template for patterns configuration
+# @param gather_template Template for gather configuration
+# @param includes_template Template for includes configuration
+# @param puppetdb_server IP address of the PuppetDB server
+# @param puppetdb_port Port of the PuppetDB server
+# @param ip_addresses List of IP addresses
+# @param includes List of include files
+# @param ip_transparent Whether to enable IP transparency
+# @param reuseport Whether to enable SO_REUSEPORT
+# @param debug_mode Whether to enable debug mode
+# @param tcp_count Number of TCP connections
+# @param tcp_query_count Number of TCP queries
+# @param ipv4_edns_size EDNS buffer size for IPv4
+# @param ipv6_edns_size EDNS buffer size for IPv6
+# @param port Port number for the DNS server
+# @param username Username to run the service as
+# @param xfrd_reload_timeout Timeout for XFRD reload
+# @param verbosity Verbosity level
+# @param hide_version Whether to hide the version
+# @param version Version string
+# @param control_enable Whether to enable control interface
+# @param control_port Port number for control interface
+# @param logrotate_rotate Number of log rotations
+# @param logrotate_size Size of log files for rotation
+# @param rrl_enable Whether to enable Response Rate Limiting
+# @param rrl_size Size of the RRL table
+# @param rrl_ratelimit Rate limit for RRL
+# @param rrl_slip Slip ratio for RRL
+# @param rrl_whitelist List of whitelisted IPs for RRL
+# @param rrl_ipv4_prefix_length IPv4 prefix length for RRL
+# @param rrl_ipv6_prefix_length IPv6 prefix length for RRL
+# @param rrl_whitelist_ratelimit Rate limit for whitelisted IPs in RRL
+# @param identity Identity string
+# @param nsid NSID string
+# @param server_count Number of server instances
+# @param pidfile Path to the PID file
+# @param zonesdir Directory for zone files
+# @param conf_dir Directory for configuration files
+# @param zone_subdir Subdirectory for zone files
+# @param conf_file Path to the main configuration file
+# @param xfrdfile Path to the XFRD state file
+# @param server_key_file Path to the server key file
+# @param server_cert_file Path to the server certificate file
+# @param control_key_file Path to the control key file
+# @param control_cert_file Path to the control certificate file
+# @param init Init system to use
+# @param package_name Name of the package
+# @param service_name Name of the service
+# @param restart_cmd Command to restart the service
+# @param logrotate_enable Whether to enable log rotation
+# @param default_allow_axfr_fallback Default allow AXFR fallback
+# @param default_create_ixfr Default create IXFR
+# @param default_ixfr_size Default IXFR size
+# @param imports List of import files
+# @param exports List of export files
 class nsd (
-  Optional[Integer]           $tcp_timeout                 = undef,
+  Optional[Integer]           $tcp_timeout          = undef,
   Optional[Integer]           $statistics                  = undef,
   Optional[Tea::Absolutepath] $chroot                      = undef,
   Optional[Tea::Absolutepath] $logfile                     = undef,
@@ -59,15 +131,15 @@ class nsd (
   Tea::Absolutepath           $conf_dir                    = '/etc/nsd',
   Tea::Absolutepath           $zone_subdir                 = "${zonesdir}/zone",
   Tea::Absolutepath           $conf_file                   = "${conf_dir}/nsd.conf",
-  Tea::Absolutepath           $xfrdfile                    = "${zonesdir}/xfrd.state"
+  Tea::Absolutepath           $xfrdfile                    = "${zonesdir}/xfrd.state",
   Tea::Absolutepath           $server_key_file             = "${conf_dir}/nsd_server.key",
   Tea::Absolutepath           $server_cert_file            = "${conf_dir}/nsd_server.pem",
   Tea::Absolutepath           $control_key_file            = "${conf_dir}/nsd_control.key",
   Tea::Absolutepath           $control_cert_file           = "${conf_dir}/nsd_control.pem",
-  Optional[String]            $init                        = 'systemd'
+  Optional[String]            $init                        = undef,
   String                      $package_name                = 'nsd',
   String                      $service_name                = 'nsd',
-  String                      $restart_cmd                 = '/usr/sbin/nsd-control reconfig'
+  String                      $restart_cmd                 = '/usr/sbin/nsd-control reconfig',
   Boolean                     $logrotate_enable            = true,
   Optional[Stdlib::Yes_no]    $default_allow_axfr_fallback = undef,
   Optional[Stdlib::Yes_no]    $default_create_ixfr         = undef,

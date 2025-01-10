@@ -1,4 +1,8 @@
-# Define: nsd::tsig
+# @summary define for creating nsd zone files
+# @param data the data for the tsig key
+# @param algo the algorithm to use
+# @param template the template to use for the key
+# @param key_name the name of the key
 #
 define nsd::tsig (
     String           $data,

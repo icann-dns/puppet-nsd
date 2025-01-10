@@ -1,4 +1,4 @@
-# helper class to configure an as112 server
+# @summary helper class to configure an as112 server
 #
 class nsd::as112 {
   include nsd

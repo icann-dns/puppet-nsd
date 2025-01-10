@@ -1,4 +1,9 @@
-#== Define: nsd::remote
+# @summary Configure a remote master server
+# @param address4 the IPv4 address of the remote server
+# @param address6 the IPv6 address of the remote server
+# @param tsig the name of the tsig key to use
+# @param tsig_name the name of the tsig key to use
+# @param port the port to connect to
 #
 define nsd::remote (
   Optional[Variant[Tea::Ipv4, Tea::Ipv4_cidr]] $address4  = undef,
