@@ -62,7 +62,6 @@
 # @param server_cert_file Path to the server certificate file
 # @param control_key_file Path to the control key file
 # @param control_cert_file Path to the control certificate file
-# @param init Init system to use
 # @param package_name Name of the package
 # @param service_name Name of the service
 # @param restart_cmd Command to restart the service
@@ -136,7 +135,6 @@ class nsd (
   Stdlib::Unixpath              $server_cert_file            = "${conf_dir}/nsd_server.pem",
   Stdlib::Unixpath              $control_key_file            = "${conf_dir}/nsd_control.key",
   Stdlib::Unixpath              $control_cert_file           = "${conf_dir}/nsd_control.pem",
-  Optional[String]              $init                        = undef,
   String                        $package_name                = 'nsd',
   String                        $service_name                = 'nsd',
   String                        $restart_cmd                 = '/usr/sbin/nsd-control reconfig',
@@ -147,8 +145,22 @@ class nsd (
   Array[String]                 $imports                     = [],
   Array[String]                 $exports                     = [],
 ) {
+  # TODO: We should add this to the systemd unit file
   $_restart_cmd = "${restart_cmd} || nsd-checkconf ${conf_file} && service nsd restart"
   ensure_packages([$package_name])
+
+  file {
+    default:
+      ensure  => directory,
+      owner   => $username,
+      group   => $username,
+      require => Package[$package_name];
+    [$zonesdir, $zone_subdir]:
+      ;
+    $conf_dir:
+      mode  => '0755',
+      owner => 'root';
+  }
   concat { $conf_file:
     require => Package[$package_name],
     notify  => Service[$service_name];
@@ -171,42 +183,11 @@ class nsd (
       require => Package[$package_name],
     }
   }
-  file { [$zonesdir, $zone_subdir]:
-    ensure  => directory,
-    owner   => $username,
-    group   => $username,
-    require => Package[$package_name],
-  }
-  file { $conf_dir:
-    ensure  => directory,
-    mode    => '0755',
-    group   => $username,
-    require => Package[$package_name],
-  }
-  if $init == 'base' {
-    service { $service_name:
-      ensure   => $enable,
-      provider => 'base',
-      restart  => $_restart_cmd,
-      start    => "/etc/init.d/${service_name} start",
-      stop     => "/etc/init.d/${service_name} stop",
-      enable   => $enable,
-      require  => Package[$package_name];
-    }
-  } else {
-    if $facts['os']['name'] == 'ubuntu' and $facts['os']['distro']['codename'] == 'trusty' {
-      file { '/etc/init/nsd.conf':
-        ensure => file,
-        source => 'puppet:///modules/nsd/etc/init/nsd.conf',
-        notify => Service[$service_name],
-      }
-    }
-    service { $service_name:
-      ensure  => $enable,
-      enable  => $enable,
-      restart => $_restart_cmd,
-      require => Package[$package_name];
-    }
+  service { $service_name:
+    ensure  => $enable,
+    enable  => $enable,
+    restart => $_restart_cmd,
+    require => Package[$package_name];
   }
   if $logrotate_enable and $logfile and $facts['kernel'] != 'FreeBSD' {
     logrotate::rule { 'nsd':

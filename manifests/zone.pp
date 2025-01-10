@@ -18,7 +18,7 @@ define nsd::zone (
   Array[String]                  $allow_notify_additions = [],
   Array[String]                  $send_notify_additions  = [],
   Optional[String]               $zonefile               = undef,
-  Optional[Tea::Absolutepath]    $zone_dir               = undef,
+  Optional[Stdlib::Unixpath]     $zone_dir               = undef,
   Array[Nsd::Rrltype]            $rrl_whitelist          = [],
   Optional[Enum['on','off']]     $zonemd_verify          = undef,
   Optional[Nsd::Zonemd_generate] $zonemd_generate        = undef,
