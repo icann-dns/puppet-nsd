@@ -10,19 +10,24 @@ if ENV['BEAKER_TESTMODE'] == 'apply'
         apply_manifest(pp, catch_failures: true)
         expect(apply_manifest(pp, catch_failures: true).exit_code).to eq 0
       end
+
       describe service('nsd') do
         it { is_expected.to be_running }
       end
+
       describe port(53) do
         it { is_expected.to be_listening }
       end
+
       describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf') do
         its(:stdout) { is_expected.to match %r{} }
       end
+
       describe command('dig +short soa empty.as112.arpa @127.0.0.1') do
         its(:exit_status) { is_expected.to eq 0 }
         its(:stdout) { is_expected.to match %r{blackhole.as112.arpa. noc.dns.icann.org. 1 604800 60 604800 604800} }
       end
+
       %w[
         10.172 16.172 17.172 18.172 19.172 20.172 21.172 22.172 23.172 24.172
         25.172 26.172 27.172 28.172 29.172 30.172 31.172 168.192 254.129

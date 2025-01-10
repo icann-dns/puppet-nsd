@@ -15,13 +15,14 @@ describe 'nsd::tsig', type: :define do
         let(:params) { { data: 'aaaa' } }
 
         it { is_expected.to compile.with_all_deps }
+
         it do
           is_expected.to contain_concat_fragment(
-            'nsd_key_test',
+            'nsd_key_test'
           ).with_content(
-            %r{name:\stest},
+            %r{name:\stest}
           ).with_content(
-            %r{secret:\saaaa},
+            %r{secret:\saaaa}
           )
         end
       end
