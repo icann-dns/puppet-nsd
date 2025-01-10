@@ -32,11 +32,11 @@ define nsd::remote (
       fail("${name}: Nsd::Tsig['${tsig_name}'] does not exist")
     }
   } else {
-    $_tsig_name = $::nsd::default_tsig_name
+    $_tsig_name = $nsd::default_tsig_name
   }
-  concat::fragment{ "nsd_pattern_${name}":
-    target  => $::nsd::conf_file,
-    content => template($::nsd::pattern_template),
+  concat::fragment { "nsd_pattern_${name}":
+    target  => $nsd::conf_file,
+    content => template($nsd::pattern_template),
     order   => '15';
   }
 }

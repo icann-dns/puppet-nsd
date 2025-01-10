@@ -13,13 +13,13 @@
 # @param ixfr_size the size of the ixfr files
 #
 define nsd::zone (
-  Optional[Array[String]]        $masters                = [],
-  Optional[Array[String]]        $provide_xfrs           = [],
-  Optional[Array[String]]        $allow_notify_additions = [],
-  Optional[Array[String]]        $send_notify_additions  = [],
+  Array[String]                  $masters                = [],
+  Array[String]                  $provide_xfrs           = [],
+  Array[String]                  $allow_notify_additions = [],
+  Array[String]                  $send_notify_additions  = [],
   Optional[String]               $zonefile               = undef,
   Optional[Tea::Absolutepath]    $zone_dir               = undef,
-  Optional[Array[Nsd::Rrltype]]  $rrl_whitelist          = [],
+  Array[Nsd::Rrltype]            $rrl_whitelist          = [],
   Optional[Enum['on','off']]     $zonemd_verify          = undef,
   Optional[Nsd::Zonemd_generate] $zonemd_generate        = undef,
   Optional[Stdlib::Yes_no]       $allow_axfr_fallback    = undef,
@@ -35,10 +35,10 @@ define nsd::zone (
   if $zone_dir {
     $zone_subdir = $zone_dir
   } else {
-    $zone_subdir = $::nsd::zone_subdir
+    $zone_subdir = $nsd::zone_subdir
   }
   if empty($rrl_whitelist) {
-    $_rrl_whitelist = $::nsd::rrl_whitelist
+    $_rrl_whitelist = $nsd::rrl_whitelist
   } else {
     $_rrl_whitelist = $rrl_whitelist
   }
@@ -63,9 +63,9 @@ define nsd::zone (
     }
   }
 
-  concat::fragment{ "nsd_zones_${name}":
-    target  => $::nsd::conf_file,
-    content => template($::nsd::zones_template),
+  concat::fragment { "nsd_zones_${name}":
+    target  => $nsd::conf_file,
+    content => template($nsd::zones_template),
     order   => 20;
   }
 }

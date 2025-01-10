@@ -147,19 +147,18 @@ class nsd (
   Array[String]               $imports                     = [],
   Array[String]               $exports                     = [],
 ) {
-
   $_restart_cmd = "${restart_cmd} || nsd-checkconf ${conf_file} && service nsd restart"
   ensure_packages([$package_name])
-  concat{$conf_file:
+  concat { $conf_file:
     require => Package[$package_name],
     notify  => Service[$service_name];
   }
-  concat::fragment{'nsd_server':
+  concat::fragment { 'nsd_server':
     target  => $conf_file,
     content => template($server_template),
     order   => '01',
   }
-  concat::fragment{'includes':
+  concat::fragment { 'includes':
     target  => $conf_file,
     content => template($includes_template),
     order   => '19',
@@ -195,7 +194,7 @@ class nsd (
       require  => Package[$package_name];
     }
   } else {
-    if $::operatingsystem == 'ubuntu' and $::lsbdistcodename == 'trusty' {
+    if $facts['os']['name'] == 'ubuntu' and $facts['os']['distro']['codename'] == 'trusty' {
       file { '/etc/init/nsd.conf':
         ensure => file,
         source => 'puppet:///modules/nsd/etc/init/nsd.conf',
@@ -209,8 +208,8 @@ class nsd (
       require => Package[$package_name];
     }
   }
-  if $logrotate_enable and $logfile and $::kernel != 'FreeBSD' {
-    logrotate::rule {'nsd':
+  if $logrotate_enable and $logfile and $facts['kernel'] != 'FreeBSD' {
+    logrotate::rule { 'nsd':
       path       => $logfile,
       rotate     => $logrotate_rotate,
       size       => $logrotate_size,
@@ -225,7 +224,7 @@ class nsd (
     fail("Nsd::Tsig['${default_tsig_name}'] does not exist")
   }
   create_resources(nsd::remote, $remotes)
-  concat::fragment {'nsd_pattern_gather':
+  concat::fragment { 'nsd_pattern_gather':
     target  => $conf_file,
     content => template($gather_template),
     order   => '16',
