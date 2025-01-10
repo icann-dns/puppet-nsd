@@ -151,10 +151,10 @@ class nsd (
 
   file {
     default:
-      ensure  => directory,
-      owner   => $username,
-      group   => $username,
-      require => Package[$package_name];
+      ensure => directory,
+      owner  => $username,
+      group  => $username,
+      before => Package[$package_name];
     [$zonesdir, $zone_subdir]:
       ;
     $conf_dir:
@@ -162,7 +162,8 @@ class nsd (
       owner => 'root';
   }
   concat { $conf_file:
-    require => Package[$package_name],
+    before  => Package[$package_name],
+    require => File[$conf_dir],
     notify  => Service[$service_name];
   }
   concat::fragment { 'nsd_server':
@@ -176,9 +177,7 @@ class nsd (
     order   => '19',
   }
   if $control_enable {
-    exec { 'nsd-control-setup':
-      command => 'nsd-control-setup',
-      path    => '/usr/bin:/usr/sbin:/usr/local/sbin',
+    exec { '/usr/sbin/nsd-control-setup':
       creates => $server_key_file,
       require => Package[$package_name],
     }
@@ -189,7 +188,7 @@ class nsd (
     restart => $_restart_cmd,
     require => Package[$package_name];
   }
-  if $logrotate_enable and $logfile and $facts['kernel'] != 'FreeBSD' {
+  if $logrotate_enable and $logfile {
     logrotate::rule { 'nsd':
       path       => $logfile,
       rotate     => $logrotate_rotate,
