@@ -1,3 +1,4 @@
+# @summary Type for the Nsd algorithm
 type Nsd::Algo = Enum[
   hmac-sha1,
   hmac-sha224,
@@ -6,4 +7,3 @@ type Nsd::Algo = Enum[
   hmac-sha512,
   hmac-md5,
 ]
-
