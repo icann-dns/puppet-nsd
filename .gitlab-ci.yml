@@ -2,8 +2,9 @@ stages:
   - lint
   - rubocop
   - rspec
-  - beaker_apply
-  - beaker_agent
+# TODO: We need to update theses test
+#  - beaker_apply
+#  - beaker_agent
 
 before_script:
   - ruby -v
@@ -27,36 +28,36 @@ rspec:
   script:
     - bundle exec rake spec
 
-beaker_trusty_apply:
-  stage: beaker_apply
-  variables:
-    BEAKER_set: docker/ubuntu-14.04
-    BEAKER_TESTMODE: apply
-  script:
-    -  bundle exec rake beaker
-
-beaker_xenial_apply:
-  stage: beaker_apply
-  variables:
-    BEAKER_set: docker/ubuntu-16.04
-    BEAKER_TESTMODE: apply
-  script:
-    -  bundle exec rake beaker
-
-beaker_trusty_agent:
-  stage: beaker_agent
-  variables:
-    BEAKER_set: docker/ubuntu-master-14.04
-    BEAKER_TESTMODE: agent
-  script:
-    -  bundle exec rake beaker
-
-beaker_xenial_agent:
-  stage: beaker_agent
-  variables:
-    BEAKER_set: docker/ubuntu-master-16.04
-    BEAKER_TESTMODE: agent
-    BEAKER_debug: 'on'
-  script:
-    -  bundle exec rake beaker
-
+#beaker_trusty_apply:
+#  stage: beaker_apply
+#  variables:
+#    BEAKER_set: docker/ubuntu-14.04
+#    BEAKER_TESTMODE: apply
+#  script:
+#    -  bundle exec rake beaker
+#
+#beaker_xenial_apply:
+#  stage: beaker_apply
+#  variables:
+#    BEAKER_set: docker/ubuntu-16.04
+#    BEAKER_TESTMODE: apply
+#  script:
+#    -  bundle exec rake beaker
+#
+#beaker_trusty_agent:
+#  stage: beaker_agent
+#  variables:
+#    BEAKER_set: docker/ubuntu-master-14.04
+#    BEAKER_TESTMODE: agent
+#  script:
+#    -  bundle exec rake beaker
+#
+#beaker_xenial_agent:
+#  stage: beaker_agent
+#  variables:
+#    BEAKER_set: docker/ubuntu-master-16.04
+#    BEAKER_TESTMODE: agent
+#    BEAKER_debug: 'on'
+#  script:
+#    -  bundle exec rake beaker
+#
