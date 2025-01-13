@@ -193,11 +193,17 @@ class nsd (
       require => Package[$package_name],
     }
   }
+  $read_write_paths = ['/var/lib/nsd', '/etc/nsd', '/run', '/var/log']
+  systemd::dropin_file { 'nsd.conf':
+    unit    => 'nsd.service',
+    content => "[Service]\nReadWritePaths=\nReadWritePaths=${read_write_paths.join(' ')}\n",
+    before  => Package[$package_name],
+  }
   service { $service_name:
     ensure  => $enable,
     enable  => $enable,
     restart => $_restart_cmd,
-    require => Package[$package_name];
+    require => Package[$package_name],
   }
   if $logrotate_enable and $logfile {
     logrotate::rule { 'nsd':
