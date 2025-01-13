@@ -149,6 +149,17 @@ class nsd (
   $_restart_cmd = "${restart_cmd} || nsd-checkconf ${conf_file} && service nsd restart"
   ensure_packages([$package_name])
 
+  group { 'nsd':
+    ensure => present,
+    system => true,
+  }
+  user { 'nsd':
+    ensure => present,
+    home   => '/var/lib/nsd',
+    shell  => '/usr/sbin/nologin',
+    gid    => 'nsd',
+    system => true,
+  }
   file {
     default:
       ensure => directory,
