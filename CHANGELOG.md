@@ -1,3 +1,17 @@
+### 2025-01-14 0.4.0
+* Drop FreeBSD support
+* Add documentation
+* fix linting issues
+* Drop tea module for stdlib
+* Drop unused code paths
+* Update dependencies
+* Manage user and groups in puppet
+* Fix rspec scripts
+* Fix rubocop errors
+* Add reference file
+* Drop beaker tests
+* Add systemd override for ReadWritePaths
+
 ### 2018-06-26 0.3.8
 * Check for empty not nil as default_pick(undef, undef) returns empty string
 
