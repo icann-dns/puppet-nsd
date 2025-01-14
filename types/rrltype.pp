@@ -1,3 +1,4 @@
+# @summary Type for the Nsd rrltype
 type Nsd::Rrltype = Enum[
   nxdomain,
   error,

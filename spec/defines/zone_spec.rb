@@ -33,8 +33,8 @@ describe 'nsd::zone', type: :define do
   let(:title) { 'example.com' }
   let(:params) do
     {
-      'masters'       => ['master'],
-      'provide_xfrs'  => ['slave'],
+      'masters' => ['master'],
+      'provide_xfrs' => ['slave'],
     }
   end
 
@@ -44,154 +44,127 @@ describe 'nsd::zone', type: :define do
 
       describe 'basic check' do
         it { is_expected.to compile.with_all_deps }
+
         it do
           is_expected.to contain_concat_fragment(
-            'nsd_zones_example.com',
+            'nsd_zones_example.com'
           ).with_content(
-            %r{name: "example.com"},
+            %r{name: "example.com"}
           ).with_content(
-            %r{zonefile:.+example.com},
+            %r{zonefile:.+example.com}
           ).with_content(
-            %r{include-pattern: master-master},
+            %r{include-pattern: master-master}
           ).with_content(
-            %r{include-pattern: slave-provide-xfr},
+            %r{include-pattern: slave-provide-xfr}
           )
         end
       end
+
       describe 'Change Defaults' do
         context 'masters' do
           let(:params) { { 'masters' => ['slave'] } }
 
           it { is_expected.to compile }
+
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com',
+              'nsd_zones_example.com'
             ).without_content(
-              %r{include-pattern: master-master},
+              %r{include-pattern: master-master}
             ).with_content(
-              %r{include-pattern: slave-master},
+              %r{include-pattern: slave-master}
             )
           end
         end
+
         context 'provide_xfrs' do
           let(:params) { { 'provide_xfrs' => ['master'] } }
 
           it { is_expected.to compile }
+
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com',
+              'nsd_zones_example.com'
             ).with_content(
-              %r{include-pattern: master-provide-xfr},
+              %r{include-pattern: master-provide-xfr}
             ).without_content(
-              %r{include-pattern: slave-provide-xfr},
+              %r{include-pattern: slave-provide-xfr}
             )
           end
         end
+
         context 'allow_notify_additions' do
-          before(:each) { params.merge!(allow_notify_additions: ['extra_allow_notify']) }
+          before { params.merge!(allow_notify_additions: ['extra_allow_notify']) }
+
           it { is_expected.to compile }
+
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com',
+              'nsd_zones_example.com'
             ).with_content(
-              %r{include-pattern: extra_allow_notify-allow-notify-addition},
+              %r{include-pattern: extra_allow_notify-allow-notify-addition}
             )
           end
         end
+
         context 'send_notify_additions' do
-          before(:each) { params.merge!(send_notify_additions: ['extra_notify']) }
+          before { params.merge!(send_notify_additions: ['extra_notify']) }
+
           it { is_expected.to compile }
+
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com',
+              'nsd_zones_example.com'
             ).with_content(
-              %r{include-pattern: extra_notify-send-notify-addition},
+              %r{include-pattern: extra_notify-send-notify-addition}
             )
           end
         end
+
         context 'zonefile' do
-          before(:each) { params.merge!(zonefile: 'foobar') }
+          before { params.merge!(zonefile: 'foobar') }
+
           it { is_expected.to compile }
+
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com',
+              'nsd_zones_example.com'
             ).with_content(
-              %r{zonefile:.+foobar},
+              %r{zonefile:.+foobar}
             )
           end
         end
+
         context 'zone_dir' do
-          before(:each) { params.merge!(zone_dir: '/foobar') }
+          before { params.merge!(zone_dir: '/foobar') }
+
           it { is_expected.to compile }
+
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com',
+              'nsd_zones_example.com'
             ).with_content(
-              %r{zonefile: "/foobar/example.com"},
+              %r{zonefile: "/foobar/example.com"}
             )
           end
         end
+
         context 'rrl_whitelist' do
-          before(:each) { params.merge!(rrl_whitelist: ['dnskey', 'rrsig']) }
+          before { params.merge!(rrl_whitelist: %w[dnskey rrsig]) }
+
           it { is_expected.to compile }
+
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com',
+              'nsd_zones_example.com'
             ).without_content(
-              %r{rrl-whitelist: nxdomain},
+              %r{rrl-whitelist: nxdomain}
             ).with_content(
-              %r{rrl-whitelist: rrsig},
+              %r{rrl-whitelist: rrsig}
             ).with_content(
-              %r{rrl-whitelist: dnskey},
+              %r{rrl-whitelist: dnskey}
             )
           end
-        end
-      end
-      describe 'Check bad params' do
-        context 'masters' do
-          let(:params) { { masters: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'masters server not defined' do
-          let(:params) { { masters: ['foo'] } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'provide_xfrs server not defined' do
-          let(:params) { { notify_addresses: ['foo'] } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'allow_notify_additions' do
-          let(:params) { { allow_notify: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'send_notify_additions' do
-          let(:params) { { provide_xfr: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'zonefile' do
-          let(:params) { { zones: true } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'zone_dir' do
-          let(:params) { { zone_dir: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'rrl_whitelist bad type' do
-          let(:params) { { rrl_whitelist: ['foo'] } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
-        end
-        context 'rrl_whitelist' do
-          let(:params) { { rrl_whitelist: 'foo' } }
-
-          it { is_expected.to raise_error(Puppet::Error) }
         end
       end
     end

@@ -1,8 +1,8 @@
 fixtures:
   repositories:
-    tea: https://github.com/icann-dns/puppet-tea
     "stdlib": "https://github.com/puppetlabs/puppetlabs-stdlib"
     "concat": "https://github.com/puppetlabs/puppetlabs-concat"
     "logrotate" : "https://github.com/icann-dns/puppet-logrotate"
+    "systemd" : "https://github.com/icann-dns/puppet-systemd"
   symlinks:
     "nsd": "#{source_dir}"

@@ -1,11 +1,16 @@
-#== Define: nsd::remote
+# @summary Configure a remote master server
+# @param address4 the IPv4 address of the remote server
+# @param address6 the IPv6 address of the remote server
+# @param tsig the name of the tsig key to use
+# @param tsig_name the name of the tsig key to use
+# @param port the port to connect to
 #
 define nsd::remote (
-  Optional[Variant[Tea::Ipv4, Tea::Ipv4_cidr]] $address4  = undef,
-  Optional[Variant[Tea::Ipv6, Tea::Ipv6_cidr]] $address6  = undef,
-  Optional[String]                             $tsig      = undef,
-  Optional[String]                             $tsig_name = undef,
-  Tea::Port                                    $port      = 53,
+  Optional[Stdlib::IP::Address] $address4  = undef,
+  Optional[Stdlib::IP::Address] $address6  = undef,
+  Optional[String]              $tsig      = undef,
+  Optional[String]              $tsig_name = undef,
+  Stdlib::Port                  $port      = 53,
 ) {
   include nsd
   if ! $address4 and ! $address6 {
@@ -27,11 +32,11 @@ define nsd::remote (
       fail("${name}: Nsd::Tsig['${tsig_name}'] does not exist")
     }
   } else {
-    $_tsig_name = $::nsd::default_tsig_name
+    $_tsig_name = $nsd::default_tsig_name
   }
-  concat::fragment{ "nsd_pattern_${name}":
-    target  => $::nsd::conf_file,
-    content => template($::nsd::pattern_template),
+  concat::fragment { "nsd_pattern_${name}":
+    target  => $nsd::conf_file,
+    content => template($nsd::pattern_template),
     order   => '15';
   }
 }
