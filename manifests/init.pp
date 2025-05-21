@@ -221,10 +221,21 @@ class nsd (
     fail("Nsd::Tsig['${default_tsig_name}'] does not exist")
   }
   create_resources(nsd::remote, $remotes)
-  concat::fragment { 'nsd_pattern_gather':
-    target  => $conf_file,
-    content => template($gather_template),
-    order   => '16',
+  unless $imports.empty() {
+    $remotes_pql = @("PQL")
+      resources[title] {
+        exported = true and type = 'Nsd::Remote' and tags ~ '${imports.join('|')}'
+      }
+      | PQL
+    $patterns = puppetdb_query($remotes_pql).map |$remote| {
+      "  include-pattern: ${remote['title']}-provide-xfr"
+    }.sort
+    $remote_content = "pattern:\n  name: slave_servers\n${patterns.join("\n")}\n"
+    concat::fragment { 'nsd_slaves_servers':
+      target  => $conf_file,
+      content => $remote_content,
+      order   => '16',
+    }
   }
   $default_masters.each |String $master| {
     if ! defined(Nsd::Remote[$master]) {
