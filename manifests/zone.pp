@@ -29,6 +29,7 @@ define nsd::zone (
   include nsd
   $default_masters      = $nsd::default_masters
   $default_provide_xfrs = $nsd::default_provide_xfrs
+  $imports              = $nsd::imports
   $_allow_axfr_fallback = pick_default($allow_axfr_fallback, $nsd::default_allow_axfr_fallback)
   $_create_ixfr         = pick_default($create_ixfr, $nsd::default_create_ixfr)
   $_ixfr_size           = pick_default($ixfr_size, $nsd::default_ixfr_size)

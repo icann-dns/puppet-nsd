@@ -5,7 +5,9 @@ zone:
 <%- else -%>
   zonefile: "<%= @zone_subdir %>/<%= @name %>"
 <%- end -%>
+<%- unless @imports.empty? -%>
   include-pattern: slave_servers
+<%- end -%>
 <%- if @masters.any? -%>
   <%- @masters.each do |master| -%>
   include-pattern: <%= master %>-master
