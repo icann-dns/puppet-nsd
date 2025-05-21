@@ -1,3 +1,6 @@
+### 2025-05-21 0.5.0
+* update to use puppetdb_query instead of raw ruby rest requests
+
 ### 2025-01-14 0.4.0
 * Drop FreeBSD support
 * Add documentation
