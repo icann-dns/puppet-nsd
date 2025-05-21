@@ -54,12 +54,12 @@ class nsd::as112 {
   }
   nsd::file {
     'db.dd-empty':
-      source  => 'puppet:///modules/nsd/etc/nsd/db.dd-empty';
+      source => 'puppet:///modules/nsd/etc/nsd/db.dd-empty';
     'db.dr-empty':
-      source  => 'puppet:///modules/nsd/etc/nsd/db.dr-empty';
+      source => 'puppet:///modules/nsd/etc/nsd/db.dr-empty';
     'hostname.as112.net.zone':
       content_template => 'nsd/etc/nsd/hostname.as112.net.zone.erb';
     'hostname.as112.arpa.zone':
-      content_template=> 'nsd/etc/nsd/hostname.as112.arpa.zone.erb';
+      content_template => 'nsd/etc/nsd/hostname.as112.arpa.zone.erb';
   }
 }
