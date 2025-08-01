@@ -103,6 +103,11 @@ The following parameters are available in the `nsd` class:
 * [`default_allow_axfr_fallback`](#-nsd--default_allow_axfr_fallback)
 * [`default_create_ixfr`](#-nsd--default_create_ixfr)
 * [`default_ixfr_size`](#-nsd--default_ixfr_size)
+* [`default_max_refresh_time`](#-nsd--default_max_refresh_time)
+* [`default_min_refresh_time`](#-nsd--default_min_refresh_time)
+* [`default_max_retry_time`](#-nsd--default_max_retry_time)
+* [`default_min_retry_time`](#-nsd--default_min_retry_time)
+* [`default_min_expire_time`](#-nsd--default_min_expire_time)
 * [`imports`](#-nsd--imports)
 * [`exports`](#-nsd--exports)
 
@@ -666,6 +671,46 @@ Default IXFR size
 
 Default value: `undef`
 
+##### <a name="-nsd--default_max_refresh_time"></a>`default_max_refresh_time`
+
+Data type: `Optional[Integer]`
+
+Maximum refresh interval for zones
+
+Default value: `undef`
+
+##### <a name="-nsd--default_min_refresh_time"></a>`default_min_refresh_time`
+
+Data type: `Optional[Integer]`
+
+Minimum refresh interval for zones
+
+Default value: `undef`
+
+##### <a name="-nsd--default_max_retry_time"></a>`default_max_retry_time`
+
+Data type: `Optional[Integer]`
+
+Maximum retry interval for zones
+
+Default value: `undef`
+
+##### <a name="-nsd--default_min_retry_time"></a>`default_min_retry_time`
+
+Data type: `Optional[Integer]`
+
+Minimum retry interval for zones
+
+Default value: `undef`
+
+##### <a name="-nsd--default_min_expire_time"></a>`default_min_expire_time`
+
+Data type: `Optional[Integer]`
+
+Minimum expire interval for zones
+
+Default value: `undef`
+
 ##### <a name="-nsd--imports"></a>`imports`
 
 Data type: `Array[String]`
@@ -877,6 +922,11 @@ The following parameters are available in the `nsd::zone` defined type:
 * [`allow_axfr_fallback`](#-nsd--zone--allow_axfr_fallback)
 * [`create_ixfr`](#-nsd--zone--create_ixfr)
 * [`ixfr_size`](#-nsd--zone--ixfr_size)
+* [`max_refresh_time`](#-nsd--zone--max_refresh_time)
+* [`min_refresh_time`](#-nsd--zone--min_refresh_time)
+* [`max_retry_time`](#-nsd--zone--max_retry_time)
+* [`min_retry_time`](#-nsd--zone--min_retry_time)
+* [`min_expire_time`](#-nsd--zone--min_expire_time)
 
 ##### <a name="-nsd--zone--masters"></a>`masters`
 
@@ -971,6 +1021,46 @@ Default value: `undef`
 Data type: `Optional[Integer]`
 
 the size of the ixfr files
+
+Default value: `undef`
+
+##### <a name="-nsd--zone--max_refresh_time"></a>`max_refresh_time`
+
+Data type: `Optional[Integer]`
+
+Maximum refresh interval for zones
+
+Default value: `undef`
+
+##### <a name="-nsd--zone--min_refresh_time"></a>`min_refresh_time`
+
+Data type: `Optional[Integer]`
+
+Minimum refresh interval for zones
+
+Default value: `undef`
+
+##### <a name="-nsd--zone--max_retry_time"></a>`max_retry_time`
+
+Data type: `Optional[Integer]`
+
+Maximum retry interval for zones
+
+Default value: `undef`
+
+##### <a name="-nsd--zone--min_retry_time"></a>`min_retry_time`
+
+Data type: `Optional[Integer]`
+
+Minimum retry interval for zones
+
+Default value: `undef`
+
+##### <a name="-nsd--zone--min_expire_time"></a>`min_expire_time`
+
+Data type: `Optional[Integer]`
+
+Minimum expire interval for zones
 
 Default value: `undef`
 
