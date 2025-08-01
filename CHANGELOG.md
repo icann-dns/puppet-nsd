@@ -1,3 +1,6 @@
+### 2025-08-01 0.6.0
+* Add parameters to override soa timers
+
 ### 2025-05-21 0.5.0
 * update to use puppetdb_query instead of raw ruby rest requests
 
