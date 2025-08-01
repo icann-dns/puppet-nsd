@@ -12,7 +12,7 @@ server:
   <%- if address != :undef -%>
     <%- if @ipv6_capable.nil? or (address[":"] and @ipv6_capable) -%>
     ip-address: <%= address.split('/')[0] %>
-    <%- elsif @ipv4_capable.nil? or @ipv4_capable then -%> 
+    <%- elsif @ipv4_capable.nil? or @ipv4_capable then -%>
     ip-address: <%= address.split('/')[0] %>
     <%- end -%>
   <%- end -%>

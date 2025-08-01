@@ -11,6 +11,11 @@
 # @param allow_axfr_fallback whether to allow axfr fallback
 # @param create_ixfr whether to create ixfr files
 # @param ixfr_size the size of the ixfr files
+# @param max_refresh_time Maximum refresh interval for zones
+# @param min_refresh_time Minimum refresh interval for zones
+# @param max_retry_time Maximum retry interval for zones
+# @param min_retry_time Minimum retry interval for zones
+# @param min_expire_time Minimum expire interval for zones
 #
 define nsd::zone (
   Array[String]                  $masters                = [],
@@ -25,6 +30,11 @@ define nsd::zone (
   Optional[Stdlib::Yes_no]       $allow_axfr_fallback    = undef,
   Optional[Stdlib::Yes_no]       $create_ixfr            = undef,
   Optional[Integer]              $ixfr_size              = undef,
+  Optional[Integer]              $max_refresh_time       = undef,
+  Optional[Integer]              $min_refresh_time       = undef,
+  Optional[Integer]              $max_retry_time         = undef,
+  Optional[Integer]              $min_retry_time         = undef,
+  Optional[Integer]              $min_expire_time        = undef,
 ) {
   include nsd
   $default_masters      = $nsd::default_masters
@@ -33,6 +43,11 @@ define nsd::zone (
   $_allow_axfr_fallback = pick_default($allow_axfr_fallback, $nsd::default_allow_axfr_fallback)
   $_create_ixfr         = pick_default($create_ixfr, $nsd::default_create_ixfr)
   $_ixfr_size           = pick_default($ixfr_size, $nsd::default_ixfr_size)
+  $_max_refresh_time    = pick_default($max_refresh_time, $nsd::default_max_refresh_time)
+  $_min_refresh_time    = pick_default($min_refresh_time, $nsd::default_min_refresh_time)
+  $_max_retry_time      = pick_default($max_retry_time, $nsd::default_max_retry_time)
+  $_min_retry_time      = pick_default($min_retry_time, $nsd::default_min_retry_time)
+  $_min_expire_time     = pick_default($min_expire_time, $nsd::default_min_expire_time)
   if $zone_dir {
     $zone_subdir = $zone_dir
   } else {

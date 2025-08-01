@@ -69,6 +69,11 @@
 # @param default_allow_axfr_fallback Default allow AXFR fallback
 # @param default_create_ixfr Default create IXFR
 # @param default_ixfr_size Default IXFR size
+# @param default_max_refresh_time Maximum refresh interval for zones
+# @param default_min_refresh_time Minimum refresh interval for zones
+# @param default_max_retry_time Maximum retry interval for zones
+# @param default_min_retry_time Minimum retry interval for zones
+# @param default_min_expire_time Minimum expire interval for zones
 # @param imports List of import files
 # @param exports List of export files
 class nsd (
@@ -142,12 +147,17 @@ class nsd (
   Optional[Stdlib::Yes_no]      $default_allow_axfr_fallback = undef,
   Optional[Stdlib::Yes_no]      $default_create_ixfr         = undef,
   Optional[Integer]             $default_ixfr_size           = undef,
+  Optional[Integer]             $default_max_refresh_time            = undef,
+  Optional[Integer]             $default_min_refresh_time            = undef,
+  Optional[Integer]             $default_max_retry_time              = undef,
+  Optional[Integer]             $default_min_retry_time              = undef,
+  Optional[Integer]             $default_min_expire_time             = undef,
   Array[String]                 $imports                     = [],
   Array[String]                 $exports                     = [],
 ) {
   # TODO: We should add this to the systemd unit file
   $_restart_cmd = "${restart_cmd} || nsd-checkconf ${conf_file} && service nsd restart"
-  ensure_packages([$package_name])
+  stdlib::ensure_packages([$package_name])
 
   group { 'nsd':
     ensure => present,
