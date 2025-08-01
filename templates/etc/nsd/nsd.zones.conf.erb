@@ -44,6 +44,21 @@ zone:
 <%- unless @_create_ixfr.empty? -%>
   create-ixfr: <%= @_create_ixfr %>
 <%- end -%>
-<%- unless @_ixfr_size.empty? -%>
+<%- if @_ixfr_size.kind_of?(Integer) -%>
   ixfr-size: <%= @_ixfr_size %>
+<%- end -%>
+<%- if @_min_refresh_time.kind_of?(Integer) -%>
+  min-refresh-time: <%= @_min_refresh_time %>
+<%- end -%>
+<%- if @_max_refresh_time.kind_of?(Integer) -%>
+  max-refresh-time: <%= @_max_refresh_time %>
+<%- end -%>
+<%- if @_min_retry_time.kind_of?(Integer) -%>
+  min-retry-time: <%= @_min_retry_time %>
+<%- end -%>
+<%- if @_max_retry_time.kind_of?(Integer) -%>
+  max-retry-time: <%= @_max_retry_time %>
+<%- end -%>
+<%- if @_min_expire_time.kind_of?(Integer) -%>
+  min-expire-time: <%= @_min_expire_time %>
 <%- end -%>
