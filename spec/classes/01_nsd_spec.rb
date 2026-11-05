@@ -25,69 +25,69 @@ describe 'nsd', type: :class do
 
         it do
           is_expected.to contain_concat_fragment(
-            'nsd_server'
+            'nsd_server',
           ).with_target(
-            conf_file
+            conf_file,
           ).with_content(
-            %r{ip-transparent: no}
+            %r{ip-transparent: no},
           ).with_content(
-            %r{debug-mode: no}
+            %r{debug-mode: no},
           ).with_content(
-            %r{database: #{database}}
+            %r{database: #{database}},
           ).with_content(
-            %r{identity: foo.example.com}
+            %r{identity: foo.example.com},
           ).with_content(
-            %r{nsid: "666f6f2e6578616d706c652e636f6d"}
+            %r{nsid: "666f6f2e6578616d706c652e636f6d"},
           ).without_content(
-            %r{logfile:}
+            %r{logfile:},
           ).with_content(
-            %r{server-count: #{facts[:processors]['count']}}
+            %r{server-count: #{facts[:processors]['count']}},
           ).with_content(
-            %r{tcp-count: 250}
+            %r{tcp-count: 250},
           ).with_content(
-            %r{tcp-query-count: 0}
+            %r{tcp-query-count: 0},
           ).without_content(
-            %r{tcp-timeout:}
+            %r{tcp-timeout:},
           ).with_content(
-            %r{ipv4-edns-size: 4096}
+            %r{ipv4-edns-size: 4096},
           ).with_content(
-            %r{ipv6-edns-size: 4096}
+            %r{ipv6-edns-size: 4096},
           ).with_content(
-            %r{pidfile: #{pidfile}}
+            %r{pidfile: #{pidfile}},
           ).with_content(
-            %r{port: 53}
+            %r{port: 53},
           ).without_content(
-            %r{statistics:}
+            %r{statistics:},
           ).without_content(
-            %r{chroot:}
+            %r{chroot:},
           ).with_content(
-            %r{username: nsd}
+            %r{username: nsd},
           ).with_content(
-            %r{zonesdir: #{zonesdir}}
+            %r{zonesdir: #{zonesdir}},
           ).without_content(
-            %r{difffile:}
+            %r{difffile:},
           ).with_content(
-            %r{xfrdfile: #{xfrdfile}}
+            %r{xfrdfile: #{xfrdfile}},
           ).with_content(
-            %r{xfrd-reload-timeout: 1}
+            %r{xfrd-reload-timeout: 1},
           ).with_content(
-            %r{verbosity: 0}
+            %r{verbosity: 0},
           ).with_content(
-            %r{hide-version: no}
+            %r{hide-version: no},
           ).with_content(
-            %r{rrl-size: 1000000}
+            %r{rrl-size: 1000000},
           ).with_content(
-            %r{rrl-ratelimit: 200}
+            %r{rrl-ratelimit: 200},
           ).with_content(
-            %r{rrl-slip: 2}
+            %r{rrl-slip: 2},
           ).with_content(
-            %r{rrl-ipv4-prefix-length: 24}
+            %r{rrl-ipv4-prefix-length: 24},
           ).with_content(
-            %r{rrl-ipv6-prefix-length: 64}
+            %r{rrl-ipv6-prefix-length: 64},
           ).with_content(
-            %r{rrl-whitelist-ratelimit: 4000}
+            %r{rrl-whitelist-ratelimit: 4000},
           ).with_content(
-            %r{control-enable: no}
+            %r{control-enable: no},
           )
         end
 
@@ -95,7 +95,7 @@ describe 'nsd', type: :class do
           is_expected.to contain_file(zonesdir).with(
             ensure: 'directory',
             owner: 'nsd',
-            group: 'nsd'
+            group: 'nsd',
           )
         end
 
@@ -103,7 +103,7 @@ describe 'nsd', type: :class do
           is_expected.to contain_file(zone_subdir).with(
             ensure: 'directory',
             owner: 'nsd',
-            group: 'nsd'
+            group: 'nsd',
           )
         end
 
@@ -111,14 +111,14 @@ describe 'nsd', type: :class do
           is_expected.to contain_file(conf_dir).with(
             ensure: 'directory',
             mode: '0755',
-            group: 'nsd'
+            group: 'nsd',
           )
         end
 
         it do
           is_expected.to contain_service(service_name).with(
             ensure: true,
-            enable: true
+            enable: true,
           )
         end
       end
@@ -130,7 +130,7 @@ describe 'nsd', type: :class do
           it do
             is_expected.to contain_service(service_name).with(
               ensure: false,
-              enable: false
+              enable: false,
             )
           end
         end
@@ -155,7 +155,7 @@ describe 'nsd', type: :class do
           it do
             is_expected.to contain_nsd__zone('test').with(
               masters: ['test'],
-              provide_xfrs: ['test']
+              provide_xfrs: ['test'],
             )
           end
         end
@@ -176,7 +176,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_nsd__file('foo').with_source(
-              'puppet:///modules/foo.zone'
+              'puppet:///modules/foo.zone',
             )
           end
 
@@ -202,7 +202,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{ip-address: 192.0.2.1}
+              %r{ip-address: 192.0.2.1},
             )
           end
         end
@@ -212,7 +212,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('includes').with_content(
-              %r{include: "/etc/nsd/foo/"}
+              %r{include: "/etc/nsd/foo/"},
             )
           end
         end
@@ -222,7 +222,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{ip-transparent: yes}
+              %r{ip-transparent: yes},
             )
           end
         end
@@ -232,7 +232,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{reuseport: yes}
+              %r{reuseport: yes},
             )
           end
         end
@@ -242,7 +242,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{debug-mode: yes}
+              %r{debug-mode: yes},
             )
           end
         end
@@ -252,7 +252,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{identity: foo}
+              %r{identity: foo},
             )
           end
         end
@@ -262,7 +262,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{nsid: "666f6f"}
+              %r{nsid: "666f6f"},
             )
           end
         end
@@ -272,7 +272,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{logfile: /foo}
+              %r{logfile: /foo},
             )
           end
         end
@@ -282,7 +282,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{server-count: 6}
+              %r{server-count: 6},
             )
           end
         end
@@ -292,7 +292,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{tcp-count: 6}
+              %r{tcp-count: 6},
             )
           end
         end
@@ -302,7 +302,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{tcp-query-count: 6}
+              %r{tcp-query-count: 6},
             )
           end
         end
@@ -312,7 +312,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{tcp-timeout: 6}
+              %r{tcp-timeout: 6},
             )
           end
         end
@@ -322,7 +322,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{ipv4-edns-size: 512}
+              %r{ipv4-edns-size: 512},
             )
           end
         end
@@ -332,7 +332,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{ipv6-edns-size: 512}
+              %r{ipv6-edns-size: 512},
             )
           end
         end
@@ -342,7 +342,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{pidfile: /foo}
+              %r{pidfile: /foo},
             )
           end
         end
@@ -352,7 +352,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{port: 6}
+              %r{port: 6},
             )
           end
         end
@@ -362,7 +362,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{statistics: 6}
+              %r{statistics: 6},
             )
           end
         end
@@ -372,7 +372,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{chroot: /foo}
+              %r{chroot: /foo},
             )
           end
         end
@@ -382,7 +382,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{username: foo}
+              %r{username: foo},
             )
           end
         end
@@ -392,7 +392,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{zonesdir: /foo}
+              %r{zonesdir: /foo},
             )
           end
         end
@@ -402,7 +402,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{difffile: /foo}
+              %r{difffile: /foo},
             )
           end
         end
@@ -412,7 +412,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{xfrdfile: /foo}
+              %r{xfrdfile: /foo},
             )
           end
         end
@@ -422,7 +422,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{xfrd-reload-timeout: 6}
+              %r{xfrd-reload-timeout: 6},
             )
           end
         end
@@ -432,7 +432,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{verbosity: 1}
+              %r{verbosity: 1},
             )
           end
         end
@@ -442,7 +442,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{hide-version: yes}
+              %r{hide-version: yes},
             )
           end
         end
@@ -452,7 +452,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{rrl-size: 6}
+              %r{rrl-size: 6},
             )
           end
         end
@@ -462,7 +462,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{rrl-ratelimit: 6}
+              %r{rrl-ratelimit: 6},
             )
           end
         end
@@ -472,7 +472,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{rrl-slip: 6}
+              %r{rrl-slip: 6},
             )
           end
         end
@@ -482,7 +482,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{rrl-ipv4-prefix-length: 6}
+              %r{rrl-ipv4-prefix-length: 6},
             )
           end
         end
@@ -492,7 +492,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{rrl-ipv6-prefix-length: 6}
+              %r{rrl-ipv6-prefix-length: 6},
             )
           end
         end
@@ -502,7 +502,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{rrl-whitelist-ratelimit: 6}
+              %r{rrl-whitelist-ratelimit: 6},
             )
           end
         end
@@ -512,7 +512,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{control-enable: yes}
+              %r{control-enable: yes},
             )
           end
         end
@@ -522,7 +522,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_content(
-              %r{database: /foo}
+              %r{database: /foo},
             )
           end
         end
@@ -544,7 +544,7 @@ describe 'nsd', type: :class do
 
           it do
             is_expected.to contain_concat_fragment('nsd_server').with_target(
-              '/foo.cfg'
+              '/foo.cfg',
             )
           end
         end

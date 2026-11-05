@@ -18,11 +18,11 @@ describe 'nsd::tsig', type: :define do
 
         it do
           is_expected.to contain_concat_fragment(
-            'nsd_key_test'
+            'nsd_key_test',
           ).with_content(
-            %r{name:\stest}
+            %r{name:\stest},
           ).with_content(
-            %r{secret:\saaaa}
+            %r{secret:\saaaa},
           )
         end
       end

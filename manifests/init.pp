@@ -177,7 +177,7 @@ class nsd (
       group  => $username,
       before => Package[$package_name];
     [$zonesdir, $zone_subdir]:
-      ;
+    ;
     $conf_dir:
       mode  => '0755',
       owner => 'root';
