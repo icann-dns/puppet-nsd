@@ -3,6 +3,8 @@
 require 'spec_helper_acceptance'
 
 describe 'nsd class' do
+  let(:ip) { fact('networking.ip') }
+
   context 'defaults' do
     it 'work with no errors' do
       pp = 'include nsd'
@@ -16,7 +18,7 @@ describe 'nsd class' do
     end
 
     describe port(53) do
-      it { is_expected.to be_listening }
+      it { is_expected.to be_listening.on(ip) }
     end
 
     describe command('nsd-checkconf /etc/nsd/nsd.conf || cat /etc/nsd/nsd.conf') do

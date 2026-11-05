@@ -301,7 +301,7 @@ Data type: `Array[Stdlib::IP::Address]`
 
 List of IP addresses
 
-Default value: `[]`
+Default value: `[$facts['networking']['ip']]`
 
 ##### <a name="-nsd--includes"></a>`includes`
 
