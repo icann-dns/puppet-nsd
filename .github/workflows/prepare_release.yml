@@ -1,0 +1,30 @@
+---
+# Managed by modulesync - DO NOT EDIT
+# https://voxpupuli.org/docs/updating-files-managed-with-modulesync/
+
+name: 'Prepare Release'
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Module version to be released. Must be a valid semver string without leading v. (1.2.3)'
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release_prep:
+    uses: 'icann-dns/gha-puppet/.github/workflows/prepare_release.yml@v4-icann'
+    with:
+      version: ${{ github.event.inputs.version }}
+      allowed_owner: 'icann-dns'
+      git_name: 'icann-dns-release-bot[bot]'
+      git_email: '352992185+icann-dns-release-bot[bot]@users.noreply.github.com'
+      app_client_id: '${{ vars.RELEASE_APP_CLIENT_ID }}'
+    secrets:
+      # Configure secrets here:
+      #  https://docs.github.com/en/actions/security-guides/encrypted-secrets
+      app_private_key: '${{ secrets.RELEASE_APP_PRIVATE_KEY }}'
