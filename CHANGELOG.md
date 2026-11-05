@@ -44,7 +44,7 @@
 * FIX: trusty default NSD is 4.0.1 which needs to have a database file
 
 ### 2017-02-07 0.2.6
-* change default for database in line with the following comment from the devs: 
+* change default for database in line with the following comment from the devs:
   * We recommend to run NSD without the precompiled database.  With recent optimizations, the DB doesn't give any big/measurable advantages but does use a substantial more amount of runtime memory.
 
 ### 2017-08-30 0.2.5
@@ -64,7 +64,7 @@
 * Fix a few typos
 
 ### 2017-04-06 0.2.0
-* Complete rewrite of the zones hash. 
+* Complete rewrite of the zones hash.
 * depricated the old $tsig hash now all hashs have to be defined in $tsisg and then refrenced by name in the remotes
 * added new nsd::remotes define.  allows you to define data about remote servers and then refrence them by name where ever a zone paramter would require a server e.g. masters, provide_xfrs, notifis etc
 * added default_tsig_name.  this specifies which nsd::tsig should be used by default
