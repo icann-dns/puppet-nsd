@@ -1086,8 +1086,8 @@ Alias of
 
 ```puppet
 Struct[{
-  address4          => Optional[Variant[Tea::Ipv4, Tea::Ipv4_cidr]],
-  address6          => Optional[Variant[Tea::Ipv6, Tea::Ipv6_cidr]],
+  address4          => Optional[Stdlib::IP::Address::V4::CIDR],
+  address6          => Optional[Stdlib::IP::Address::V6::CIDR],
   fetch_tsig_name   => Optional[String],
   provide_tsig_name => Optional[String],
 }]
