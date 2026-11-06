@@ -5,61 +5,68 @@ require 'spec_helper_acceptance'
 if ENV['BEAKER_TESTMODE'] == 'agent'
   describe 'nsd class' do
     context 'test notifies' do
-      dnsmaster    = find_host_with_role('dnsmaster')
-      dnsmaster_ip = fact_on(dnsmaster, 'ipaddress')
-      dnsslave     = find_host_with_role('dnsslave')
-      dnsslave_ip  = fact_on(dnsslave, 'ipaddress')
-      example_zone = <<-EOS.gsub(%r{^\s+\|}, '')
-        |example.com. 3600 IN SOA sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600
-        |example.com. 86400 IN NS a.iana-servers.net.
-        |example.com. 86400 IN NS b.iana-servers.net.
-      EOS
-      dnsmaster_pp = <<-EOS
-      class {'::nsd':
-        imports => ['nofiy_test'],
-        zones   => {
-          'example.com' => {},
-        },
-        files => {
-          'example.com' => {
-            'content' => '#{example_zone}',
-          }
-        },
-      }
-      Nsd::Tsig <<| tag == 'dns__nofiy_test' |>>
-      Nsd::Remote <<| tag == 'dns__nofiy_test' |>>
-      EOS
-      dnsslave_pp = <<-EOS
-      class {'::nsd':
-        exports => ['nofiy_test'],
-        tsigs    => {
-          '#{dnsslave}-test' => {
-            'data' => 'qneKJvaiXqVrfrS4v+Oi/9GpLqrkhSGLTCZkf0dyKZ0='
+      let(:dnsmaster)    { find_host_with_role('dnsmaster') }
+      let(:dnsmaster_ip) { fact_on(dnsmaster, 'ipaddress') }
+      let(:dnsslave)     { find_host_with_role('dnsslave') }
+      let(:dnsslave_ip)  { fact_on(dnsslave, 'ipaddress') }
+      let(:example_zone) do
+        <<-EOS.gsub(%r{^\s+\|}, '')
+          |example.com. 3600 IN SOA sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600
+          |example.com. 86400 IN NS a.iana-servers.net.
+          |example.com. 86400 IN NS b.iana-servers.net.
+        EOS
+      end
+      let(:dnsmaster_pp) do
+        <<-EOS
+        class {'::nsd':
+          imports => ['nofiy_test'],
+          zones   => {
+            'example.com' => {},
           },
-        },
-        remotes => {
-          'master_server' => {
-            'address4'  => '#{dnsmaster_ip}',
-            'tsig_name' => '#{dnsslave}-test',
-          }
-        },
-        zones   => {
-          'example.com' => { 'masters' => ['master_server'] },
-        },
-      }
-      @@nsd::tsig {'dns__export_nofiy_test_#{dnsslave}-test':
-        algo => 'hmac-sha256',
-        data => 'qneKJvaiXqVrfrS4v+Oi/9GpLqrkhSGLTCZkf0dyKZ0=',
-        key_name => '#{dnsslave}-test',
-        tag => 'dns__nofiy_test',
-      }
-      @@nsd::remote {'dns__export_nofiy_test_#{dnsslave}':
-        address4 => '#{dnsslave_ip}',
-        tsig => 'dns__export_nofiy_test_#{dnsslave}-test',
-        tsig_name => '#{dnsslave}-test',
-        tag => 'dns__nofiy_test',
-      }
-      EOS
+          files => {
+            'example.com' => {
+              'content' => '#{example_zone}',
+            }
+          },
+        }
+        Nsd::Tsig <<| tag == 'dns__nofiy_test' |>>
+        Nsd::Remote <<| tag == 'dns__nofiy_test' |>>
+        EOS
+      end
+      let(:dnsslave_pp) do
+        <<-EOS
+        class {'::nsd':
+          exports => ['nofiy_test'],
+          tsigs    => {
+            '#{dnsslave}-test' => {
+              'data' => 'qneKJvaiXqVrfrS4v+Oi/9GpLqrkhSGLTCZkf0dyKZ0='
+            },
+          },
+          remotes => {
+            'master_server' => {
+              'address4'  => '#{dnsmaster_ip}',
+              'tsig_name' => '#{dnsslave}-test',
+            }
+          },
+          zones   => {
+            'example.com' => { 'masters' => ['master_server'] },
+          },
+        }
+        @@nsd::tsig {'dns__export_nofiy_test_#{dnsslave}-test':
+          algo => 'hmac-sha256',
+          data => 'qneKJvaiXqVrfrS4v+Oi/9GpLqrkhSGLTCZkf0dyKZ0=',
+          key_name => '#{dnsslave}-test',
+          tag => 'dns__nofiy_test',
+        }
+        @@nsd::remote {'dns__export_nofiy_test_#{dnsslave}':
+          address4 => '#{dnsslave_ip}',
+          tsig => 'dns__export_nofiy_test_#{dnsslave}-test',
+          tsig_name => '#{dnsslave}-test',
+          tag => 'dns__nofiy_test',
+        }
+        EOS
+      end
+
       it 'run puppet a bunch of times' do
         execute_manifest_on(dnsmaster, dnsmaster_pp, catch_failures: true)
         execute_manifest_on(dnsslave, dnsslave_pp, catch_failures: true)
@@ -103,7 +110,7 @@ if ENV['BEAKER_TESTMODE'] == 'agent'
 
         its(:stdout) do
           is_expected.to match(
-            %r{sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600}
+            %r{sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600},
           )
         end
       end
@@ -113,7 +120,7 @@ if ENV['BEAKER_TESTMODE'] == 'agent'
 
         its(:stdout) do
           is_expected.to match(
-            %r{sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600}
+            %r{sns.dns.icann.org. noc.dns.icann.org. 1 7200 3600 1209600 3600},
           )
         end
       end
@@ -133,7 +140,7 @@ if ENV['BEAKER_TESTMODE'] == 'agent'
 
         its(:stdout) do
           is_expected.to match(
-            %r{sns.dns.icann.org. noc.dns.icann.org. 2 7200 3600 1209600 3600}
+            %r{sns.dns.icann.org. noc.dns.icann.org. 2 7200 3600 1209600 3600},
           )
         end
       end
@@ -143,7 +150,7 @@ if ENV['BEAKER_TESTMODE'] == 'agent'
 
         its(:stdout) do
           is_expected.to match(
-            %r{sns.dns.icann.org. noc.dns.icann.org. 2 7200 3600 1209600 3600}
+            %r{sns.dns.icann.org. noc.dns.icann.org. 2 7200 3600 1209600 3600},
           )
         end
       end

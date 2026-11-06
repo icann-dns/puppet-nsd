@@ -24,19 +24,19 @@ Manage the installation and configuration of NSD (name serve daemon) and zone fi
 
 ## Module Description
 
-This module allows for the management of all aspects of the NSD configuration 
-file, keys and zonefiles.  
+This module allows for the management of all aspects of the NSD configuration
+file, keys and zonefiles.
 
 ## Setup
 
 ### What nsd affects
 
-* Manages configuration the nsd configueration file 
+* Manages configuration the nsd configueration file
 * Manages zone data in the zone dir
 * dynamicly sets processor count based on installed processes
 * can manage nsd control
 
-### Setup Requirements 
+### Setup Requirements
 
 * puppetlabs-stdlib 4.11.0
 * icann-tea 0.2.8
@@ -46,7 +46,7 @@ file, keys and zonefiles.
 
 Install the package an make sure it is enabled and running with default options:
 
-```puppet 
+```puppet
 class { '::nsd': }
 ```
 
@@ -72,7 +72,7 @@ rrl_size: 1000
 Add config with tsig key
 
 ```puppet
-class {'::nsd': 
+class {'::nsd':
   default_tsig_name: 'test',
   tsigs => {
     'test',=>  {
@@ -96,7 +96,7 @@ nsd::tsigs:
 add zone files.  zone files are added with sets of common config.
 
 ```puppet
-class {'::nsd': 
+class {'::nsd':
   remotes => {
     master_v4 => { 'address4' => '192.0.2.1' },
     master_v6 => { 'address6' => '2001:DB8::1' },
@@ -144,7 +144,7 @@ nsd::zones:
     slave: *id002
 ```
 
-create and as112, please look at the as112 class to see how this works under the hood 
+create and as112, please look at the as112 class to see how this works under the hood
 
 ```puppet
   class {'::nsd::as112': }
@@ -171,7 +171,7 @@ create and as112, please look at the as112 class to see how this works under the
 
 #### Class: `nsd`
   Guides the basic setup and installation of NSD on your system
-  
+
 ##### Parameters (all optional)
 
 * `default_tsig_name` (Optional[String], Default: undef): the default tsig to use when fetching zone data. Knot::Tsig[$default_tsig_name] must exist
@@ -219,8 +219,8 @@ create and as112, please look at the as112 class to see how this works under the
 * `rrl_ipv6_prefix_length` (Integer < 129, Default: 64): IPv6 prefix length. Addresses are grouped by netblock.
 * `rrl_whitelist_ratelimit` (Integer, Default: 4000): The max qps for query sorts for a source, which have been whitelisted.
 * `control_enable` (Bool, Default: false): Enable remote control
-* `control_interface` (Array, Default: undef): the interfaces for remote control service 
-* `control_port` (Integer < 65536, Default: 8952): the port number for remote control service 
+* `control_interface` (Array, Default: undef): the interfaces for remote control service
+* `control_port` (Integer < 65536, Default: 8952): the port number for remote control service
 * `server_key_file` (file path, Default: OS Specific): path to server private key
 * `server_cert_file` (file path, Default: OS Specific): path to self signed certificate
 * `client_key_file` (file path, Default: OS Specific): path to client private key
@@ -245,7 +245,7 @@ Set os specific parameters
 
 Manage files used by nsd
 
-##### Parameters 
+##### Parameters
 
 * `owner` (String: Default root): the owner of the file
 * `group` (String: Default nsd): the group of the file
@@ -258,7 +258,7 @@ Manage files used by nsd
 
 Manage tsig keys used by nsd
 
-##### Parameters 
+##### Parameters
 
 * `algo` (String '^hmac-sha(1|224|256|384|512)$' or '^hmac-md5$', Default: 'hmac-sha256' ): The tsig algorithem of the key
 * `data` (String, Required: true): The tsig key information
@@ -268,7 +268,7 @@ Manage tsig keys used by nsd
 
 Manage a zone set conifg for nsd
 
-##### Parameters 
+##### Parameters
 
 * `masters` (Array[String], Default: []): List of nsd::remote keys to configure as masters
 * `provide_xfr` (Array[String], Default: []): List of nsd::remote keys to configure as slave servers
@@ -281,7 +281,7 @@ Manage a zone set conifg for nsd
 
 used to define remote serveres these are used later to configure the system
 
-##### Parameters 
+##### Parameters
 
 * `address4` (Optional[Variant[Tea::Ipv4, Tea::Ipv4_cidr]]): ipv4 address or prefix for this remote
 * `address6` (Optional[Variant[Tea::Ipv6, Tea::Ipv6_cidr]]): ipv6 address or prefix for this remote

@@ -14,7 +14,7 @@ define nsd::file (
   Stdlib::Filemode             $mode             = '0640',
   Optional[Stdlib::Filesource] $source           = undef,
   Optional[String]             $content          = undef,
-  Optional[String] $content_template = undef,
+  Optional[String]             $content_template = undef,
 ) {
   if $content and $content_template {
     fail('can\'t set $content and $content_template')

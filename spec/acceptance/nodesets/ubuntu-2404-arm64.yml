@@ -6,6 +6,8 @@ HOSTS:
     hypervisor: docker
     image: arm64v8/ubuntu:24.04
     docker_cmd: '["/sbin/init"]'
+    docker_image_commands:
+      - 'apt-get install -y iproute2'
 CONFIG:
   type: foss
   log_level: verbose

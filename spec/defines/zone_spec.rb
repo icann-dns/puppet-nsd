@@ -47,15 +47,15 @@ describe 'nsd::zone', type: :define do
 
         it do
           is_expected.to contain_concat_fragment(
-            'nsd_zones_example.com'
+            'nsd_zones_example.com',
           ).with_content(
-            %r{name: "example.com"}
+            %r{name: "example.com"},
           ).with_content(
-            %r{zonefile:.+example.com}
+            %r{zonefile:.+example.com},
           ).with_content(
-            %r{include-pattern: master-master}
+            %r{include-pattern: master-master},
           ).with_content(
-            %r{include-pattern: slave-provide-xfr}
+            %r{include-pattern: slave-provide-xfr},
           )
         end
       end
@@ -68,11 +68,11 @@ describe 'nsd::zone', type: :define do
 
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com'
+              'nsd_zones_example.com',
             ).without_content(
-              %r{include-pattern: master-master}
+              %r{include-pattern: master-master},
             ).with_content(
-              %r{include-pattern: slave-master}
+              %r{include-pattern: slave-master},
             )
           end
         end
@@ -84,11 +84,11 @@ describe 'nsd::zone', type: :define do
 
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com'
+              'nsd_zones_example.com',
             ).with_content(
-              %r{include-pattern: master-provide-xfr}
+              %r{include-pattern: master-provide-xfr},
             ).without_content(
-              %r{include-pattern: slave-provide-xfr}
+              %r{include-pattern: slave-provide-xfr},
             )
           end
         end
@@ -100,9 +100,9 @@ describe 'nsd::zone', type: :define do
 
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com'
+              'nsd_zones_example.com',
             ).with_content(
-              %r{include-pattern: extra_allow_notify-allow-notify-addition}
+              %r{include-pattern: extra_allow_notify-allow-notify-addition},
             )
           end
         end
@@ -114,9 +114,9 @@ describe 'nsd::zone', type: :define do
 
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com'
+              'nsd_zones_example.com',
             ).with_content(
-              %r{include-pattern: extra_notify-send-notify-addition}
+              %r{include-pattern: extra_notify-send-notify-addition},
             )
           end
         end
@@ -128,9 +128,9 @@ describe 'nsd::zone', type: :define do
 
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com'
+              'nsd_zones_example.com',
             ).with_content(
-              %r{zonefile:.+foobar}
+              %r{zonefile:.+foobar},
             )
           end
         end
@@ -142,9 +142,9 @@ describe 'nsd::zone', type: :define do
 
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com'
+              'nsd_zones_example.com',
             ).with_content(
-              %r{zonefile: "/foobar/example.com"}
+              %r{zonefile: "/foobar/example.com"},
             )
           end
         end
@@ -156,13 +156,13 @@ describe 'nsd::zone', type: :define do
 
           it do
             is_expected.to contain_concat_fragment(
-              'nsd_zones_example.com'
+              'nsd_zones_example.com',
             ).without_content(
-              %r{rrl-whitelist: nxdomain}
+              %r{rrl-whitelist: nxdomain},
             ).with_content(
-              %r{rrl-whitelist: rrsig}
+              %r{rrl-whitelist: rrsig},
             ).with_content(
-              %r{rrl-whitelist: dnskey}
+              %r{rrl-whitelist: dnskey},
             )
           end
         end

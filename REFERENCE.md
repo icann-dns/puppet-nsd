@@ -301,7 +301,7 @@ Data type: `Array[Stdlib::IP::Address]`
 
 List of IP addresses
 
-Default value: `[]`
+Default value: `[$facts['networking']['ip']]`
 
 ##### <a name="-nsd--includes"></a>`includes`
 
@@ -1086,10 +1086,10 @@ Alias of
 
 ```puppet
 Struct[{
-    address4          => Optional[Variant[Tea::Ipv4, Tea::Ipv4_cidr]],
-    address6          => Optional[Variant[Tea::Ipv6, Tea::Ipv6_cidr]],
-    fetch_tsig_name   => Optional[String],
-    provide_tsig_name => Optional[String],
+  address4          => Optional[Stdlib::IP::Address::V4::CIDR],
+  address6          => Optional[Stdlib::IP::Address::V6::CIDR],
+  fetch_tsig_name   => Optional[String],
+  provide_tsig_name => Optional[String],
 }]
 ```
 
@@ -1098,4 +1098,3 @@ Struct[{
 Type for the Nsd zonemd_generate
 
 Alias of `Enum[none, zonemd-sha384, zonemd-sha512, remove]`
-

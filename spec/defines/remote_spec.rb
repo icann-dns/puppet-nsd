@@ -37,33 +37,33 @@ describe 'nsd::remote' do
 
         it do
           is_expected.to contain_concat__fragment(
-            'nsd_pattern_xfr.example.com'
+            'nsd_pattern_xfr.example.com',
           ).with_target(conf_file).with_order('15').with_content(
             %r{
               pattern:\n
               \s+name:\sxfr.example.com-master\n
               \s+allow-notify:\s192.0.2.1\sNOKEY\n
               \s+request-xfr:\sAXFR\s192.0.2.1\sNOKEY\n
-            }x
+            }x,
           ).with_content(
             %r{
               pattern:\n
               \s+name:\sxfr.example.com-provide-xfr\n
               \s+notify:\s192.0.2.1\sNOKEY\n
               \s+provide-xfr:\s192.0.2.1\sNOKEY\n
-            }x
+            }x,
           ).with_content(
             %r{
               pattern:\n
               \s+name:\s+xfr.example.com-allow-notify-addition\n
               \s+allow-notify:\s192.0.2.1\sNOKEY\n
-            }x
+            }x,
           ).with_content(
             %r{
               pattern:\n
               \s+name:\sxfr.example.com-send-notify-addition\n
               \s+notify:\s192.0.2.1\sNOKEY\n
-            }x
+            }x,
           )
         end
       end
@@ -76,31 +76,31 @@ describe 'nsd::remote' do
 
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com'
+              'nsd_pattern_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-master\n
                 \s+allow-notify:\s192.0.2.0/24\sNOKEY\n
-              }x
+              }x,
             ).without_content(
-              %r{request-xfr: AXFR 192.0.2.0/24}
+              %r{request-xfr: AXFR 192.0.2.0/24},
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-provide-xfr\n
                 \s+provide-xfr:\s192.0.2.0/24\sNOKEY\n
-              }x
+              }x,
             ).without_content(
-              %r{\s+notify: 192.0.2.0/24 NOKEY}
+              %r{\s+notify: 192.0.2.0/24 NOKEY},
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-allow-notify-addition\n
                 \s+allow-notify:\s192.0.2.0/24\sNOKEY\n
-              }x
+              }x,
             ).with_content(
-              %r{pattern:\s+name: xfr.example.com-send-notify-addition}
+              %r{pattern:\s+name: xfr.example.com-send-notify-addition},
             )
           end
         end
@@ -112,33 +112,33 @@ describe 'nsd::remote' do
 
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com'
+              'nsd_pattern_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-master\n
                 \s+allow-notify:\s2001:DB8::1\sNOKEY\n
                 \s+request-xfr:\sAXFR\s2001:DB8::1\sNOKEY\n
-                }x
+                }x,
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-provide-xfr\n
                 \s+notify:\s2001:DB8::1\sNOKEY\n
                 \s+provide-xfr:\s2001:DB8::1\sNOKEY
-              }x
+              }x,
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-allow-notify-addition\n
                 \s+allow-notify:\s2001:DB8::1\sNOKEY\n
-              }x
+              }x,
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-send-notify-addition\n
                 \s+notify:\s2001:DB8::1\sNOKEY\n
-              }x
+              }x,
             )
           end
         end
@@ -150,31 +150,31 @@ describe 'nsd::remote' do
 
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com'
+              'nsd_pattern_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-master\n
                 \s+allow-notify:\s2001:DB8::/48\sNOKEY\n
-              }x
+              }x,
             ).without_content(
-              %r{request-xfr: AXFR 2001:DB8::/48}
+              %r{request-xfr: AXFR 2001:DB8::/48},
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-provide-xfr\n
                 \s+provide-xfr:\s2001:DB8::/48\sNOKEY\n
-              }x
+              }x,
             ).without_content(
-              %r{\s+notify: 2001:DB8::/48 NOKEY}
+              %r{\s+notify: 2001:DB8::/48 NOKEY},
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-allow-notify-addition\n
                 \s+allow-notify:\s2001:DB8::/48\sNOKEY\n
-              }x
+              }x,
             ).with_content(
-              %r{pattern:\s+name: xfr.example.com-send-notify-addition}
+              %r{pattern:\s+name: xfr.example.com-send-notify-addition},
             )
           end
         end
@@ -186,7 +186,7 @@ describe 'nsd::remote' do
 
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com'
+              'nsd_pattern_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
@@ -195,7 +195,7 @@ describe 'nsd::remote' do
                 \s+request-xfr:\sAXFR\s192.0.2.1\sNOKEY\n
                 \s+allow-notify:\s2001:DB8::1\sNOKEY\n
                 \s+request-xfr:\sAXFR\s2001:DB8::1\sNOKEY\n
-              }x
+              }x,
             ).with_content(
               %r{
                 pattern:\n
@@ -204,21 +204,21 @@ describe 'nsd::remote' do
                 \s+provide-xfr:\s192.0.2.1\sNOKEY
                 \s+notify:\s2001:DB8::1\sNOKEY\n
                 \s+provide-xfr:\s2001:DB8::1\sNOKEY
-              }x
+              }x,
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-allow-notify-addition\n
                 \s+allow-notify:\s192.0.2.1\sNOKEY\n
                 \s+allow-notify:\s2001:DB8::1\sNOKEY\n
-              }x
+              }x,
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-send-notify-addition\n
                 \s+notify:\s192.0.2.1\sNOKEY\n
                 \s+notify:\s2001:DB8::1\sNOKEY\n
-              }x
+              }x,
             )
           end
         end
@@ -232,36 +232,36 @@ describe 'nsd::remote' do
 
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com'
+              'nsd_pattern_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-master\n
                 \s+allow-notify:\s192.0.2.0/24\sNOKEY\n
                 \s+allow-notify:\s2001:DB8::/48\sNOKEY\n
-              }x
+              }x,
             ).without_content(
-              %r{request-xfr: AXFR 2001:DB8::/48}
+              %r{request-xfr: AXFR 2001:DB8::/48},
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-provide-xfr\n
                 \s+provide-xfr:\s192.0.2.0/24\sNOKEY\n
                 \s+provide-xfr:\s2001:DB8::/48\sNOKEY\n
-              }x
+              }x,
             ).without_content(
-              %r{\s+notify: 192.0.2.0/24 NOKEY}
+              %r{\s+notify: 192.0.2.0/24 NOKEY},
             ).without_content(
-              %r{\s+notify: 2001:DB8::/48 NOKEY}
+              %r{\s+notify: 2001:DB8::/48 NOKEY},
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-allow-notify-addition\n
                 \s+allow-notify:\s192.0.2.0/24\sNOKEY\n
                 \s+allow-notify:\s2001:DB8::/48\sNOKEY\n
-              }x
+              }x,
             ).with_content(
-              %r{pattern:\s+name: xfr.example.com-send-notify-addition}
+              %r{pattern:\s+name: xfr.example.com-send-notify-addition},
             )
           end
         end
@@ -273,33 +273,33 @@ describe 'nsd::remote' do
 
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com'
+              'nsd_pattern_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-master\n
                 \s+allow-notify:\s192.0.2.1\sNOKEY\n
                 \s+request-xfr:\sAXFR\s192.0.2.1\sexample_tsig\n
-              }x
+              }x,
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-provide-xfr\n
                 \s+notify:\s192.0.2.1\sNOKEY\n
                 \s+provide-xfr:\s192.0.2.1\sexample_tsig\n
-              }x
+              }x,
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\s+xfr.example.com-allow-notify-addition\n
                 \s+allow-notify:\s192.0.2.1\sNOKEY\n
-              }x
+              }x,
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-send-notify-addition\n
                 \s+notify:\s192.0.2.1\sNOKEY\n
-              }x
+              }x,
             )
           end
         end
@@ -311,33 +311,33 @@ describe 'nsd::remote' do
 
           it do
             is_expected.to contain_concat__fragment(
-              'nsd_pattern_xfr.example.com'
+              'nsd_pattern_xfr.example.com',
             ).with_target(conf_file).with_order('15').with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-master\n
                 \s+allow-notify:\s192.0.2.1@5353\sNOKEY\n
                 \s+request-xfr:\sAXFR\s192.0.2.1@5353\sNOKEY\n
-              }x
+              }x,
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-provide-xfr\n
                 \s+notify:\s192.0.2.1@5353\sNOKEY\n
                 \s+provide-xfr:\s192.0.2.1@5353\sNOKEY\n
-              }x
+              }x,
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\s+xfr.example.com-allow-notify-addition\n
                 \s+allow-notify:\s192.0.2.1@5353\sNOKEY\n
-              }x
+              }x,
             ).with_content(
               %r{
                 pattern:\n
                 \s+name:\sxfr.example.com-send-notify-addition\n
                 \s+notify:\s192.0.2.1@5353\sNOKEY\n
-              }x
+              }x,
             )
           end
         end
